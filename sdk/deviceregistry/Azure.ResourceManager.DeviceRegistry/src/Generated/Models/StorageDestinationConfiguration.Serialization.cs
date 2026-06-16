@@ -14,11 +14,28 @@ using Azure.ResourceManager.DeviceRegistry;
 namespace Azure.ResourceManager.DeviceRegistry.Models
 {
     /// <summary> The configuration for a storage destination. </summary>
-    public partial class StorageDestinationConfiguration : IJsonModel<StorageDestinationConfiguration>
+    internal partial class StorageDestinationConfiguration : IJsonModel<StorageDestinationConfiguration>
     {
         /// <summary> Initializes a new instance of <see cref="StorageDestinationConfiguration"/> for deserialization. </summary>
         internal StorageDestinationConfiguration()
         {
+        }
+
+        /// <param name="data"> The data to parse. </param>
+        /// <param name="options"> The client options for reading and writing models. </param>
+        protected virtual StorageDestinationConfiguration PersistableModelCreateCore(BinaryData data, ModelReaderWriterOptions options)
+        {
+            string format = options.Format == "W" ? ((IPersistableModel<StorageDestinationConfiguration>)this).GetFormatFromOptions(options) : options.Format;
+            switch (format)
+            {
+                case "J":
+                    using (JsonDocument document = JsonDocument.Parse(data, ModelSerializationExtensions.JsonDocumentOptions))
+                    {
+                        return DeserializeStorageDestinationConfiguration(document.RootElement, options);
+                    }
+                default:
+                    throw new FormatException($"The model {nameof(StorageDestinationConfiguration)} does not support reading '{options.Format}' format.");
+            }
         }
 
         /// <param name="writer"> The JSON writer. </param>
@@ -119,23 +136,6 @@ namespace Azure.ResourceManager.DeviceRegistry.Models
         /// <param name="data"> The data to parse. </param>
         /// <param name="options"> The client options for reading and writing models. </param>
         StorageDestinationConfiguration IPersistableModel<StorageDestinationConfiguration>.Create(BinaryData data, ModelReaderWriterOptions options) => PersistableModelCreateCore(data, options);
-
-        /// <param name="data"> The data to parse. </param>
-        /// <param name="options"> The client options for reading and writing models. </param>
-        protected virtual StorageDestinationConfiguration PersistableModelCreateCore(BinaryData data, ModelReaderWriterOptions options)
-        {
-            string format = options.Format == "W" ? ((IPersistableModel<StorageDestinationConfiguration>)this).GetFormatFromOptions(options) : options.Format;
-            switch (format)
-            {
-                case "J":
-                    using (JsonDocument document = JsonDocument.Parse(data))
-                    {
-                        return DeserializeStorageDestinationConfiguration(document.RootElement, options);
-                    }
-                default:
-                    throw new FormatException($"The model {nameof(StorageDestinationConfiguration)} does not support reading '{options.Format}' format.");
-            }
-        }
 
         /// <param name="options"> The client options for reading and writing models. </param>
         string IPersistableModel<StorageDestinationConfiguration>.GetFormatFromOptions(ModelReaderWriterOptions options) => "J";

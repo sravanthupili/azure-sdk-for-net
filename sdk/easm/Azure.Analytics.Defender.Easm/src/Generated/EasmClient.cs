@@ -73,7 +73,7 @@ namespace Azure.Analytics.Defender.Easm
         /// <param name="filter"> Filter the result list using the given expression. </param>
         /// <param name="orderby"> A list of expressions that specify the order of the returned resources. </param>
         /// <param name="skip"> The number of result items to skip. </param>
-        /// <param name="maxpagesize"> The maximum number of result items per page. </param>
+        /// <param name="maxPageSize"> The maximum number of result items per page. </param>
         /// <param name="mark"> Specify this value instead of 'skip' to use cursor-based searching. Initial value is '*' and subsequent values are returned in the response. </param>
         /// <param name="responseType"> Specify the response type. The possible values are: ID, STANDARD, FULL, REDUCED. </param>
         /// <param name="responseIncludes"> The properties to include in the response. </param>
@@ -81,29 +81,19 @@ namespace Azure.Analytics.Defender.Easm
         /// <param name="context"> The request options, which can override default behaviors of the client pipeline on a per-call basis. </param>
         /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
         /// <returns> The response returned from the service. </returns>
-        public virtual Pageable<BinaryData> GetAssetResources(string filter, string @orderby, int? skip, int? maxpagesize, string mark, string responseType, IEnumerable<string> responseIncludes, bool? recentOnly, RequestContext context)
+        public virtual Pageable<BinaryData> GetAssetResources(string filter, string @orderby, int? skip, int? maxPageSize, string mark, string responseType, IEnumerable<string> responseIncludes, bool? recentOnly, RequestContext context)
         {
-            using DiagnosticScope scope = ClientDiagnostics.CreateScope("EasmClient.GetAssetResources");
-            scope.Start();
-            try
-            {
-                return new EasmClientGetAssetResourcesCollectionResult(
-                    this,
-                    filter,
-                    @orderby,
-                    skip,
-                    maxpagesize,
-                    mark,
-                    responseType,
-                    responseIncludes,
-                    recentOnly,
-                    context);
-            }
-            catch (Exception e)
-            {
-                scope.Failed(e);
-                throw;
-            }
+            return new EasmClientGetAssetResourcesCollectionResult(
+                this,
+                filter,
+                @orderby,
+                skip,
+                maxPageSize,
+                mark,
+                responseType,
+                responseIncludes,
+                recentOnly,
+                context);
         }
 
         /// <summary>
@@ -117,7 +107,7 @@ namespace Azure.Analytics.Defender.Easm
         /// <param name="filter"> Filter the result list using the given expression. </param>
         /// <param name="orderby"> A list of expressions that specify the order of the returned resources. </param>
         /// <param name="skip"> The number of result items to skip. </param>
-        /// <param name="maxpagesize"> The maximum number of result items per page. </param>
+        /// <param name="maxPageSize"> The maximum number of result items per page. </param>
         /// <param name="mark"> Specify this value instead of 'skip' to use cursor-based searching. Initial value is '*' and subsequent values are returned in the response. </param>
         /// <param name="responseType"> Specify the response type. The possible values are: ID, STANDARD, FULL, REDUCED. </param>
         /// <param name="responseIncludes"> The properties to include in the response. </param>
@@ -125,50 +115,40 @@ namespace Azure.Analytics.Defender.Easm
         /// <param name="context"> The request options, which can override default behaviors of the client pipeline on a per-call basis. </param>
         /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
         /// <returns> The response returned from the service. </returns>
-        public virtual AsyncPageable<BinaryData> GetAssetResourcesAsync(string filter, string @orderby, int? skip, int? maxpagesize, string mark, string responseType, IEnumerable<string> responseIncludes, bool? recentOnly, RequestContext context)
+        public virtual AsyncPageable<BinaryData> GetAssetResourcesAsync(string filter, string @orderby, int? skip, int? maxPageSize, string mark, string responseType, IEnumerable<string> responseIncludes, bool? recentOnly, RequestContext context)
         {
-            using DiagnosticScope scope = ClientDiagnostics.CreateScope("EasmClient.GetAssetResources");
-            scope.Start();
-            try
-            {
-                return new EasmClientGetAssetResourcesAsyncCollectionResult(
-                    this,
-                    filter,
-                    @orderby,
-                    skip,
-                    maxpagesize,
-                    mark,
-                    responseType,
-                    responseIncludes,
-                    recentOnly,
-                    context);
-            }
-            catch (Exception e)
-            {
-                scope.Failed(e);
-                throw;
-            }
+            return new EasmClientGetAssetResourcesAsyncCollectionResult(
+                this,
+                filter,
+                @orderby,
+                skip,
+                maxPageSize,
+                mark,
+                responseType,
+                responseIncludes,
+                recentOnly,
+                context);
         }
 
         /// <summary> Retrieve a list of assets for the provided search parameters. </summary>
         /// <param name="filter"> Filter the result list using the given expression. </param>
         /// <param name="orderby"> A list of expressions that specify the order of the returned resources. </param>
         /// <param name="skip"> The number of result items to skip. </param>
-        /// <param name="maxpagesize"> The maximum number of result items per page. </param>
+        /// <param name="maxPageSize"> The maximum number of result items per page. </param>
         /// <param name="mark"> Specify this value instead of 'skip' to use cursor-based searching. Initial value is '*' and subsequent values are returned in the response. </param>
         /// <param name="responseType"> Specify the response type. The possible values are: ID, STANDARD, FULL, REDUCED. </param>
         /// <param name="responseIncludes"> The properties to include in the response. </param>
         /// <param name="recentOnly"> If it's recent only. </param>
         /// <param name="cancellationToken"> The cancellation token that can be used to cancel the operation. </param>
         /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
-        public virtual Pageable<AssetResource> GetAssetResources(string filter = default, string @orderby = default, int? skip = default, int? maxpagesize = default, string mark = default, AssetResponseType? responseType = default, IEnumerable<string> responseIncludes = default, bool? recentOnly = default, CancellationToken cancellationToken = default)
+        public virtual Pageable<AssetResource> GetAssetResources(string filter = default, string @orderby = default, int? skip = default, int? maxPageSize = default, string mark = default, AssetResponseType? responseType = default, IEnumerable<string> responseIncludes = default, bool? recentOnly = default, CancellationToken cancellationToken = default)
         {
             return new EasmClientGetAssetResourcesCollectionResultOfT(
                 this,
                 filter,
                 @orderby,
                 skip,
-                maxpagesize,
+                maxPageSize,
                 mark,
                 responseType?.ToString(),
                 responseIncludes,
@@ -180,21 +160,21 @@ namespace Azure.Analytics.Defender.Easm
         /// <param name="filter"> Filter the result list using the given expression. </param>
         /// <param name="orderby"> A list of expressions that specify the order of the returned resources. </param>
         /// <param name="skip"> The number of result items to skip. </param>
-        /// <param name="maxpagesize"> The maximum number of result items per page. </param>
+        /// <param name="maxPageSize"> The maximum number of result items per page. </param>
         /// <param name="mark"> Specify this value instead of 'skip' to use cursor-based searching. Initial value is '*' and subsequent values are returned in the response. </param>
         /// <param name="responseType"> Specify the response type. The possible values are: ID, STANDARD, FULL, REDUCED. </param>
         /// <param name="responseIncludes"> The properties to include in the response. </param>
         /// <param name="recentOnly"> If it's recent only. </param>
         /// <param name="cancellationToken"> The cancellation token that can be used to cancel the operation. </param>
         /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
-        public virtual AsyncPageable<AssetResource> GetAssetResourcesAsync(string filter = default, string @orderby = default, int? skip = default, int? maxpagesize = default, string mark = default, AssetResponseType? responseType = default, IEnumerable<string> responseIncludes = default, bool? recentOnly = default, CancellationToken cancellationToken = default)
+        public virtual AsyncPageable<AssetResource> GetAssetResourcesAsync(string filter = default, string @orderby = default, int? skip = default, int? maxPageSize = default, string mark = default, AssetResponseType? responseType = default, IEnumerable<string> responseIncludes = default, bool? recentOnly = default, CancellationToken cancellationToken = default)
         {
             return new EasmClientGetAssetResourcesAsyncCollectionResultOfT(
                 this,
                 filter,
                 @orderby,
                 skip,
-                maxpagesize,
+                maxPageSize,
                 mark,
                 responseType?.ToString(),
                 responseIncludes,
@@ -615,19 +595,9 @@ namespace Azure.Analytics.Defender.Easm
         /// <returns> The response returned from the service. </returns>
         public virtual Pageable<BinaryData> GetDeltaDetails(RequestContent content, int? skip = default, int? maxpagesize = default, RequestContext context = null)
         {
-            using DiagnosticScope scope = ClientDiagnostics.CreateScope("EasmClient.GetDeltaDetails");
-            scope.Start();
-            try
-            {
-                Argument.AssertNotNull(content, nameof(content));
+            Argument.AssertNotNull(content, nameof(content));
 
-                return new EasmClientGetDeltaDetailsCollectionResult(this, content, skip, maxpagesize, context);
-            }
-            catch (Exception e)
-            {
-                scope.Failed(e);
-                throw;
-            }
+            return new EasmClientGetDeltaDetailsCollectionResult(this, content, skip, maxpagesize, context);
         }
 
         /// <summary>
@@ -647,19 +617,9 @@ namespace Azure.Analytics.Defender.Easm
         /// <returns> The response returned from the service. </returns>
         public virtual AsyncPageable<BinaryData> GetDeltaDetailsAsync(RequestContent content, int? skip = default, int? maxpagesize = default, RequestContext context = null)
         {
-            using DiagnosticScope scope = ClientDiagnostics.CreateScope("EasmClient.GetDeltaDetails");
-            scope.Start();
-            try
-            {
-                Argument.AssertNotNull(content, nameof(content));
+            Argument.AssertNotNull(content, nameof(content));
 
-                return new EasmClientGetDeltaDetailsAsyncCollectionResult(this, content, skip, maxpagesize, context);
-            }
-            catch (Exception e)
-            {
-                scope.Failed(e);
-                throw;
-            }
+            return new EasmClientGetDeltaDetailsAsyncCollectionResult(this, content, skip, maxpagesize, context);
         }
 
         /// <summary> Retrieve a list of deltas for the provided time range. </summary>
@@ -787,23 +747,13 @@ namespace Azure.Analytics.Defender.Easm
         /// </list>
         /// </summary>
         /// <param name="skip"> The number of result items to skip. </param>
-        /// <param name="maxpagesize"> The maximum number of result items per page. </param>
+        /// <param name="maxPageSize"> The maximum number of result items per page. </param>
         /// <param name="context"> The request options, which can override default behaviors of the client pipeline on a per-call basis. </param>
         /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
         /// <returns> The response returned from the service. </returns>
-        public virtual Pageable<BinaryData> GetDataConnections(int? skip, int? maxpagesize, RequestContext context)
+        public virtual Pageable<BinaryData> GetDataConnections(int? skip, int? maxPageSize, RequestContext context)
         {
-            using DiagnosticScope scope = ClientDiagnostics.CreateScope("EasmClient.GetDataConnections");
-            scope.Start();
-            try
-            {
-                return new EasmClientGetDataConnectionsCollectionResult(this, skip, maxpagesize, context);
-            }
-            catch (Exception e)
-            {
-                scope.Failed(e);
-                throw;
-            }
+            return new EasmClientGetDataConnectionsCollectionResult(this, skip, maxPageSize, context);
         }
 
         /// <summary>
@@ -815,43 +765,33 @@ namespace Azure.Analytics.Defender.Easm
         /// </list>
         /// </summary>
         /// <param name="skip"> The number of result items to skip. </param>
-        /// <param name="maxpagesize"> The maximum number of result items per page. </param>
+        /// <param name="maxPageSize"> The maximum number of result items per page. </param>
         /// <param name="context"> The request options, which can override default behaviors of the client pipeline on a per-call basis. </param>
         /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
         /// <returns> The response returned from the service. </returns>
-        public virtual AsyncPageable<BinaryData> GetDataConnectionsAsync(int? skip, int? maxpagesize, RequestContext context)
+        public virtual AsyncPageable<BinaryData> GetDataConnectionsAsync(int? skip, int? maxPageSize, RequestContext context)
         {
-            using DiagnosticScope scope = ClientDiagnostics.CreateScope("EasmClient.GetDataConnections");
-            scope.Start();
-            try
-            {
-                return new EasmClientGetDataConnectionsAsyncCollectionResult(this, skip, maxpagesize, context);
-            }
-            catch (Exception e)
-            {
-                scope.Failed(e);
-                throw;
-            }
+            return new EasmClientGetDataConnectionsAsyncCollectionResult(this, skip, maxPageSize, context);
         }
 
         /// <summary> Retrieve a list of data connections. </summary>
         /// <param name="skip"> The number of result items to skip. </param>
-        /// <param name="maxpagesize"> The maximum number of result items per page. </param>
+        /// <param name="maxPageSize"> The maximum number of result items per page. </param>
         /// <param name="cancellationToken"> The cancellation token that can be used to cancel the operation. </param>
         /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
-        public virtual Pageable<DataConnection> GetDataConnections(int? skip = default, int? maxpagesize = default, CancellationToken cancellationToken = default)
+        public virtual Pageable<DataConnection> GetDataConnections(int? skip = default, int? maxPageSize = default, CancellationToken cancellationToken = default)
         {
-            return new EasmClientGetDataConnectionsCollectionResultOfT(this, skip, maxpagesize, cancellationToken.ToRequestContext());
+            return new EasmClientGetDataConnectionsCollectionResultOfT(this, skip, maxPageSize, cancellationToken.ToRequestContext());
         }
 
         /// <summary> Retrieve a list of data connections. </summary>
         /// <param name="skip"> The number of result items to skip. </param>
-        /// <param name="maxpagesize"> The maximum number of result items per page. </param>
+        /// <param name="maxPageSize"> The maximum number of result items per page. </param>
         /// <param name="cancellationToken"> The cancellation token that can be used to cancel the operation. </param>
         /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
-        public virtual AsyncPageable<DataConnection> GetDataConnectionsAsync(int? skip = default, int? maxpagesize = default, CancellationToken cancellationToken = default)
+        public virtual AsyncPageable<DataConnection> GetDataConnectionsAsync(int? skip = default, int? maxPageSize = default, CancellationToken cancellationToken = default)
         {
-            return new EasmClientGetDataConnectionsAsyncCollectionResultOfT(this, skip, maxpagesize, cancellationToken.ToRequestContext());
+            return new EasmClientGetDataConnectionsAsyncCollectionResultOfT(this, skip, maxPageSize, cancellationToken.ToRequestContext());
         }
 
         /// <summary>
@@ -1234,23 +1174,13 @@ namespace Azure.Analytics.Defender.Easm
         /// </summary>
         /// <param name="filter"> Filter the result list using the given expression. </param>
         /// <param name="skip"> The number of result items to skip. </param>
-        /// <param name="maxpagesize"> The maximum number of result items per page. </param>
+        /// <param name="maxPageSize"> The maximum number of result items per page. </param>
         /// <param name="context"> The request options, which can override default behaviors of the client pipeline on a per-call basis. </param>
         /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
         /// <returns> The response returned from the service. </returns>
-        public virtual Pageable<BinaryData> GetDiscoveryGroups(string filter, int? skip, int? maxpagesize, RequestContext context)
+        public virtual Pageable<BinaryData> GetDiscoveryGroups(string filter, int? skip, int? maxPageSize, RequestContext context)
         {
-            using DiagnosticScope scope = ClientDiagnostics.CreateScope("EasmClient.GetDiscoveryGroups");
-            scope.Start();
-            try
-            {
-                return new EasmClientGetDiscoveryGroupsCollectionResult(this, filter, skip, maxpagesize, context);
-            }
-            catch (Exception e)
-            {
-                scope.Failed(e);
-                throw;
-            }
+            return new EasmClientGetDiscoveryGroupsCollectionResult(this, filter, skip, maxPageSize, context);
         }
 
         /// <summary>
@@ -1263,45 +1193,35 @@ namespace Azure.Analytics.Defender.Easm
         /// </summary>
         /// <param name="filter"> Filter the result list using the given expression. </param>
         /// <param name="skip"> The number of result items to skip. </param>
-        /// <param name="maxpagesize"> The maximum number of result items per page. </param>
+        /// <param name="maxPageSize"> The maximum number of result items per page. </param>
         /// <param name="context"> The request options, which can override default behaviors of the client pipeline on a per-call basis. </param>
         /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
         /// <returns> The response returned from the service. </returns>
-        public virtual AsyncPageable<BinaryData> GetDiscoveryGroupsAsync(string filter, int? skip, int? maxpagesize, RequestContext context)
+        public virtual AsyncPageable<BinaryData> GetDiscoveryGroupsAsync(string filter, int? skip, int? maxPageSize, RequestContext context)
         {
-            using DiagnosticScope scope = ClientDiagnostics.CreateScope("EasmClient.GetDiscoveryGroups");
-            scope.Start();
-            try
-            {
-                return new EasmClientGetDiscoveryGroupsAsyncCollectionResult(this, filter, skip, maxpagesize, context);
-            }
-            catch (Exception e)
-            {
-                scope.Failed(e);
-                throw;
-            }
+            return new EasmClientGetDiscoveryGroupsAsyncCollectionResult(this, filter, skip, maxPageSize, context);
         }
 
         /// <summary> Retrieve a list of discovery group for the provided search parameters. </summary>
         /// <param name="filter"> Filter the result list using the given expression. </param>
         /// <param name="skip"> The number of result items to skip. </param>
-        /// <param name="maxpagesize"> The maximum number of result items per page. </param>
+        /// <param name="maxPageSize"> The maximum number of result items per page. </param>
         /// <param name="cancellationToken"> The cancellation token that can be used to cancel the operation. </param>
         /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
-        public virtual Pageable<DiscoveryGroup> GetDiscoveryGroups(string filter = default, int? skip = default, int? maxpagesize = default, CancellationToken cancellationToken = default)
+        public virtual Pageable<DiscoveryGroup> GetDiscoveryGroups(string filter = default, int? skip = default, int? maxPageSize = default, CancellationToken cancellationToken = default)
         {
-            return new EasmClientGetDiscoveryGroupsCollectionResultOfT(this, filter, skip, maxpagesize, cancellationToken.ToRequestContext());
+            return new EasmClientGetDiscoveryGroupsCollectionResultOfT(this, filter, skip, maxPageSize, cancellationToken.ToRequestContext());
         }
 
         /// <summary> Retrieve a list of discovery group for the provided search parameters. </summary>
         /// <param name="filter"> Filter the result list using the given expression. </param>
         /// <param name="skip"> The number of result items to skip. </param>
-        /// <param name="maxpagesize"> The maximum number of result items per page. </param>
+        /// <param name="maxPageSize"> The maximum number of result items per page. </param>
         /// <param name="cancellationToken"> The cancellation token that can be used to cancel the operation. </param>
         /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
-        public virtual AsyncPageable<DiscoveryGroup> GetDiscoveryGroupsAsync(string filter = default, int? skip = default, int? maxpagesize = default, CancellationToken cancellationToken = default)
+        public virtual AsyncPageable<DiscoveryGroup> GetDiscoveryGroupsAsync(string filter = default, int? skip = default, int? maxPageSize = default, CancellationToken cancellationToken = default)
         {
-            return new EasmClientGetDiscoveryGroupsAsyncCollectionResultOfT(this, filter, skip, maxpagesize, cancellationToken.ToRequestContext());
+            return new EasmClientGetDiscoveryGroupsAsyncCollectionResultOfT(this, filter, skip, maxPageSize, cancellationToken.ToRequestContext());
         }
 
         /// <summary>
@@ -1775,33 +1695,23 @@ namespace Azure.Analytics.Defender.Easm
         /// <param name="groupName"> The unique identifier for the discovery group. </param>
         /// <param name="filter"> Filter the result list using the given expression. </param>
         /// <param name="skip"> The number of result items to skip. </param>
-        /// <param name="maxpagesize"> The maximum number of result items per page. </param>
+        /// <param name="maxPageSize"> The maximum number of result items per page. </param>
         /// <param name="context"> The request options, which can override default behaviors of the client pipeline on a per-call basis. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="groupName"/> is null. </exception>
         /// <exception cref="ArgumentException"> <paramref name="groupName"/> is an empty string, and was expected to be non-empty. </exception>
         /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
         /// <returns> The response returned from the service. </returns>
-        public virtual Pageable<BinaryData> GetDiscoveryGroupRuns(string groupName, string filter, int? skip, int? maxpagesize, RequestContext context)
+        public virtual Pageable<BinaryData> GetDiscoveryGroupRuns(string groupName, string filter, int? skip, int? maxPageSize, RequestContext context)
         {
-            using DiagnosticScope scope = ClientDiagnostics.CreateScope("EasmClient.GetDiscoveryGroupRuns");
-            scope.Start();
-            try
-            {
-                Argument.AssertNotNullOrEmpty(groupName, nameof(groupName));
+            Argument.AssertNotNullOrEmpty(groupName, nameof(groupName));
 
-                return new EasmClientGetDiscoveryGroupRunsCollectionResult(
-                    this,
-                    groupName,
-                    filter,
-                    skip,
-                    maxpagesize,
-                    context);
-            }
-            catch (Exception e)
-            {
-                scope.Failed(e);
-                throw;
-            }
+            return new EasmClientGetDiscoveryGroupRunsCollectionResult(
+                this,
+                groupName,
+                filter,
+                skip,
+                maxPageSize,
+                context);
         }
 
         /// <summary>
@@ -1815,45 +1725,35 @@ namespace Azure.Analytics.Defender.Easm
         /// <param name="groupName"> The unique identifier for the discovery group. </param>
         /// <param name="filter"> Filter the result list using the given expression. </param>
         /// <param name="skip"> The number of result items to skip. </param>
-        /// <param name="maxpagesize"> The maximum number of result items per page. </param>
+        /// <param name="maxPageSize"> The maximum number of result items per page. </param>
         /// <param name="context"> The request options, which can override default behaviors of the client pipeline on a per-call basis. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="groupName"/> is null. </exception>
         /// <exception cref="ArgumentException"> <paramref name="groupName"/> is an empty string, and was expected to be non-empty. </exception>
         /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
         /// <returns> The response returned from the service. </returns>
-        public virtual AsyncPageable<BinaryData> GetDiscoveryGroupRunsAsync(string groupName, string filter, int? skip, int? maxpagesize, RequestContext context)
+        public virtual AsyncPageable<BinaryData> GetDiscoveryGroupRunsAsync(string groupName, string filter, int? skip, int? maxPageSize, RequestContext context)
         {
-            using DiagnosticScope scope = ClientDiagnostics.CreateScope("EasmClient.GetDiscoveryGroupRuns");
-            scope.Start();
-            try
-            {
-                Argument.AssertNotNullOrEmpty(groupName, nameof(groupName));
+            Argument.AssertNotNullOrEmpty(groupName, nameof(groupName));
 
-                return new EasmClientGetDiscoveryGroupRunsAsyncCollectionResult(
-                    this,
-                    groupName,
-                    filter,
-                    skip,
-                    maxpagesize,
-                    context);
-            }
-            catch (Exception e)
-            {
-                scope.Failed(e);
-                throw;
-            }
+            return new EasmClientGetDiscoveryGroupRunsAsyncCollectionResult(
+                this,
+                groupName,
+                filter,
+                skip,
+                maxPageSize,
+                context);
         }
 
         /// <summary> Retrieve a collection of discovery run results for a discovery group with a given groupName. </summary>
         /// <param name="groupName"> The unique identifier for the discovery group. </param>
         /// <param name="filter"> Filter the result list using the given expression. </param>
         /// <param name="skip"> The number of result items to skip. </param>
-        /// <param name="maxpagesize"> The maximum number of result items per page. </param>
+        /// <param name="maxPageSize"> The maximum number of result items per page. </param>
         /// <param name="cancellationToken"> The cancellation token that can be used to cancel the operation. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="groupName"/> is null. </exception>
         /// <exception cref="ArgumentException"> <paramref name="groupName"/> is an empty string, and was expected to be non-empty. </exception>
         /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
-        public virtual Pageable<DiscoveryRunResult> GetDiscoveryGroupRuns(string groupName, string filter = default, int? skip = default, int? maxpagesize = default, CancellationToken cancellationToken = default)
+        public virtual Pageable<DiscoveryRunResult> GetDiscoveryGroupRuns(string groupName, string filter = default, int? skip = default, int? maxPageSize = default, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(groupName, nameof(groupName));
 
@@ -1862,7 +1762,7 @@ namespace Azure.Analytics.Defender.Easm
                 groupName,
                 filter,
                 skip,
-                maxpagesize,
+                maxPageSize,
                 cancellationToken.ToRequestContext());
         }
 
@@ -1870,12 +1770,12 @@ namespace Azure.Analytics.Defender.Easm
         /// <param name="groupName"> The unique identifier for the discovery group. </param>
         /// <param name="filter"> Filter the result list using the given expression. </param>
         /// <param name="skip"> The number of result items to skip. </param>
-        /// <param name="maxpagesize"> The maximum number of result items per page. </param>
+        /// <param name="maxPageSize"> The maximum number of result items per page. </param>
         /// <param name="cancellationToken"> The cancellation token that can be used to cancel the operation. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="groupName"/> is null. </exception>
         /// <exception cref="ArgumentException"> <paramref name="groupName"/> is an empty string, and was expected to be non-empty. </exception>
         /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
-        public virtual AsyncPageable<DiscoveryRunResult> GetDiscoveryGroupRunsAsync(string groupName, string filter = default, int? skip = default, int? maxpagesize = default, CancellationToken cancellationToken = default)
+        public virtual AsyncPageable<DiscoveryRunResult> GetDiscoveryGroupRunsAsync(string groupName, string filter = default, int? skip = default, int? maxPageSize = default, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(groupName, nameof(groupName));
 
@@ -1884,7 +1784,7 @@ namespace Azure.Analytics.Defender.Easm
                 groupName,
                 filter,
                 skip,
-                maxpagesize,
+                maxPageSize,
                 cancellationToken.ToRequestContext());
         }
 
@@ -2074,23 +1974,13 @@ namespace Azure.Analytics.Defender.Easm
         /// </summary>
         /// <param name="filter"> Filter the result list using the given expression. </param>
         /// <param name="skip"> The number of result items to skip. </param>
-        /// <param name="maxpagesize"> The maximum number of result items per page. </param>
+        /// <param name="maxPageSize"> The maximum number of result items per page. </param>
         /// <param name="context"> The request options, which can override default behaviors of the client pipeline on a per-call basis. </param>
         /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
         /// <returns> The response returned from the service. </returns>
-        public virtual Pageable<BinaryData> GetDiscoveryTemplates(string filter, int? skip, int? maxpagesize, RequestContext context)
+        public virtual Pageable<BinaryData> GetDiscoveryTemplates(string filter, int? skip, int? maxPageSize, RequestContext context)
         {
-            using DiagnosticScope scope = ClientDiagnostics.CreateScope("EasmClient.GetDiscoveryTemplates");
-            scope.Start();
-            try
-            {
-                return new EasmClientGetDiscoveryTemplatesCollectionResult(this, filter, skip, maxpagesize, context);
-            }
-            catch (Exception e)
-            {
-                scope.Failed(e);
-                throw;
-            }
+            return new EasmClientGetDiscoveryTemplatesCollectionResult(this, filter, skip, maxPageSize, context);
         }
 
         /// <summary>
@@ -2103,45 +1993,35 @@ namespace Azure.Analytics.Defender.Easm
         /// </summary>
         /// <param name="filter"> Filter the result list using the given expression. </param>
         /// <param name="skip"> The number of result items to skip. </param>
-        /// <param name="maxpagesize"> The maximum number of result items per page. </param>
+        /// <param name="maxPageSize"> The maximum number of result items per page. </param>
         /// <param name="context"> The request options, which can override default behaviors of the client pipeline on a per-call basis. </param>
         /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
         /// <returns> The response returned from the service. </returns>
-        public virtual AsyncPageable<BinaryData> GetDiscoveryTemplatesAsync(string filter, int? skip, int? maxpagesize, RequestContext context)
+        public virtual AsyncPageable<BinaryData> GetDiscoveryTemplatesAsync(string filter, int? skip, int? maxPageSize, RequestContext context)
         {
-            using DiagnosticScope scope = ClientDiagnostics.CreateScope("EasmClient.GetDiscoveryTemplates");
-            scope.Start();
-            try
-            {
-                return new EasmClientGetDiscoveryTemplatesAsyncCollectionResult(this, filter, skip, maxpagesize, context);
-            }
-            catch (Exception e)
-            {
-                scope.Failed(e);
-                throw;
-            }
+            return new EasmClientGetDiscoveryTemplatesAsyncCollectionResult(this, filter, skip, maxPageSize, context);
         }
 
         /// <summary> Retrieve a list of disco templates for the provided search parameters. </summary>
         /// <param name="filter"> Filter the result list using the given expression. </param>
         /// <param name="skip"> The number of result items to skip. </param>
-        /// <param name="maxpagesize"> The maximum number of result items per page. </param>
+        /// <param name="maxPageSize"> The maximum number of result items per page. </param>
         /// <param name="cancellationToken"> The cancellation token that can be used to cancel the operation. </param>
         /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
-        public virtual Pageable<DiscoveryTemplate> GetDiscoveryTemplates(string filter = default, int? skip = default, int? maxpagesize = default, CancellationToken cancellationToken = default)
+        public virtual Pageable<DiscoveryTemplate> GetDiscoveryTemplates(string filter = default, int? skip = default, int? maxPageSize = default, CancellationToken cancellationToken = default)
         {
-            return new EasmClientGetDiscoveryTemplatesCollectionResultOfT(this, filter, skip, maxpagesize, cancellationToken.ToRequestContext());
+            return new EasmClientGetDiscoveryTemplatesCollectionResultOfT(this, filter, skip, maxPageSize, cancellationToken.ToRequestContext());
         }
 
         /// <summary> Retrieve a list of disco templates for the provided search parameters. </summary>
         /// <param name="filter"> Filter the result list using the given expression. </param>
         /// <param name="skip"> The number of result items to skip. </param>
-        /// <param name="maxpagesize"> The maximum number of result items per page. </param>
+        /// <param name="maxPageSize"> The maximum number of result items per page. </param>
         /// <param name="cancellationToken"> The cancellation token that can be used to cancel the operation. </param>
         /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
-        public virtual AsyncPageable<DiscoveryTemplate> GetDiscoveryTemplatesAsync(string filter = default, int? skip = default, int? maxpagesize = default, CancellationToken cancellationToken = default)
+        public virtual AsyncPageable<DiscoveryTemplate> GetDiscoveryTemplatesAsync(string filter = default, int? skip = default, int? maxPageSize = default, CancellationToken cancellationToken = default)
         {
-            return new EasmClientGetDiscoveryTemplatesAsyncCollectionResultOfT(this, filter, skip, maxpagesize, cancellationToken.ToRequestContext());
+            return new EasmClientGetDiscoveryTemplatesAsyncCollectionResultOfT(this, filter, skip, maxPageSize, cancellationToken.ToRequestContext());
         }
 
         /// <summary>
@@ -2582,23 +2462,13 @@ namespace Azure.Analytics.Defender.Easm
         /// </summary>
         /// <param name="filter"> Filter the result list using the given expression. </param>
         /// <param name="skip"> The number of result items to skip. </param>
-        /// <param name="maxpagesize"> The maximum number of result items per page. </param>
+        /// <param name="maxPageSize"> The maximum number of result items per page. </param>
         /// <param name="context"> The request options, which can override default behaviors of the client pipeline on a per-call basis. </param>
         /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
         /// <returns> The response returned from the service. </returns>
-        public virtual Pageable<BinaryData> GetSavedFilters(string filter, int? skip, int? maxpagesize, RequestContext context)
+        public virtual Pageable<BinaryData> GetSavedFilters(string filter, int? skip, int? maxPageSize, RequestContext context)
         {
-            using DiagnosticScope scope = ClientDiagnostics.CreateScope("EasmClient.GetSavedFilters");
-            scope.Start();
-            try
-            {
-                return new EasmClientGetSavedFiltersCollectionResult(this, filter, skip, maxpagesize, context);
-            }
-            catch (Exception e)
-            {
-                scope.Failed(e);
-                throw;
-            }
+            return new EasmClientGetSavedFiltersCollectionResult(this, filter, skip, maxPageSize, context);
         }
 
         /// <summary>
@@ -2611,45 +2481,35 @@ namespace Azure.Analytics.Defender.Easm
         /// </summary>
         /// <param name="filter"> Filter the result list using the given expression. </param>
         /// <param name="skip"> The number of result items to skip. </param>
-        /// <param name="maxpagesize"> The maximum number of result items per page. </param>
+        /// <param name="maxPageSize"> The maximum number of result items per page. </param>
         /// <param name="context"> The request options, which can override default behaviors of the client pipeline on a per-call basis. </param>
         /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
         /// <returns> The response returned from the service. </returns>
-        public virtual AsyncPageable<BinaryData> GetSavedFiltersAsync(string filter, int? skip, int? maxpagesize, RequestContext context)
+        public virtual AsyncPageable<BinaryData> GetSavedFiltersAsync(string filter, int? skip, int? maxPageSize, RequestContext context)
         {
-            using DiagnosticScope scope = ClientDiagnostics.CreateScope("EasmClient.GetSavedFilters");
-            scope.Start();
-            try
-            {
-                return new EasmClientGetSavedFiltersAsyncCollectionResult(this, filter, skip, maxpagesize, context);
-            }
-            catch (Exception e)
-            {
-                scope.Failed(e);
-                throw;
-            }
+            return new EasmClientGetSavedFiltersAsyncCollectionResult(this, filter, skip, maxPageSize, context);
         }
 
         /// <summary> Retrieve a list of saved filters for the provided search parameters. </summary>
         /// <param name="filter"> Filter the result list using the given expression. </param>
         /// <param name="skip"> The number of result items to skip. </param>
-        /// <param name="maxpagesize"> The maximum number of result items per page. </param>
+        /// <param name="maxPageSize"> The maximum number of result items per page. </param>
         /// <param name="cancellationToken"> The cancellation token that can be used to cancel the operation. </param>
         /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
-        public virtual Pageable<SavedFilter> GetSavedFilters(string filter = default, int? skip = default, int? maxpagesize = default, CancellationToken cancellationToken = default)
+        public virtual Pageable<SavedFilter> GetSavedFilters(string filter = default, int? skip = default, int? maxPageSize = default, CancellationToken cancellationToken = default)
         {
-            return new EasmClientGetSavedFiltersCollectionResultOfT(this, filter, skip, maxpagesize, cancellationToken.ToRequestContext());
+            return new EasmClientGetSavedFiltersCollectionResultOfT(this, filter, skip, maxPageSize, cancellationToken.ToRequestContext());
         }
 
         /// <summary> Retrieve a list of saved filters for the provided search parameters. </summary>
         /// <param name="filter"> Filter the result list using the given expression. </param>
         /// <param name="skip"> The number of result items to skip. </param>
-        /// <param name="maxpagesize"> The maximum number of result items per page. </param>
+        /// <param name="maxPageSize"> The maximum number of result items per page. </param>
         /// <param name="cancellationToken"> The cancellation token that can be used to cancel the operation. </param>
         /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
-        public virtual AsyncPageable<SavedFilter> GetSavedFiltersAsync(string filter = default, int? skip = default, int? maxpagesize = default, CancellationToken cancellationToken = default)
+        public virtual AsyncPageable<SavedFilter> GetSavedFiltersAsync(string filter = default, int? skip = default, int? maxPageSize = default, CancellationToken cancellationToken = default)
         {
-            return new EasmClientGetSavedFiltersAsyncCollectionResultOfT(this, filter, skip, maxpagesize, cancellationToken.ToRequestContext());
+            return new EasmClientGetSavedFiltersAsyncCollectionResultOfT(this, filter, skip, maxPageSize, cancellationToken.ToRequestContext());
         }
 
         /// <summary>
@@ -2945,29 +2805,19 @@ namespace Azure.Analytics.Defender.Easm
         /// <param name="filter"> Filter the result list using the given expression. </param>
         /// <param name="orderby"> A list of expressions that specify the order of the returned resources. </param>
         /// <param name="skip"> The number of result items to skip. </param>
-        /// <param name="maxpagesize"> The maximum number of result items per page. </param>
+        /// <param name="maxPageSize"> The maximum number of result items per page. </param>
         /// <param name="context"> The request options, which can override default behaviors of the client pipeline on a per-call basis. </param>
         /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
         /// <returns> The response returned from the service. </returns>
-        public virtual Pageable<BinaryData> GetTasks(string filter, string @orderby, int? skip, int? maxpagesize, RequestContext context)
+        public virtual Pageable<BinaryData> GetTasks(string filter, string @orderby, int? skip, int? maxPageSize, RequestContext context)
         {
-            using DiagnosticScope scope = ClientDiagnostics.CreateScope("EasmClient.GetTasks");
-            scope.Start();
-            try
-            {
-                return new EasmClientGetTasksCollectionResult(
-                    this,
-                    filter,
-                    @orderby,
-                    skip,
-                    maxpagesize,
-                    context);
-            }
-            catch (Exception e)
-            {
-                scope.Failed(e);
-                throw;
-            }
+            return new EasmClientGetTasksCollectionResult(
+                this,
+                filter,
+                @orderby,
+                skip,
+                maxPageSize,
+                context);
         }
 
         /// <summary>
@@ -2981,46 +2831,36 @@ namespace Azure.Analytics.Defender.Easm
         /// <param name="filter"> Filter the result list using the given expression. </param>
         /// <param name="orderby"> A list of expressions that specify the order of the returned resources. </param>
         /// <param name="skip"> The number of result items to skip. </param>
-        /// <param name="maxpagesize"> The maximum number of result items per page. </param>
+        /// <param name="maxPageSize"> The maximum number of result items per page. </param>
         /// <param name="context"> The request options, which can override default behaviors of the client pipeline on a per-call basis. </param>
         /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
         /// <returns> The response returned from the service. </returns>
-        public virtual AsyncPageable<BinaryData> GetTasksAsync(string filter, string @orderby, int? skip, int? maxpagesize, RequestContext context)
+        public virtual AsyncPageable<BinaryData> GetTasksAsync(string filter, string @orderby, int? skip, int? maxPageSize, RequestContext context)
         {
-            using DiagnosticScope scope = ClientDiagnostics.CreateScope("EasmClient.GetTasks");
-            scope.Start();
-            try
-            {
-                return new EasmClientGetTasksAsyncCollectionResult(
-                    this,
-                    filter,
-                    @orderby,
-                    skip,
-                    maxpagesize,
-                    context);
-            }
-            catch (Exception e)
-            {
-                scope.Failed(e);
-                throw;
-            }
+            return new EasmClientGetTasksAsyncCollectionResult(
+                this,
+                filter,
+                @orderby,
+                skip,
+                maxPageSize,
+                context);
         }
 
         /// <summary> Retrieve a list of tasks for the provided search parameters. </summary>
         /// <param name="filter"> Filter the result list using the given expression. </param>
         /// <param name="orderby"> A list of expressions that specify the order of the returned resources. </param>
         /// <param name="skip"> The number of result items to skip. </param>
-        /// <param name="maxpagesize"> The maximum number of result items per page. </param>
+        /// <param name="maxPageSize"> The maximum number of result items per page. </param>
         /// <param name="cancellationToken"> The cancellation token that can be used to cancel the operation. </param>
         /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
-        public virtual Pageable<TaskResource> GetTasks(string filter = default, string @orderby = default, int? skip = default, int? maxpagesize = default, CancellationToken cancellationToken = default)
+        public virtual Pageable<TaskResource> GetTasks(string filter = default, string @orderby = default, int? skip = default, int? maxPageSize = default, CancellationToken cancellationToken = default)
         {
             return new EasmClientGetTasksCollectionResultOfT(
                 this,
                 filter,
                 @orderby,
                 skip,
-                maxpagesize,
+                maxPageSize,
                 cancellationToken.ToRequestContext());
         }
 
@@ -3028,17 +2868,17 @@ namespace Azure.Analytics.Defender.Easm
         /// <param name="filter"> Filter the result list using the given expression. </param>
         /// <param name="orderby"> A list of expressions that specify the order of the returned resources. </param>
         /// <param name="skip"> The number of result items to skip. </param>
-        /// <param name="maxpagesize"> The maximum number of result items per page. </param>
+        /// <param name="maxPageSize"> The maximum number of result items per page. </param>
         /// <param name="cancellationToken"> The cancellation token that can be used to cancel the operation. </param>
         /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
-        public virtual AsyncPageable<TaskResource> GetTasksAsync(string filter = default, string @orderby = default, int? skip = default, int? maxpagesize = default, CancellationToken cancellationToken = default)
+        public virtual AsyncPageable<TaskResource> GetTasksAsync(string filter = default, string @orderby = default, int? skip = default, int? maxPageSize = default, CancellationToken cancellationToken = default)
         {
             return new EasmClientGetTasksAsyncCollectionResultOfT(
                 this,
                 filter,
                 @orderby,
                 skip,
-                maxpagesize,
+                maxPageSize,
                 cancellationToken.ToRequestContext());
         }
 
@@ -3423,17 +3263,7 @@ namespace Azure.Analytics.Defender.Easm
         /// <returns> The response returned from the service. </returns>
         public virtual Pageable<BinaryData> GetCisaCves(RequestContext context)
         {
-            using DiagnosticScope scope = ClientDiagnostics.CreateScope("EasmClient.GetCisaCves");
-            scope.Start();
-            try
-            {
-                return new EasmClientGetCisaCvesCollectionResult(this, context);
-            }
-            catch (Exception e)
-            {
-                scope.Failed(e);
-                throw;
-            }
+            return new EasmClientGetCisaCvesCollectionResult(this, context);
         }
 
         /// <summary>
@@ -3449,17 +3279,7 @@ namespace Azure.Analytics.Defender.Easm
         /// <returns> The response returned from the service. </returns>
         public virtual AsyncPageable<BinaryData> GetCisaCvesAsync(RequestContext context)
         {
-            using DiagnosticScope scope = ClientDiagnostics.CreateScope("EasmClient.GetCisaCves");
-            scope.Start();
-            try
-            {
-                return new EasmClientGetCisaCvesAsyncCollectionResult(this, context);
-            }
-            catch (Exception e)
-            {
-                scope.Failed(e);
-                throw;
-            }
+            return new EasmClientGetCisaCvesAsyncCollectionResult(this, context);
         }
 
         /// <summary> Retrieve a list of CisaCves for the provided search parameters. </summary>
@@ -3580,23 +3400,13 @@ namespace Azure.Analytics.Defender.Easm
         /// </summary>
         /// <param name="filter"> Filter the result list using the given expression. </param>
         /// <param name="skip"> The number of result items to skip. </param>
-        /// <param name="maxpagesize"> The maximum number of result items per page. </param>
+        /// <param name="maxPageSize"> The maximum number of result items per page. </param>
         /// <param name="context"> The request options, which can override default behaviors of the client pipeline on a per-call basis. </param>
         /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
         /// <returns> The response returned from the service. </returns>
-        public virtual Pageable<BinaryData> GetPolicies(string filter, int? skip, int? maxpagesize, RequestContext context)
+        public virtual Pageable<BinaryData> GetPolicies(string filter, int? skip, int? maxPageSize, RequestContext context)
         {
-            using DiagnosticScope scope = ClientDiagnostics.CreateScope("EasmClient.GetPolicies");
-            scope.Start();
-            try
-            {
-                return new EasmClientGetPoliciesCollectionResult(this, filter, skip, maxpagesize, context);
-            }
-            catch (Exception e)
-            {
-                scope.Failed(e);
-                throw;
-            }
+            return new EasmClientGetPoliciesCollectionResult(this, filter, skip, maxPageSize, context);
         }
 
         /// <summary>
@@ -3609,45 +3419,35 @@ namespace Azure.Analytics.Defender.Easm
         /// </summary>
         /// <param name="filter"> Filter the result list using the given expression. </param>
         /// <param name="skip"> The number of result items to skip. </param>
-        /// <param name="maxpagesize"> The maximum number of result items per page. </param>
+        /// <param name="maxPageSize"> The maximum number of result items per page. </param>
         /// <param name="context"> The request options, which can override default behaviors of the client pipeline on a per-call basis. </param>
         /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
         /// <returns> The response returned from the service. </returns>
-        public virtual AsyncPageable<BinaryData> GetPoliciesAsync(string filter, int? skip, int? maxpagesize, RequestContext context)
+        public virtual AsyncPageable<BinaryData> GetPoliciesAsync(string filter, int? skip, int? maxPageSize, RequestContext context)
         {
-            using DiagnosticScope scope = ClientDiagnostics.CreateScope("EasmClient.GetPolicies");
-            scope.Start();
-            try
-            {
-                return new EasmClientGetPoliciesAsyncCollectionResult(this, filter, skip, maxpagesize, context);
-            }
-            catch (Exception e)
-            {
-                scope.Failed(e);
-                throw;
-            }
+            return new EasmClientGetPoliciesAsyncCollectionResult(this, filter, skip, maxPageSize, context);
         }
 
         /// <summary> Retrieve a list of policies for the provided search parameters. </summary>
         /// <param name="filter"> Filter the result list using the given expression. </param>
         /// <param name="skip"> The number of result items to skip. </param>
-        /// <param name="maxpagesize"> The maximum number of result items per page. </param>
+        /// <param name="maxPageSize"> The maximum number of result items per page. </param>
         /// <param name="cancellationToken"> The cancellation token that can be used to cancel the operation. </param>
         /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
-        public virtual Pageable<EasmPolicy> GetPolicies(string filter = default, int? skip = default, int? maxpagesize = default, CancellationToken cancellationToken = default)
+        public virtual Pageable<EasmPolicy> GetPolicies(string filter = default, int? skip = default, int? maxPageSize = default, CancellationToken cancellationToken = default)
         {
-            return new EasmClientGetPoliciesCollectionResultOfT(this, filter, skip, maxpagesize, cancellationToken.ToRequestContext());
+            return new EasmClientGetPoliciesCollectionResultOfT(this, filter, skip, maxPageSize, cancellationToken.ToRequestContext());
         }
 
         /// <summary> Retrieve a list of policies for the provided search parameters. </summary>
         /// <param name="filter"> Filter the result list using the given expression. </param>
         /// <param name="skip"> The number of result items to skip. </param>
-        /// <param name="maxpagesize"> The maximum number of result items per page. </param>
+        /// <param name="maxPageSize"> The maximum number of result items per page. </param>
         /// <param name="cancellationToken"> The cancellation token that can be used to cancel the operation. </param>
         /// <exception cref="RequestFailedException"> Service returned a non-success status code. </exception>
-        public virtual AsyncPageable<EasmPolicy> GetPoliciesAsync(string filter = default, int? skip = default, int? maxpagesize = default, CancellationToken cancellationToken = default)
+        public virtual AsyncPageable<EasmPolicy> GetPoliciesAsync(string filter = default, int? skip = default, int? maxPageSize = default, CancellationToken cancellationToken = default)
         {
-            return new EasmClientGetPoliciesAsyncCollectionResultOfT(this, filter, skip, maxpagesize, cancellationToken.ToRequestContext());
+            return new EasmClientGetPoliciesAsyncCollectionResultOfT(this, filter, skip, maxPageSize, cancellationToken.ToRequestContext());
         }
 
         /// <summary>

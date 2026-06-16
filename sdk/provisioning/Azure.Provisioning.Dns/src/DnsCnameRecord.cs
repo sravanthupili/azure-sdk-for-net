@@ -3,11 +3,11 @@
 
 #nullable enable
 
+using System;
 using Azure;
 using Azure.Core;
 using Azure.Provisioning.Primitives;
 using Azure.Provisioning.Resources;
-using System;
 
 namespace Azure.Provisioning.Dns;
 
@@ -95,11 +95,11 @@ public partial class DnsCnameRecord : ProvisionableResource
     protected override void DefineProvisionableProperties()
     {
         base.DefineProvisionableProperties();
-        _name = DefineProperty<string>("Name", ["name"], isRequired: true);
-        _id = DefineProperty<ResourceIdentifier>("Id", ["id"], isOutput: true);
-        _systemData = DefineModelProperty<SystemData>("SystemData", ["systemData"], isOutput: true);
-        _parent = DefineResource<DnsZone>("Parent", ["parent"], isRequired: true);
-        _cname = DefineProperty<string>("Cname", ["CNAMERecord", "cname"]);
+        _name = DefineProperty<string>(nameof(Name), ["name"], isRequired: true);
+        _id = DefineProperty<ResourceIdentifier>(nameof(Id), ["id"], isOutput: true);
+        _systemData = DefineModelProperty<SystemData>(nameof(SystemData), ["systemData"], isOutput: true);
+        _parent = DefineResource<DnsZone>(nameof(Parent), ["parent"], isRequired: true);
+        _cname = DefineProperty<string>(nameof(Cname), ["properties", "CNAMERecord", "cname"]);
         _ttlInSeconds = DefineProperty<long>(nameof(TtlInSeconds), ["properties", "TTL"]);
     }
 

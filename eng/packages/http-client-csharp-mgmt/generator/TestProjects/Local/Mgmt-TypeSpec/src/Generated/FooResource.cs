@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Azure;
@@ -406,7 +407,167 @@ namespace Azure.Generator.MgmtTypeSpec.Tests
         }
 
         /// <summary>
-        /// Create a Foo
+        /// Get the provisioning state of a Foo resource.
+        /// <list type="bullet">
+        /// <item>
+        /// <term> Request Path. </term>
+        /// <description> /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/MgmtTypeSpec/foos/{fooName}/getProvisioningState. </description>
+        /// </item>
+        /// <item>
+        /// <term> Operation Id. </term>
+        /// <description> Foos_GetProvisioningState. </description>
+        /// </item>
+        /// <item>
+        /// <term> Default Api Version. </term>
+        /// <description> 2024-05-01. </description>
+        /// </item>
+        /// <item>
+        /// <term> Resource. </term>
+        /// <description> <see cref="FooResource"/>. </description>
+        /// </item>
+        /// </list>
+        /// </summary>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        public virtual async Task<Response<FooProvisioningState>> GetProvisioningStateAsync(CancellationToken cancellationToken = default)
+        {
+            using DiagnosticScope scope = _foosClientDiagnostics.CreateScope("FooResource.GetProvisioningState");
+            scope.Start();
+            try
+            {
+                RequestContext context = new RequestContext
+                {
+                    CancellationToken = cancellationToken
+                };
+                HttpMessage message = _foosRestClient.CreateGetProvisioningStateRequest(Guid.Parse(Id.SubscriptionId), Id.ResourceGroupName, Id.Name, context);
+                Response result = await Pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
+                Response<FooProvisioningState> response = Response.FromValue(new FooProvisioningState(JsonDocument.Parse(result.Content, ModelSerializationExtensions.JsonDocumentOptions).RootElement.GetString()), result);
+                if (response.Value == null)
+                {
+                    throw new RequestFailedException(response.GetRawResponse());
+                }
+                return response;
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Get the provisioning state of a Foo resource.
+        /// <list type="bullet">
+        /// <item>
+        /// <term> Request Path. </term>
+        /// <description> /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/MgmtTypeSpec/foos/{fooName}/getProvisioningState. </description>
+        /// </item>
+        /// <item>
+        /// <term> Operation Id. </term>
+        /// <description> Foos_GetProvisioningState. </description>
+        /// </item>
+        /// <item>
+        /// <term> Default Api Version. </term>
+        /// <description> 2024-05-01. </description>
+        /// </item>
+        /// <item>
+        /// <term> Resource. </term>
+        /// <description> <see cref="FooResource"/>. </description>
+        /// </item>
+        /// </list>
+        /// </summary>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        public virtual Response<FooProvisioningState> GetProvisioningState(CancellationToken cancellationToken = default)
+        {
+            using DiagnosticScope scope = _foosClientDiagnostics.CreateScope("FooResource.GetProvisioningState");
+            scope.Start();
+            try
+            {
+                RequestContext context = new RequestContext
+                {
+                    CancellationToken = cancellationToken
+                };
+                HttpMessage message = _foosRestClient.CreateGetProvisioningStateRequest(Guid.Parse(Id.SubscriptionId), Id.ResourceGroupName, Id.Name, context);
+                Response result = Pipeline.ProcessMessage(message, context);
+                Response<FooProvisioningState> response = Response.FromValue(new FooProvisioningState(JsonDocument.Parse(result.Content, ModelSerializationExtensions.JsonDocumentOptions).RootElement.GetString()), result);
+                if (response.Value == null)
+                {
+                    throw new RequestFailedException(response.GetRawResponse());
+                }
+                return response;
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// A synchronous resource action.
+        /// <list type="bullet">
+        /// <item>
+        /// <term> Request Path. </term>
+        /// <description> /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/MgmtTypeSpec/foos/{fooName}/listDependencies. </description>
+        /// </item>
+        /// <item>
+        /// <term> Operation Id. </term>
+        /// <description> Foos_ListDependencies. </description>
+        /// </item>
+        /// <item>
+        /// <term> Default Api Version. </term>
+        /// <description> 2024-05-01. </description>
+        /// </item>
+        /// <item>
+        /// <term> Resource. </term>
+        /// <description> <see cref="FooResource"/>. </description>
+        /// </item>
+        /// </list>
+        /// </summary>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <returns> A collection of <see cref="FooDependency"/> that may take multiple service requests to iterate over. </returns>
+        public virtual AsyncPageable<FooDependency> GetDependenciesAsync(CancellationToken cancellationToken = default)
+        {
+            RequestContext context = new RequestContext
+            {
+                CancellationToken = cancellationToken
+            };
+            return new FooResourceGetDependenciesAsyncCollectionResultOfT(_foosRestClient, Guid.Parse(Id.SubscriptionId), Id.ResourceGroupName, Id.Name, context);
+        }
+
+        /// <summary>
+        /// A synchronous resource action.
+        /// <list type="bullet">
+        /// <item>
+        /// <term> Request Path. </term>
+        /// <description> /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/MgmtTypeSpec/foos/{fooName}/listDependencies. </description>
+        /// </item>
+        /// <item>
+        /// <term> Operation Id. </term>
+        /// <description> Foos_ListDependencies. </description>
+        /// </item>
+        /// <item>
+        /// <term> Default Api Version. </term>
+        /// <description> 2024-05-01. </description>
+        /// </item>
+        /// <item>
+        /// <term> Resource. </term>
+        /// <description> <see cref="FooResource"/>. </description>
+        /// </item>
+        /// </list>
+        /// </summary>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <returns> A collection of <see cref="FooDependency"/> that may take multiple service requests to iterate over. </returns>
+        public virtual Pageable<FooDependency> GetDependencies(CancellationToken cancellationToken = default)
+        {
+            RequestContext context = new RequestContext
+            {
+                CancellationToken = cancellationToken
+            };
+            return new FooResourceGetDependenciesCollectionResultOfT(_foosRestClient, Guid.Parse(Id.SubscriptionId), Id.ResourceGroupName, Id.Name, context);
+        }
+
+        /// <summary>
+        /// Update a Foo.
         /// <list type="bullet">
         /// <item>
         /// <term> Request Path. </term>
@@ -465,7 +626,7 @@ namespace Azure.Generator.MgmtTypeSpec.Tests
         }
 
         /// <summary>
-        /// Create a Foo
+        /// Update a Foo.
         /// <list type="bullet">
         /// <item>
         /// <term> Request Path. </term>
@@ -555,7 +716,7 @@ namespace Azure.Generator.MgmtTypeSpec.Tests
                 {
                     FooData current = (await GetAsync(cancellationToken: cancellationToken).ConfigureAwait(false)).Value.Data;
                     current.Tags[key] = value;
-                    ArmOperation<FooResource> result = await UpdateAsync(WaitUntil.Completed, current, cancellationToken).ConfigureAwait(false);
+                    ArmOperation<FooResource> result = await UpdateAsync(WaitUntil.Completed, current, cancellationToken: cancellationToken).ConfigureAwait(false);
                     return Response.FromValue(result.Value, result.GetRawResponse());
                 }
             }
@@ -598,7 +759,7 @@ namespace Azure.Generator.MgmtTypeSpec.Tests
                 {
                     FooData current = Get(cancellationToken: cancellationToken).Value.Data;
                     current.Tags[key] = value;
-                    ArmOperation<FooResource> result = Update(WaitUntil.Completed, current, cancellationToken);
+                    ArmOperation<FooResource> result = Update(WaitUntil.Completed, current, cancellationToken: cancellationToken);
                     return Response.FromValue(result.Value, result.GetRawResponse());
                 }
             }
@@ -640,7 +801,7 @@ namespace Azure.Generator.MgmtTypeSpec.Tests
                 {
                     FooData current = (await GetAsync(cancellationToken: cancellationToken).ConfigureAwait(false)).Value.Data;
                     current.Tags.ReplaceWith(tags);
-                    ArmOperation<FooResource> result = await UpdateAsync(WaitUntil.Completed, current, cancellationToken).ConfigureAwait(false);
+                    ArmOperation<FooResource> result = await UpdateAsync(WaitUntil.Completed, current, cancellationToken: cancellationToken).ConfigureAwait(false);
                     return Response.FromValue(result.Value, result.GetRawResponse());
                 }
             }
@@ -682,7 +843,7 @@ namespace Azure.Generator.MgmtTypeSpec.Tests
                 {
                     FooData current = Get(cancellationToken: cancellationToken).Value.Data;
                     current.Tags.ReplaceWith(tags);
-                    ArmOperation<FooResource> result = Update(WaitUntil.Completed, current, cancellationToken);
+                    ArmOperation<FooResource> result = Update(WaitUntil.Completed, current, cancellationToken: cancellationToken);
                     return Response.FromValue(result.Value, result.GetRawResponse());
                 }
             }
@@ -723,7 +884,7 @@ namespace Azure.Generator.MgmtTypeSpec.Tests
                 {
                     FooData current = (await GetAsync(cancellationToken: cancellationToken).ConfigureAwait(false)).Value.Data;
                     current.Tags.Remove(key);
-                    ArmOperation<FooResource> result = await UpdateAsync(WaitUntil.Completed, current, cancellationToken).ConfigureAwait(false);
+                    ArmOperation<FooResource> result = await UpdateAsync(WaitUntil.Completed, current, cancellationToken: cancellationToken).ConfigureAwait(false);
                     return Response.FromValue(result.Value, result.GetRawResponse());
                 }
             }
@@ -764,7 +925,7 @@ namespace Azure.Generator.MgmtTypeSpec.Tests
                 {
                     FooData current = Get(cancellationToken: cancellationToken).Value.Data;
                     current.Tags.Remove(key);
-                    ArmOperation<FooResource> result = Update(WaitUntil.Completed, current, cancellationToken);
+                    ArmOperation<FooResource> result = Update(WaitUntil.Completed, current, cancellationToken: cancellationToken);
                     return Response.FromValue(result.Value, result.GetRawResponse());
                 }
             }
@@ -806,6 +967,39 @@ namespace Azure.Generator.MgmtTypeSpec.Tests
             Argument.AssertNotNullOrEmpty(barName, nameof(barName));
 
             return GetBars().Get(barName, cancellationToken);
+        }
+
+        /// <summary> Gets a collection of MultiFlattenTests in the <see cref="FooResource"/>. </summary>
+        /// <returns> An object representing collection of MultiFlattenTests and their operations over a MultiFlattenTestResource. </returns>
+        public virtual MultiFlattenTestCollection GetMultiFlattenTests()
+        {
+            return GetCachedClient(client => new MultiFlattenTestCollection(client, Id));
+        }
+
+        /// <summary> Get a MultiFlattenTest. </summary>
+        /// <param name="multiFlattenTestName"> The name of the MultiFlattenTest. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="multiFlattenTestName"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="multiFlattenTestName"/> is an empty string, and was expected to be non-empty. </exception>
+        [ForwardsClientCalls]
+        public virtual async Task<Response<MultiFlattenTestResource>> GetMultiFlattenTestAsync(string multiFlattenTestName, CancellationToken cancellationToken = default)
+        {
+            Argument.AssertNotNullOrEmpty(multiFlattenTestName, nameof(multiFlattenTestName));
+
+            return await GetMultiFlattenTests().GetAsync(multiFlattenTestName, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary> Get a MultiFlattenTest. </summary>
+        /// <param name="multiFlattenTestName"> The name of the MultiFlattenTest. </param>
+        /// <param name="cancellationToken"> The cancellation token to use. </param>
+        /// <exception cref="ArgumentNullException"> <paramref name="multiFlattenTestName"/> is null. </exception>
+        /// <exception cref="ArgumentException"> <paramref name="multiFlattenTestName"/> is an empty string, and was expected to be non-empty. </exception>
+        [ForwardsClientCalls]
+        public virtual Response<MultiFlattenTestResource> GetMultiFlattenTest(string multiFlattenTestName, CancellationToken cancellationToken = default)
+        {
+            Argument.AssertNotNullOrEmpty(multiFlattenTestName, nameof(multiFlattenTestName));
+
+            return GetMultiFlattenTests().Get(multiFlattenTestName, cancellationToken);
         }
     }
 }

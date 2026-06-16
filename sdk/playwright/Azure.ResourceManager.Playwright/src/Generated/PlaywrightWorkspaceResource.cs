@@ -428,7 +428,7 @@ namespace Azure.ResourceManager.Playwright
                         patch.Tags.Add(tag);
                     }
                     patch.Tags[key] = value;
-                    Response<PlaywrightWorkspaceResource> result = await UpdateAsync(patch, cancellationToken).ConfigureAwait(false);
+                    Response<PlaywrightWorkspaceResource> result = await UpdateAsync(patch, cancellationToken: cancellationToken).ConfigureAwait(false);
                     return Response.FromValue(result.Value, result.GetRawResponse());
                 }
             }
@@ -476,7 +476,7 @@ namespace Azure.ResourceManager.Playwright
                         patch.Tags.Add(tag);
                     }
                     patch.Tags[key] = value;
-                    Response<PlaywrightWorkspaceResource> result = Update(patch, cancellationToken);
+                    Response<PlaywrightWorkspaceResource> result = Update(patch, cancellationToken: cancellationToken);
                     return Response.FromValue(result.Value, result.GetRawResponse());
                 }
             }
@@ -519,7 +519,7 @@ namespace Azure.ResourceManager.Playwright
                     PlaywrightWorkspaceData current = (await GetAsync(cancellationToken: cancellationToken).ConfigureAwait(false)).Value.Data;
                     PlaywrightWorkspacePatch patch = new PlaywrightWorkspacePatch();
                     patch.Tags.ReplaceWith(tags);
-                    Response<PlaywrightWorkspaceResource> result = await UpdateAsync(patch, cancellationToken).ConfigureAwait(false);
+                    Response<PlaywrightWorkspaceResource> result = await UpdateAsync(patch, cancellationToken: cancellationToken).ConfigureAwait(false);
                     return Response.FromValue(result.Value, result.GetRawResponse());
                 }
             }
@@ -562,7 +562,7 @@ namespace Azure.ResourceManager.Playwright
                     PlaywrightWorkspaceData current = Get(cancellationToken: cancellationToken).Value.Data;
                     PlaywrightWorkspacePatch patch = new PlaywrightWorkspacePatch();
                     patch.Tags.ReplaceWith(tags);
-                    Response<PlaywrightWorkspaceResource> result = Update(patch, cancellationToken);
+                    Response<PlaywrightWorkspaceResource> result = Update(patch, cancellationToken: cancellationToken);
                     return Response.FromValue(result.Value, result.GetRawResponse());
                 }
             }
@@ -608,7 +608,7 @@ namespace Azure.ResourceManager.Playwright
                         patch.Tags.Add(tag);
                     }
                     patch.Tags.Remove(key);
-                    Response<PlaywrightWorkspaceResource> result = await UpdateAsync(patch, cancellationToken).ConfigureAwait(false);
+                    Response<PlaywrightWorkspaceResource> result = await UpdateAsync(patch, cancellationToken: cancellationToken).ConfigureAwait(false);
                     return Response.FromValue(result.Value, result.GetRawResponse());
                 }
             }
@@ -654,7 +654,7 @@ namespace Azure.ResourceManager.Playwright
                         patch.Tags.Add(tag);
                     }
                     patch.Tags.Remove(key);
-                    Response<PlaywrightWorkspaceResource> result = Update(patch, cancellationToken);
+                    Response<PlaywrightWorkspaceResource> result = Update(patch, cancellationToken: cancellationToken);
                     return Response.FromValue(result.Value, result.GetRawResponse());
                 }
             }
@@ -665,8 +665,8 @@ namespace Azure.ResourceManager.Playwright
             }
         }
 
-        /// <summary> Gets a collection of PlaywrightWorkspaceQuotas in the <see cref="PlaywrightWorkspaceResource"/>. </summary>
-        /// <returns> An object representing collection of PlaywrightWorkspaceQuotas and their operations over a PlaywrightWorkspaceQuotaResource. </returns>
+        /// <summary> Gets a collection of PlaywrightWorkspaceQuota in the <see cref="PlaywrightWorkspaceResource"/>. </summary>
+        /// <returns> An object representing collection of PlaywrightWorkspaceQuota and their operations over a PlaywrightWorkspaceQuotaResource. </returns>
         public virtual PlaywrightWorkspaceQuotaCollection GetAllPlaywrightWorkspaceQuota()
         {
             return GetCachedClient(client => new PlaywrightWorkspaceQuotaCollection(client, Id));
