@@ -40,7 +40,7 @@ namespace Azure.ResourceManager.Advisor
         {
             TryGetApiVersion(AdvisorTriageResource.ResourceType, out string advisorTriageApiVersion);
             _triageResourcesClientDiagnostics = new ClientDiagnostics("Azure.ResourceManager.Advisor", AdvisorTriageResource.ResourceType.Namespace, Diagnostics);
-            _triageResourcesRestClient = new TriageResources(_triageResourcesClientDiagnostics, Pipeline, Endpoint, advisorTriageApiVersion ?? "2025-05-01-preview");
+            _triageResourcesRestClient = new TriageResources(_triageResourcesClientDiagnostics, Pipeline, Diagnostics.ApplicationId, Endpoint, advisorTriageApiVersion ?? "2025-05-01-preview");
             ValidateResourceId(id);
         }
 
@@ -50,7 +50,7 @@ namespace Azure.ResourceManager.Advisor
         {
             if (id.ResourceType != AdvisorTriageRecommendationResource.ResourceType)
             {
-                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, AdvisorTriageRecommendationResource.ResourceType), id);
+                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, AdvisorTriageRecommendationResource.ResourceType), nameof(id));
             }
         }
 
@@ -177,7 +177,13 @@ namespace Azure.ResourceManager.Advisor
             {
                 CancellationToken = cancellationToken
             };
-            return new AsyncPageableWrapper<AdvisorTriageData, AdvisorTriageResource>(new TriageResourcesGetAllAsyncCollectionResultOfT(_triageResourcesRestClient, Guid.Parse(Id.SubscriptionId), Id.Parent.Name, Id.Name, context), data => new AdvisorTriageResource(Client, data));
+            return new AsyncPageableWrapper<AdvisorTriageData, AdvisorTriageResource>(new TriageResourcesGetAllAsyncCollectionResultOfT(
+                _triageResourcesRestClient,
+                Guid.Parse(Id.SubscriptionId),
+                Id.Parent.Name,
+                Id.Name,
+                context,
+                "AdvisorTriageCollection.GetAll"), data => new AdvisorTriageResource(Client, data));
         }
 
         /// <summary>
@@ -205,7 +211,13 @@ namespace Azure.ResourceManager.Advisor
             {
                 CancellationToken = cancellationToken
             };
-            return new PageableWrapper<AdvisorTriageData, AdvisorTriageResource>(new TriageResourcesGetAllCollectionResultOfT(_triageResourcesRestClient, Guid.Parse(Id.SubscriptionId), Id.Parent.Name, Id.Name, context), data => new AdvisorTriageResource(Client, data));
+            return new PageableWrapper<AdvisorTriageData, AdvisorTriageResource>(new TriageResourcesGetAllCollectionResultOfT(
+                _triageResourcesRestClient,
+                Guid.Parse(Id.SubscriptionId),
+                Id.Parent.Name,
+                Id.Name,
+                context,
+                "AdvisorTriageCollection.GetAll"), data => new AdvisorTriageResource(Client, data));
         }
 
         /// <summary>

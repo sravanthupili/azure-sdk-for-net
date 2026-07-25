@@ -40,7 +40,7 @@ namespace Azure.ResourceManager.DeviceProvisioningServices
         {
             TryGetApiVersion(DeviceProvisioningServicesPrivateLinkResource.ResourceType, out string deviceProvisioningServicesPrivateLinkResourceApiVersion);
             _groupIdInformationsClientDiagnostics = new ClientDiagnostics("Azure.ResourceManager.DeviceProvisioningServices", DeviceProvisioningServicesPrivateLinkResource.ResourceType.Namespace, Diagnostics);
-            _groupIdInformationsRestClient = new GroupIdInformations(_groupIdInformationsClientDiagnostics, Pipeline, Endpoint, deviceProvisioningServicesPrivateLinkResourceApiVersion ?? "2025-02-01-preview");
+            _groupIdInformationsRestClient = new GroupIdInformations(_groupIdInformationsClientDiagnostics, Pipeline, Diagnostics.ApplicationId, Endpoint, deviceProvisioningServicesPrivateLinkResourceApiVersion ?? "2025-02-01-preview");
             ValidateResourceId(id);
         }
 
@@ -50,7 +50,7 @@ namespace Azure.ResourceManager.DeviceProvisioningServices
         {
             if (id.ResourceType != DeviceProvisioningServiceResource.ResourceType)
             {
-                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, DeviceProvisioningServiceResource.ResourceType), id);
+                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, DeviceProvisioningServiceResource.ResourceType), nameof(id));
             }
         }
 
@@ -177,7 +177,13 @@ namespace Azure.ResourceManager.DeviceProvisioningServices
             {
                 CancellationToken = cancellationToken
             };
-            return new AsyncPageableWrapper<DeviceProvisioningServicesPrivateLinkResourceData, DeviceProvisioningServicesPrivateLinkResource>(new GroupIdInformationsGetPrivateLinkResourcesAsyncCollectionResultOfT(_groupIdInformationsRestClient, Id.SubscriptionId, Id.ResourceGroupName, Id.Name, context), data => new DeviceProvisioningServicesPrivateLinkResource(Client, data));
+            return new AsyncPageableWrapper<DeviceProvisioningServicesPrivateLinkResourceData, DeviceProvisioningServicesPrivateLinkResource>(new GroupIdInformationsGetPrivateLinkResourcesAsyncCollectionResultOfT(
+                _groupIdInformationsRestClient,
+                Id.SubscriptionId,
+                Id.ResourceGroupName,
+                Id.Name,
+                context,
+                "DeviceProvisioningServicesPrivateLinkResourceCollection.GetAll"), data => new DeviceProvisioningServicesPrivateLinkResource(Client, data));
         }
 
         /// <summary>
@@ -205,7 +211,13 @@ namespace Azure.ResourceManager.DeviceProvisioningServices
             {
                 CancellationToken = cancellationToken
             };
-            return new PageableWrapper<DeviceProvisioningServicesPrivateLinkResourceData, DeviceProvisioningServicesPrivateLinkResource>(new GroupIdInformationsGetPrivateLinkResourcesCollectionResultOfT(_groupIdInformationsRestClient, Id.SubscriptionId, Id.ResourceGroupName, Id.Name, context), data => new DeviceProvisioningServicesPrivateLinkResource(Client, data));
+            return new PageableWrapper<DeviceProvisioningServicesPrivateLinkResourceData, DeviceProvisioningServicesPrivateLinkResource>(new GroupIdInformationsGetPrivateLinkResourcesCollectionResultOfT(
+                _groupIdInformationsRestClient,
+                Id.SubscriptionId,
+                Id.ResourceGroupName,
+                Id.Name,
+                context,
+                "DeviceProvisioningServicesPrivateLinkResourceCollection.GetAll"), data => new DeviceProvisioningServicesPrivateLinkResource(Client, data));
         }
 
         /// <summary>

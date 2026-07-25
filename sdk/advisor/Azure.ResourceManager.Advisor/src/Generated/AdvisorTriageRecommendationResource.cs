@@ -51,7 +51,7 @@ namespace Azure.ResourceManager.Advisor
         {
             TryGetApiVersion(ResourceType, out string advisorTriageRecommendationApiVersion);
             _triageRecommendationsClientDiagnostics = new ClientDiagnostics("Azure.ResourceManager.Advisor", ResourceType.Namespace, Diagnostics);
-            _triageRecommendationsRestClient = new TriageRecommendations(_triageRecommendationsClientDiagnostics, Pipeline, Endpoint, advisorTriageRecommendationApiVersion ?? "2025-05-01-preview");
+            _triageRecommendationsRestClient = new TriageRecommendations(_triageRecommendationsClientDiagnostics, Pipeline, Diagnostics.ApplicationId, Endpoint, advisorTriageRecommendationApiVersion ?? "2025-05-01-preview");
             ValidateResourceId(id);
         }
 
@@ -87,7 +87,7 @@ namespace Azure.ResourceManager.Advisor
         {
             if (id.ResourceType != ResourceType)
             {
-                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, ResourceType), id);
+                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, ResourceType), nameof(id));
             }
         }
 

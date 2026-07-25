@@ -40,7 +40,7 @@ namespace Azure.ResourceManager.SignalR
         {
             TryGetApiVersion(SignalRCustomDomainResource.ResourceType, out string signalRCustomDomainApiVersion);
             _customDomainsClientDiagnostics = new ClientDiagnostics("Azure.ResourceManager.SignalR", SignalRCustomDomainResource.ResourceType.Namespace, Diagnostics);
-            _customDomainsRestClient = new CustomDomains(_customDomainsClientDiagnostics, Pipeline, Endpoint, signalRCustomDomainApiVersion ?? "2025-01-01-preview");
+            _customDomainsRestClient = new CustomDomains(_customDomainsClientDiagnostics, Pipeline, Diagnostics.ApplicationId, Endpoint, signalRCustomDomainApiVersion ?? "2025-01-01-preview");
             ValidateResourceId(id);
         }
 
@@ -50,7 +50,7 @@ namespace Azure.ResourceManager.SignalR
         {
             if (id.ResourceType != SignalRResource.ResourceType)
             {
-                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, SignalRResource.ResourceType), id);
+                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, SignalRResource.ResourceType), nameof(id));
             }
         }
 
@@ -93,7 +93,7 @@ namespace Azure.ResourceManager.SignalR
                 HttpMessage message = _customDomainsRestClient.CreateCreateOrUpdateRequest(Guid.Parse(Id.SubscriptionId), Id.ResourceGroupName, Id.Name, name, SignalRCustomDomainData.ToRequestContent(data), context);
                 Response response = await Pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
                 SignalRArmOperation<SignalRCustomDomainResource> operation = new SignalRArmOperation<SignalRCustomDomainResource>(
-                    new SignalRCustomDomainOperationSource(Client),
+                    new SignalRCustomDomainResourceOperationSource(Client),
                     _customDomainsClientDiagnostics,
                     Pipeline,
                     message.Request,
@@ -151,7 +151,7 @@ namespace Azure.ResourceManager.SignalR
                 HttpMessage message = _customDomainsRestClient.CreateCreateOrUpdateRequest(Guid.Parse(Id.SubscriptionId), Id.ResourceGroupName, Id.Name, name, SignalRCustomDomainData.ToRequestContent(data), context);
                 Response response = Pipeline.ProcessMessage(message, context);
                 SignalRArmOperation<SignalRCustomDomainResource> operation = new SignalRArmOperation<SignalRCustomDomainResource>(
-                    new SignalRCustomDomainOperationSource(Client),
+                    new SignalRCustomDomainResourceOperationSource(Client),
                     _customDomainsClientDiagnostics,
                     Pipeline,
                     message.Request,
@@ -293,7 +293,13 @@ namespace Azure.ResourceManager.SignalR
             {
                 CancellationToken = cancellationToken
             };
-            return new AsyncPageableWrapper<SignalRCustomDomainData, SignalRCustomDomainResource>(new CustomDomainsGetAllAsyncCollectionResultOfT(_customDomainsRestClient, Guid.Parse(Id.SubscriptionId), Id.ResourceGroupName, Id.Name, context), data => new SignalRCustomDomainResource(Client, data));
+            return new AsyncPageableWrapper<SignalRCustomDomainData, SignalRCustomDomainResource>(new CustomDomainsGetAllAsyncCollectionResultOfT(
+                _customDomainsRestClient,
+                Guid.Parse(Id.SubscriptionId),
+                Id.ResourceGroupName,
+                Id.Name,
+                context,
+                "SignalRCustomDomainCollection.GetAll"), data => new SignalRCustomDomainResource(Client, data));
         }
 
         /// <summary>
@@ -321,7 +327,13 @@ namespace Azure.ResourceManager.SignalR
             {
                 CancellationToken = cancellationToken
             };
-            return new PageableWrapper<SignalRCustomDomainData, SignalRCustomDomainResource>(new CustomDomainsGetAllCollectionResultOfT(_customDomainsRestClient, Guid.Parse(Id.SubscriptionId), Id.ResourceGroupName, Id.Name, context), data => new SignalRCustomDomainResource(Client, data));
+            return new PageableWrapper<SignalRCustomDomainData, SignalRCustomDomainResource>(new CustomDomainsGetAllCollectionResultOfT(
+                _customDomainsRestClient,
+                Guid.Parse(Id.SubscriptionId),
+                Id.ResourceGroupName,
+                Id.Name,
+                context,
+                "SignalRCustomDomainCollection.GetAll"), data => new SignalRCustomDomainResource(Client, data));
         }
 
         /// <summary>

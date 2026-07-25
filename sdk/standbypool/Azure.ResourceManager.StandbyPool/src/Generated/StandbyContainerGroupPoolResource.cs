@@ -53,7 +53,7 @@ namespace Azure.ResourceManager.StandbyPool
         {
             TryGetApiVersion(ResourceType, out string standbyContainerGroupPoolApiVersion);
             _standbyContainerGroupPoolsClientDiagnostics = new ClientDiagnostics("Azure.ResourceManager.StandbyPool", ResourceType.Namespace, Diagnostics);
-            _standbyContainerGroupPoolsRestClient = new StandbyContainerGroupPools(_standbyContainerGroupPoolsClientDiagnostics, Pipeline, Endpoint, standbyContainerGroupPoolApiVersion ?? "2025-10-01");
+            _standbyContainerGroupPoolsRestClient = new StandbyContainerGroupPools(_standbyContainerGroupPoolsClientDiagnostics, Pipeline, Diagnostics.ApplicationId, Endpoint, standbyContainerGroupPoolApiVersion ?? "2025-10-01");
             ValidateResourceId(id);
         }
 
@@ -89,7 +89,7 @@ namespace Azure.ResourceManager.StandbyPool
         {
             if (id.ResourceType != ResourceType)
             {
-                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, ResourceType), id);
+                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, ResourceType), nameof(id));
             }
         }
 

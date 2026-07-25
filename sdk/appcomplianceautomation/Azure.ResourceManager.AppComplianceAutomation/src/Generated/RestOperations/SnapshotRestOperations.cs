@@ -16,6 +16,7 @@ namespace Azure.ResourceManager.AppComplianceAutomation
     {
         private readonly Uri _endpoint;
         private readonly string _apiVersion;
+        private readonly TelemetryDetails _userAgent;
 
         /// <summary> Initializes a new instance of Snapshot for mocking. </summary>
         protected Snapshot()
@@ -25,14 +26,16 @@ namespace Azure.ResourceManager.AppComplianceAutomation
         /// <summary> Initializes a new instance of Snapshot. </summary>
         /// <param name="clientDiagnostics"> The ClientDiagnostics is used to provide tracing support for the client library. </param>
         /// <param name="pipeline"> The HTTP pipeline for sending and receiving REST requests and responses. </param>
+        /// <param name="applicationId"> The application id to use for user agent. </param>
         /// <param name="endpoint"> Service endpoint. </param>
         /// <param name="apiVersion"></param>
-        internal Snapshot(ClientDiagnostics clientDiagnostics, HttpPipeline pipeline, Uri endpoint, string apiVersion)
+        internal Snapshot(ClientDiagnostics clientDiagnostics, HttpPipeline pipeline, string applicationId, Uri endpoint, string apiVersion)
         {
             ClientDiagnostics = clientDiagnostics;
             _endpoint = endpoint;
             Pipeline = pipeline;
             _apiVersion = apiVersion;
+            _userAgent = new TelemetryDetails(typeof(Snapshot).Assembly, applicationId);
         }
 
         /// <summary> The HTTP pipeline for sending and receiving REST requests and responses. </summary>
@@ -49,11 +52,15 @@ namespace Azure.ResourceManager.AppComplianceAutomation
             uri.AppendPath(reportName, true);
             uri.AppendPath("/snapshots/", false);
             uri.AppendPath(snapshotName, true);
-            uri.AppendQuery("api-version", _apiVersion, true);
+            if (_apiVersion != null)
+            {
+                uri.AppendQuery("api-version", _apiVersion, true);
+            }
             HttpMessage message = Pipeline.CreateMessage();
             Request request = message.Request;
             request.Uri = uri;
             request.Method = RequestMethod.Get;
+            _userAgent.Apply(message);
             request.Headers.SetValue("Accept", "application/json");
             return message;
         }
@@ -65,7 +72,10 @@ namespace Azure.ResourceManager.AppComplianceAutomation
             uri.AppendPath("/providers/Microsoft.AppComplianceAutomation/reports/", false);
             uri.AppendPath(reportName, true);
             uri.AppendPath("/snapshots", false);
-            uri.AppendQuery("api-version", _apiVersion, true);
+            if (_apiVersion != null)
+            {
+                uri.AppendQuery("api-version", _apiVersion, true);
+            }
             if (skipToken != null)
             {
                 uri.AppendQuery("$skipToken", skipToken, true);
@@ -98,6 +108,7 @@ namespace Azure.ResourceManager.AppComplianceAutomation
             Request request = message.Request;
             request.Uri = uri;
             request.Method = RequestMethod.Get;
+            _userAgent.Apply(message);
             request.Headers.SetValue("Accept", "application/json");
             return message;
         }
@@ -105,12 +116,23 @@ namespace Azure.ResourceManager.AppComplianceAutomation
         internal HttpMessage CreateNextGetAllRequest(Uri nextPage, string reportName, string skipToken, int? maxCount, string @select, string filter, string @orderby, string offerGuid, string reportCreatorTenantId, RequestContext context)
         {
             RawRequestUriBuilder uri = new RawRequestUriBuilder();
-            uri.Reset(nextPage);
-            uri.UpdateQuery("api-version", _apiVersion);
+            if (nextPage.IsAbsoluteUri)
+            {
+                uri.Reset(nextPage);
+            }
+            else
+            {
+                uri.Reset(new Uri(_endpoint, nextPage));
+            }
+            if (_apiVersion != null)
+            {
+                uri.UpdateQuery("api-version", _apiVersion);
+            }
             HttpMessage message = Pipeline.CreateMessage();
             Request request = message.Request;
             request.Uri = uri;
             request.Method = RequestMethod.Get;
+            _userAgent.Apply(message);
             request.Headers.SetValue("Accept", "application/json");
             return message;
         }
@@ -124,11 +146,15 @@ namespace Azure.ResourceManager.AppComplianceAutomation
             uri.AppendPath("/snapshots/", false);
             uri.AppendPath(snapshotName, true);
             uri.AppendPath("/download", false);
-            uri.AppendQuery("api-version", _apiVersion, true);
+            if (_apiVersion != null)
+            {
+                uri.AppendQuery("api-version", _apiVersion, true);
+            }
             HttpMessage message = Pipeline.CreateMessage();
             Request request = message.Request;
             request.Uri = uri;
             request.Method = RequestMethod.Post;
+            _userAgent.Apply(message);
             request.Headers.SetValue("Content-Type", "application/json");
             request.Headers.SetValue("Accept", "application/json");
             request.Content = content;

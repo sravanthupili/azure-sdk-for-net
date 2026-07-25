@@ -13,14 +13,13 @@ using Azure;
 using Azure.Core;
 using Azure.Core.Pipeline;
 using Azure.ResourceManager;
-using Azure.ResourceManager.Resources;
 
 namespace Azure.Generator.MgmtTypeSpec.Tests
 {
     /// <summary>
     /// A class representing a PolicyVmAssignment along with the instance operations that can be performed on it.
     /// If you have a <see cref="ResourceIdentifier"/> you can construct a <see cref="PolicyVmAssignmentResource"/> from an instance of <see cref="ArmClient"/> using the GetResource method.
-    /// Otherwise you can get one from its parent resource <see cref="ResourceGroupResource"/> using the GetPolicyVmAssignments method.
+    /// Otherwise you can get one from its parent resource <see cref="ArmResource"/> using the GetPolicyVmAssignments method.
     /// </summary>
     public partial class PolicyVmAssignmentResource : ArmResource
     {
@@ -51,7 +50,7 @@ namespace Azure.Generator.MgmtTypeSpec.Tests
         {
             TryGetApiVersion(ResourceType, out string policyVmAssignmentApiVersion);
             _policyVmAssignmentsClientDiagnostics = new ClientDiagnostics("Azure.Generator.MgmtTypeSpec.Tests", ResourceType.Namespace, Diagnostics);
-            _policyVmAssignmentsRestClient = new PolicyVmAssignments(_policyVmAssignmentsClientDiagnostics, Pipeline, Endpoint, policyVmAssignmentApiVersion ?? "2024-05-01");
+            _policyVmAssignmentsRestClient = new PolicyVmAssignments(_policyVmAssignmentsClientDiagnostics, Pipeline, Diagnostics.ApplicationId, Endpoint, policyVmAssignmentApiVersion ?? "2024-05-01");
             ValidateResourceId(id);
         }
 
@@ -88,7 +87,7 @@ namespace Azure.Generator.MgmtTypeSpec.Tests
         {
             if (id.ResourceType != ResourceType)
             {
-                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, ResourceType), id);
+                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, ResourceType), nameof(id));
             }
         }
 

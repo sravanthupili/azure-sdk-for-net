@@ -39,7 +39,7 @@ namespace Azure.Generator.MgmtTypeSpec.Tests
         {
             TryGetApiVersion(JobResource.ResourceType, out string jobResourceApiVersion);
             _jobResourcesClientDiagnostics = new ClientDiagnostics("Azure.Generator.MgmtTypeSpec.Tests", JobResource.ResourceType.Namespace, Diagnostics);
-            _jobResourcesRestClient = new JobResources(_jobResourcesClientDiagnostics, Pipeline, Endpoint, jobResourceApiVersion ?? "2024-05-01");
+            _jobResourcesRestClient = new JobResources(_jobResourcesClientDiagnostics, Pipeline, Diagnostics.ApplicationId, Endpoint, jobResourceApiVersion ?? "2024-05-01");
             ValidateResourceId(id);
         }
 
@@ -49,7 +49,7 @@ namespace Azure.Generator.MgmtTypeSpec.Tests
         {
             if (id.ResourceType != ResourceGroupResource.ResourceType)
             {
-                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, ResourceGroupResource.ResourceType), id);
+                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, ResourceGroupResource.ResourceType), nameof(id));
             }
         }
 
@@ -98,7 +98,8 @@ namespace Azure.Generator.MgmtTypeSpec.Tests
                     Pipeline,
                     message.Request,
                     response,
-                    OperationFinalStateVia.AzureAsyncOperation);
+                    OperationFinalStateVia.AzureAsyncOperation,
+                    true);
                 if (waitUntil == WaitUntil.Completed)
                 {
                     await operation.WaitForCompletionAsync(cancellationToken).ConfigureAwait(false);
@@ -157,7 +158,8 @@ namespace Azure.Generator.MgmtTypeSpec.Tests
                     Pipeline,
                     message.Request,
                     response,
-                    OperationFinalStateVia.AzureAsyncOperation);
+                    OperationFinalStateVia.AzureAsyncOperation,
+                    true);
                 if (waitUntil == WaitUntil.Completed)
                 {
                     operation.WaitForCompletion(cancellationToken);

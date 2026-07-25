@@ -41,7 +41,7 @@ namespace Azure.ResourceManager.Advisor
         {
             TryGetApiVersion(AdvisorMetadataEntityResource.ResourceType, out string advisorMetadataEntityApiVersion);
             _metadataEntitiesClientDiagnostics = new ClientDiagnostics("Azure.ResourceManager.Advisor", AdvisorMetadataEntityResource.ResourceType.Namespace, Diagnostics);
-            _metadataEntitiesRestClient = new MetadataEntities(_metadataEntitiesClientDiagnostics, Pipeline, Endpoint, advisorMetadataEntityApiVersion ?? "2025-05-01-preview");
+            _metadataEntitiesRestClient = new MetadataEntities(_metadataEntitiesClientDiagnostics, Pipeline, Diagnostics.ApplicationId, Endpoint, advisorMetadataEntityApiVersion ?? "2025-05-01-preview");
             ValidateResourceId(id);
         }
 
@@ -51,7 +51,7 @@ namespace Azure.ResourceManager.Advisor
         {
             if (id.ResourceType != TenantResource.ResourceType)
             {
-                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, TenantResource.ResourceType), id);
+                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, TenantResource.ResourceType), nameof(id));
             }
         }
 
@@ -178,7 +178,7 @@ namespace Azure.ResourceManager.Advisor
             {
                 CancellationToken = cancellationToken
             };
-            return new AsyncPageableWrapper<AdvisorMetadataEntityData, AdvisorMetadataEntityResource>(new MetadataEntitiesGetAllAsyncCollectionResultOfT(_metadataEntitiesRestClient, context), data => new AdvisorMetadataEntityResource(Client, data));
+            return new AsyncPageableWrapper<AdvisorMetadataEntityData, AdvisorMetadataEntityResource>(new MetadataEntitiesGetAllAsyncCollectionResultOfT(_metadataEntitiesRestClient, context, "AdvisorMetadataEntityCollection.GetAll"), data => new AdvisorMetadataEntityResource(Client, data));
         }
 
         /// <summary>
@@ -206,7 +206,7 @@ namespace Azure.ResourceManager.Advisor
             {
                 CancellationToken = cancellationToken
             };
-            return new PageableWrapper<AdvisorMetadataEntityData, AdvisorMetadataEntityResource>(new MetadataEntitiesGetAllCollectionResultOfT(_metadataEntitiesRestClient, context), data => new AdvisorMetadataEntityResource(Client, data));
+            return new PageableWrapper<AdvisorMetadataEntityData, AdvisorMetadataEntityResource>(new MetadataEntitiesGetAllCollectionResultOfT(_metadataEntitiesRestClient, context, "AdvisorMetadataEntityCollection.GetAll"), data => new AdvisorMetadataEntityResource(Client, data));
         }
 
         /// <summary>

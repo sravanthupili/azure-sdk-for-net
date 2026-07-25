@@ -41,7 +41,7 @@ namespace Azure.ResourceManager.Advisor
         {
             TryGetApiVersion(AdvisorResiliencyReviewResource.ResourceType, out string advisorResiliencyReviewApiVersion);
             _resiliencyReviewsClientDiagnostics = new ClientDiagnostics("Azure.ResourceManager.Advisor", AdvisorResiliencyReviewResource.ResourceType.Namespace, Diagnostics);
-            _resiliencyReviewsRestClient = new ResiliencyReviews(_resiliencyReviewsClientDiagnostics, Pipeline, Endpoint, advisorResiliencyReviewApiVersion ?? "2025-05-01-preview");
+            _resiliencyReviewsRestClient = new ResiliencyReviews(_resiliencyReviewsClientDiagnostics, Pipeline, Diagnostics.ApplicationId, Endpoint, advisorResiliencyReviewApiVersion ?? "2025-05-01-preview");
             ValidateResourceId(id);
         }
 
@@ -51,7 +51,7 @@ namespace Azure.ResourceManager.Advisor
         {
             if (id.ResourceType != SubscriptionResource.ResourceType)
             {
-                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, SubscriptionResource.ResourceType), id);
+                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, SubscriptionResource.ResourceType), nameof(id));
             }
         }
 
@@ -187,7 +187,8 @@ namespace Azure.ResourceManager.Advisor
                 top,
                 skip,
                 filter,
-                context), data => new AdvisorResiliencyReviewResource(Client, data));
+                context,
+                "AdvisorResiliencyReviewCollection.GetAll"), data => new AdvisorResiliencyReviewResource(Client, data));
         }
 
         /// <summary>
@@ -224,7 +225,8 @@ namespace Azure.ResourceManager.Advisor
                 top,
                 skip,
                 filter,
-                context), data => new AdvisorResiliencyReviewResource(Client, data));
+                context,
+                "AdvisorResiliencyReviewCollection.GetAll"), data => new AdvisorResiliencyReviewResource(Client, data));
         }
 
         /// <summary>

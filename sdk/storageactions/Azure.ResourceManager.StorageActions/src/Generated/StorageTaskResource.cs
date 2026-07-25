@@ -58,11 +58,11 @@ namespace Azure.ResourceManager.StorageActions
         {
             TryGetApiVersion(ResourceType, out string storageTaskApiVersion);
             _storageTasksClientDiagnostics = new ClientDiagnostics("Azure.ResourceManager.StorageActions", ResourceType.Namespace, Diagnostics);
-            _storageTasksRestClient = new StorageTasks(_storageTasksClientDiagnostics, Pipeline, Endpoint, storageTaskApiVersion ?? "2023-01-01");
+            _storageTasksRestClient = new StorageTasks(_storageTasksClientDiagnostics, Pipeline, Diagnostics.ApplicationId, Endpoint, storageTaskApiVersion ?? "2023-01-01");
             _storageTasksReportClientDiagnostics = new ClientDiagnostics("Azure.ResourceManager.StorageActions", ResourceType.Namespace, Diagnostics);
-            _storageTasksReportRestClient = new StorageTasksReport(_storageTasksReportClientDiagnostics, Pipeline, Endpoint, storageTaskApiVersion ?? "2023-01-01");
+            _storageTasksReportRestClient = new StorageTasksReport(_storageTasksReportClientDiagnostics, Pipeline, Diagnostics.ApplicationId, Endpoint, storageTaskApiVersion ?? "2023-01-01");
             _storageTaskAssignmentClientDiagnostics = new ClientDiagnostics("Azure.ResourceManager.StorageActions", ResourceType.Namespace, Diagnostics);
-            _storageTaskAssignmentRestClient = new StorageTaskAssignment(_storageTaskAssignmentClientDiagnostics, Pipeline, Endpoint, storageTaskApiVersion ?? "2023-01-01");
+            _storageTaskAssignmentRestClient = new StorageTaskAssignment(_storageTaskAssignmentClientDiagnostics, Pipeline, Diagnostics.ApplicationId, Endpoint, storageTaskApiVersion ?? "2023-01-01");
             ValidateResourceId(id);
         }
 
@@ -98,7 +98,7 @@ namespace Azure.ResourceManager.StorageActions
         {
             if (id.ResourceType != ResourceType)
             {
-                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, ResourceType), id);
+                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, ResourceType), nameof(id));
             }
         }
 
@@ -238,7 +238,7 @@ namespace Azure.ResourceManager.StorageActions
                 HttpMessage message = _storageTasksRestClient.CreateUpdateRequest(Guid.Parse(Id.SubscriptionId), Id.ResourceGroupName, Id.Name, StorageTaskPatch.ToRequestContent(patch), context);
                 Response response = await Pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
                 StorageActionsArmOperation<StorageTaskResource> operation = new StorageActionsArmOperation<StorageTaskResource>(
-                    new StorageTaskOperationSource(Client),
+                    new StorageTaskResourceOperationSource(Client),
                     _storageTasksClientDiagnostics,
                     Pipeline,
                     message.Request,
@@ -297,7 +297,7 @@ namespace Azure.ResourceManager.StorageActions
                 HttpMessage message = _storageTasksRestClient.CreateUpdateRequest(Guid.Parse(Id.SubscriptionId), Id.ResourceGroupName, Id.Name, StorageTaskPatch.ToRequestContent(patch), context);
                 Response response = Pipeline.ProcessMessage(message, context);
                 StorageActionsArmOperation<StorageTaskResource> operation = new StorageActionsArmOperation<StorageTaskResource>(
-                    new StorageTaskOperationSource(Client),
+                    new StorageTaskResourceOperationSource(Client),
                     _storageTasksClientDiagnostics,
                     Pipeline,
                     message.Request,
@@ -452,7 +452,8 @@ namespace Azure.ResourceManager.StorageActions
                 Id.Name,
                 maxpagesize,
                 filter,
-                context);
+                context,
+                "StorageTaskResource.GetStorageTasksReports");
         }
 
         /// <summary>
@@ -493,7 +494,8 @@ namespace Azure.ResourceManager.StorageActions
                 Id.Name,
                 maxpagesize,
                 filter,
-                context);
+                context,
+                "StorageTaskResource.GetStorageTasksReports");
         }
 
         /// <summary>
@@ -532,7 +534,8 @@ namespace Azure.ResourceManager.StorageActions
                 Id.ResourceGroupName,
                 Id.Name,
                 maxpagesize,
-                context);
+                context,
+                "StorageTaskResource.GetStorageTaskAssignments");
         }
 
         /// <summary>
@@ -571,7 +574,8 @@ namespace Azure.ResourceManager.StorageActions
                 Id.ResourceGroupName,
                 Id.Name,
                 maxpagesize,
-                context);
+                context,
+                "StorageTaskResource.GetStorageTaskAssignments");
         }
 
         /// <summary> Add a tag to the current resource. </summary>

@@ -14,7 +14,7 @@ using Azure.ResourceManager.RecoveryServices;
 namespace Azure.ResourceManager.RecoveryServices.Models
 {
     /// <summary> Immutability Settings of vault. </summary>
-    internal partial class ImmutabilitySettings : IJsonModel<ImmutabilitySettings>
+    public partial class ImmutabilitySettings : IJsonModel<ImmutabilitySettings>
     {
         /// <param name="data"> The data to parse. </param>
         /// <param name="options"> The client options for reading and writing models. </param>
@@ -32,6 +32,29 @@ namespace Azure.ResourceManager.RecoveryServices.Models
                     throw new FormatException($"The model {nameof(ImmutabilitySettings)} does not support reading '{options.Format}' format.");
             }
         }
+
+        /// <param name="options"> The client options for reading and writing models. </param>
+        protected virtual BinaryData PersistableModelWriteCore(ModelReaderWriterOptions options)
+        {
+            string format = options.Format == "W" ? ((IPersistableModel<ImmutabilitySettings>)this).GetFormatFromOptions(options) : options.Format;
+            switch (format)
+            {
+                case "J":
+                    return ModelReaderWriter.Write(this, options, AzureResourceManagerRecoveryServicesContext.Default);
+                default:
+                    throw new FormatException($"The model {nameof(ImmutabilitySettings)} does not support writing '{options.Format}' format.");
+            }
+        }
+
+        /// <param name="options"> The client options for reading and writing models. </param>
+        BinaryData IPersistableModel<ImmutabilitySettings>.Write(ModelReaderWriterOptions options) => PersistableModelWriteCore(options);
+
+        /// <param name="data"> The data to parse. </param>
+        /// <param name="options"> The client options for reading and writing models. </param>
+        ImmutabilitySettings IPersistableModel<ImmutabilitySettings>.Create(BinaryData data, ModelReaderWriterOptions options) => PersistableModelCreateCore(data, options);
+
+        /// <param name="options"> The client options for reading and writing models. </param>
+        string IPersistableModel<ImmutabilitySettings>.GetFormatFromOptions(ModelReaderWriterOptions options) => "J";
 
         /// <param name="writer"> The JSON writer. </param>
         /// <param name="options"> The client options for reading and writing models. </param>
@@ -55,6 +78,11 @@ namespace Azure.ResourceManager.RecoveryServices.Models
             {
                 writer.WritePropertyName("state"u8);
                 writer.WriteStringValue(State.Value.ToString());
+            }
+            if (Optional.IsDefined(Configuration))
+            {
+                writer.WritePropertyName("configuration"u8);
+                writer.WriteObjectValue(Configuration, options);
             }
             if (options.Format != "W" && _additionalBinaryDataProperties != null)
             {
@@ -99,6 +127,7 @@ namespace Azure.ResourceManager.RecoveryServices.Models
                 return null;
             }
             ImmutabilityState? state = default;
+            ImmutabilityConfiguration configuration = default;
             IDictionary<string, BinaryData> additionalBinaryDataProperties = new ChangeTrackingDictionary<string, BinaryData>();
             foreach (var prop in element.EnumerateObject())
             {
@@ -111,35 +140,21 @@ namespace Azure.ResourceManager.RecoveryServices.Models
                     state = new ImmutabilityState(prop.Value.GetString());
                     continue;
                 }
+                if (prop.NameEquals("configuration"u8))
+                {
+                    if (prop.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        continue;
+                    }
+                    configuration = ImmutabilityConfiguration.DeserializeImmutabilityConfiguration(prop.Value, options);
+                    continue;
+                }
                 if (options.Format != "W")
                 {
                     additionalBinaryDataProperties.Add(prop.Name, BinaryData.FromString(prop.Value.GetRawText()));
                 }
             }
-            return new ImmutabilitySettings(state, additionalBinaryDataProperties);
+            return new ImmutabilitySettings(state, configuration, additionalBinaryDataProperties);
         }
-
-        /// <param name="options"> The client options for reading and writing models. </param>
-        BinaryData IPersistableModel<ImmutabilitySettings>.Write(ModelReaderWriterOptions options) => PersistableModelWriteCore(options);
-
-        /// <param name="options"> The client options for reading and writing models. </param>
-        protected virtual BinaryData PersistableModelWriteCore(ModelReaderWriterOptions options)
-        {
-            string format = options.Format == "W" ? ((IPersistableModel<ImmutabilitySettings>)this).GetFormatFromOptions(options) : options.Format;
-            switch (format)
-            {
-                case "J":
-                    return ModelReaderWriter.Write(this, options, AzureResourceManagerRecoveryServicesContext.Default);
-                default:
-                    throw new FormatException($"The model {nameof(ImmutabilitySettings)} does not support writing '{options.Format}' format.");
-            }
-        }
-
-        /// <param name="data"> The data to parse. </param>
-        /// <param name="options"> The client options for reading and writing models. </param>
-        ImmutabilitySettings IPersistableModel<ImmutabilitySettings>.Create(BinaryData data, ModelReaderWriterOptions options) => PersistableModelCreateCore(data, options);
-
-        /// <param name="options"> The client options for reading and writing models. </param>
-        string IPersistableModel<ImmutabilitySettings>.GetFormatFromOptions(ModelReaderWriterOptions options) => "J";
     }
 }

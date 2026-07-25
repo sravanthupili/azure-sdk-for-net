@@ -40,7 +40,7 @@ namespace Azure.ResourceManager.Advisor
         {
             TryGetApiVersion(AdvisorTriageRecommendationResource.ResourceType, out string advisorTriageRecommendationApiVersion);
             _triageRecommendationsClientDiagnostics = new ClientDiagnostics("Azure.ResourceManager.Advisor", AdvisorTriageRecommendationResource.ResourceType.Namespace, Diagnostics);
-            _triageRecommendationsRestClient = new TriageRecommendations(_triageRecommendationsClientDiagnostics, Pipeline, Endpoint, advisorTriageRecommendationApiVersion ?? "2025-05-01-preview");
+            _triageRecommendationsRestClient = new TriageRecommendations(_triageRecommendationsClientDiagnostics, Pipeline, Diagnostics.ApplicationId, Endpoint, advisorTriageRecommendationApiVersion ?? "2025-05-01-preview");
             ValidateResourceId(id);
         }
 
@@ -50,7 +50,7 @@ namespace Azure.ResourceManager.Advisor
         {
             if (id.ResourceType != AdvisorResiliencyReviewResource.ResourceType)
             {
-                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, AdvisorResiliencyReviewResource.ResourceType), id);
+                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, AdvisorResiliencyReviewResource.ResourceType), nameof(id));
             }
         }
 
@@ -185,7 +185,8 @@ namespace Azure.ResourceManager.Advisor
                 Id.Name,
                 top,
                 skip,
-                context), data => new AdvisorTriageRecommendationResource(Client, data));
+                context,
+                "AdvisorTriageRecommendationCollection.GetAll"), data => new AdvisorTriageRecommendationResource(Client, data));
         }
 
         /// <summary>
@@ -221,7 +222,8 @@ namespace Azure.ResourceManager.Advisor
                 Id.Name,
                 top,
                 skip,
-                context), data => new AdvisorTriageRecommendationResource(Client, data));
+                context,
+                "AdvisorTriageRecommendationCollection.GetAll"), data => new AdvisorTriageRecommendationResource(Client, data));
         }
 
         /// <summary>

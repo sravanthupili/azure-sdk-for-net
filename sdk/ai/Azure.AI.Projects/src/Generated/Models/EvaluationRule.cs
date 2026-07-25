@@ -4,8 +4,9 @@
 
 using System;
 using System.Collections.Generic;
+using Azure.AI.Projects;
 
-namespace Azure.AI.Projects
+namespace Azure.AI.Projects.Evaluation
 {
     /// <summary> Evaluation rule model. </summary>
     public partial class EvaluationRule
@@ -59,9 +60,6 @@ namespace Azure.AI.Projects
 
         /// <summary> Description for the evaluation rule. </summary>
         public string Description { get; set; }
-
-        /// <summary> Definition of the evaluation rule action. </summary>
-        public EvaluationRuleAction Action { get; set; }
 
         /// <summary> Filter condition of the evaluation rule. </summary>
         public EvaluationRuleFilter Filter { get; set; }

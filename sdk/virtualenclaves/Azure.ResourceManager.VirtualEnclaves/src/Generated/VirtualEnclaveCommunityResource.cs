@@ -53,7 +53,7 @@ namespace Azure.ResourceManager.VirtualEnclaves
         {
             TryGetApiVersion(ResourceType, out string virtualEnclaveCommunityApiVersion);
             _communityClientDiagnostics = new ClientDiagnostics("Azure.ResourceManager.VirtualEnclaves", ResourceType.Namespace, Diagnostics);
-            _communityRestClient = new Community(_communityClientDiagnostics, Pipeline, Endpoint, virtualEnclaveCommunityApiVersion ?? "2025-05-01-preview");
+            _communityRestClient = new Community(_communityClientDiagnostics, Pipeline, Diagnostics.ApplicationId, Endpoint, virtualEnclaveCommunityApiVersion ?? "2025-05-01-preview");
             ValidateResourceId(id);
         }
 
@@ -89,7 +89,7 @@ namespace Azure.ResourceManager.VirtualEnclaves
         {
             if (id.ResourceType != ResourceType)
             {
-                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, ResourceType), id);
+                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, ResourceType), nameof(id));
             }
         }
 
@@ -229,7 +229,7 @@ namespace Azure.ResourceManager.VirtualEnclaves
                 HttpMessage message = _communityRestClient.CreateUpdateRequest(Guid.Parse(Id.SubscriptionId), Id.ResourceGroupName, Id.Name, VirtualEnclaveCommunityPatch.ToRequestContent(patch), context);
                 Response response = await Pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
                 VirtualEnclavesArmOperation<VirtualEnclaveCommunityResource> operation = new VirtualEnclavesArmOperation<VirtualEnclaveCommunityResource>(
-                    new VirtualEnclaveCommunityOperationSource(Client),
+                    new VirtualEnclaveCommunityResourceOperationSource(Client),
                     _communityClientDiagnostics,
                     Pipeline,
                     message.Request,
@@ -288,7 +288,7 @@ namespace Azure.ResourceManager.VirtualEnclaves
                 HttpMessage message = _communityRestClient.CreateUpdateRequest(Guid.Parse(Id.SubscriptionId), Id.ResourceGroupName, Id.Name, VirtualEnclaveCommunityPatch.ToRequestContent(patch), context);
                 Response response = Pipeline.ProcessMessage(message, context);
                 VirtualEnclavesArmOperation<VirtualEnclaveCommunityResource> operation = new VirtualEnclavesArmOperation<VirtualEnclaveCommunityResource>(
-                    new VirtualEnclaveCommunityOperationSource(Client),
+                    new VirtualEnclaveCommunityResourceOperationSource(Client),
                     _communityClientDiagnostics,
                     Pipeline,
                     message.Request,

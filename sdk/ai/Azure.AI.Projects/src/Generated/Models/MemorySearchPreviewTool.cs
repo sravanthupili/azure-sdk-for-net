@@ -4,10 +4,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using Azure.AI.Projects.Memory;
 
 namespace Azure.AI.Projects
 {
     /// <summary> A tool for integrating memories into the agent. </summary>
+    [Experimental("AAIP001")]
     internal partial class MemorySearchPreviewTool : InternalTool
     {
         /// <summary> Initializes a new instance of <see cref="MemorySearchPreviewTool"/>. </summary>
@@ -18,7 +21,7 @@ namespace Azure.AI.Projects
         /// Use special variable `{{$userId}}` to scope memories to the current signed-in user.
         /// </param>
         /// <exception cref="ArgumentNullException"> <paramref name="memoryStoreName"/> or <paramref name="scope"/> is null. </exception>
-        public MemorySearchPreviewTool(string memoryStoreName, string scope) : base(ToolType.MemorySearch)
+        public MemorySearchPreviewTool(string memoryStoreName, string scope) : base(ToolType.MemorySearchPreview)
         {
             Argument.AssertNotNull(memoryStoreName, nameof(memoryStoreName));
             Argument.AssertNotNull(scope, nameof(scope));

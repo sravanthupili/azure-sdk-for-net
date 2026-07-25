@@ -40,7 +40,7 @@ namespace Azure.ResourceManager.AppComplianceAutomation
         {
             TryGetApiVersion(AppComplianceReportEvidenceResource.ResourceType, out string appComplianceReportEvidenceApiVersion);
             _evidenceClientDiagnostics = new ClientDiagnostics("Azure.ResourceManager.AppComplianceAutomation", AppComplianceReportEvidenceResource.ResourceType.Namespace, Diagnostics);
-            _evidenceRestClient = new Evidence(_evidenceClientDiagnostics, Pipeline, Endpoint, appComplianceReportEvidenceApiVersion ?? "2024-06-27");
+            _evidenceRestClient = new Evidence(_evidenceClientDiagnostics, Pipeline, Diagnostics.ApplicationId, Endpoint, appComplianceReportEvidenceApiVersion ?? "2024-06-27");
             ValidateResourceId(id);
         }
 
@@ -50,7 +50,7 @@ namespace Azure.ResourceManager.AppComplianceAutomation
         {
             if (id.ResourceType != AppComplianceReportResource.ResourceType)
             {
-                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, AppComplianceReportResource.ResourceType), id);
+                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, AppComplianceReportResource.ResourceType), nameof(id));
             }
         }
 
@@ -308,7 +308,8 @@ namespace Azure.ResourceManager.AppComplianceAutomation
                 @orderby,
                 offerGuid,
                 reportCreatorTenantId,
-                context), data => new AppComplianceReportEvidenceResource(Client, data));
+                context,
+                "AppComplianceReportEvidenceCollection.GetAll"), data => new AppComplianceReportEvidenceResource(Client, data));
         }
 
         /// <summary>
@@ -353,7 +354,8 @@ namespace Azure.ResourceManager.AppComplianceAutomation
                 @orderby,
                 offerGuid,
                 reportCreatorTenantId,
-                context), data => new AppComplianceReportEvidenceResource(Client, data));
+                context,
+                "AppComplianceReportEvidenceCollection.GetAll"), data => new AppComplianceReportEvidenceResource(Client, data));
         }
 
         /// <summary>

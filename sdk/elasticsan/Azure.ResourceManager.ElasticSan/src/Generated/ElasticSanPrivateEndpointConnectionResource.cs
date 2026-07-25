@@ -50,7 +50,7 @@ namespace Azure.ResourceManager.ElasticSan
         {
             TryGetApiVersion(ResourceType, out string elasticSanPrivateEndpointConnectionApiVersion);
             _privateEndpointConnectionsClientDiagnostics = new ClientDiagnostics("Azure.ResourceManager.ElasticSan", ResourceType.Namespace, Diagnostics);
-            _privateEndpointConnectionsRestClient = new PrivateEndpointConnections(_privateEndpointConnectionsClientDiagnostics, Pipeline, Endpoint, elasticSanPrivateEndpointConnectionApiVersion ?? "2025-09-01");
+            _privateEndpointConnectionsRestClient = new PrivateEndpointConnections(_privateEndpointConnectionsClientDiagnostics, Pipeline, Diagnostics.ApplicationId, Endpoint, elasticSanPrivateEndpointConnectionApiVersion ?? "2025-09-01");
             ValidateResourceId(id);
         }
 
@@ -87,7 +87,7 @@ namespace Azure.ResourceManager.ElasticSan
         {
             if (id.ResourceType != ResourceType)
             {
-                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, ResourceType), id);
+                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, ResourceType), nameof(id));
             }
         }
 
@@ -325,7 +325,7 @@ namespace Azure.ResourceManager.ElasticSan
                 HttpMessage message = _privateEndpointConnectionsRestClient.CreateCreateRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, ElasticSanPrivateEndpointConnectionData.ToRequestContent(data), context);
                 Response response = await Pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
                 ElasticSanArmOperation<ElasticSanPrivateEndpointConnectionResource> operation = new ElasticSanArmOperation<ElasticSanPrivateEndpointConnectionResource>(
-                    new ElasticSanPrivateEndpointConnectionOperationSource(Client),
+                    new ElasticSanPrivateEndpointConnectionResourceOperationSource(Client),
                     _privateEndpointConnectionsClientDiagnostics,
                     Pipeline,
                     message.Request,
@@ -384,7 +384,7 @@ namespace Azure.ResourceManager.ElasticSan
                 HttpMessage message = _privateEndpointConnectionsRestClient.CreateCreateRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, ElasticSanPrivateEndpointConnectionData.ToRequestContent(data), context);
                 Response response = Pipeline.ProcessMessage(message, context);
                 ElasticSanArmOperation<ElasticSanPrivateEndpointConnectionResource> operation = new ElasticSanArmOperation<ElasticSanPrivateEndpointConnectionResource>(
-                    new ElasticSanPrivateEndpointConnectionOperationSource(Client),
+                    new ElasticSanPrivateEndpointConnectionResourceOperationSource(Client),
                     _privateEndpointConnectionsClientDiagnostics,
                     Pipeline,
                     message.Request,

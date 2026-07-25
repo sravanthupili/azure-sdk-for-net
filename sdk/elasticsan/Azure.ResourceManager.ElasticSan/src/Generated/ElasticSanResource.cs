@@ -55,9 +55,9 @@ namespace Azure.ResourceManager.ElasticSan
         {
             TryGetApiVersion(ResourceType, out string elasticSanApiVersion);
             _elasticSansClientDiagnostics = new ClientDiagnostics("Azure.ResourceManager.ElasticSan", ResourceType.Namespace, Diagnostics);
-            _elasticSansRestClient = new ElasticSans(_elasticSansClientDiagnostics, Pipeline, Endpoint, elasticSanApiVersion ?? "2025-09-01");
+            _elasticSansRestClient = new ElasticSans(_elasticSansClientDiagnostics, Pipeline, Diagnostics.ApplicationId, Endpoint, elasticSanApiVersion ?? "2025-09-01");
             _privateLinkResourcesClientDiagnostics = new ClientDiagnostics("Azure.ResourceManager.ElasticSan", ResourceType.Namespace, Diagnostics);
-            _privateLinkResourcesRestClient = new PrivateLinkResources(_privateLinkResourcesClientDiagnostics, Pipeline, Endpoint, elasticSanApiVersion ?? "2025-09-01");
+            _privateLinkResourcesRestClient = new PrivateLinkResources(_privateLinkResourcesClientDiagnostics, Pipeline, Diagnostics.ApplicationId, Endpoint, elasticSanApiVersion ?? "2025-09-01");
             ValidateResourceId(id);
         }
 
@@ -93,7 +93,7 @@ namespace Azure.ResourceManager.ElasticSan
         {
             if (id.ResourceType != ResourceType)
             {
-                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, ResourceType), id);
+                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, ResourceType), nameof(id));
             }
         }
 
@@ -233,7 +233,7 @@ namespace Azure.ResourceManager.ElasticSan
                 HttpMessage message = _elasticSansRestClient.CreateUpdateRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, ElasticSanPatch.ToRequestContent(patch), context);
                 Response response = await Pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
                 ElasticSanArmOperation<ElasticSanResource> operation = new ElasticSanArmOperation<ElasticSanResource>(
-                    new ElasticSanOperationSource(Client),
+                    new ElasticSanResourceOperationSource(Client),
                     _elasticSansClientDiagnostics,
                     Pipeline,
                     message.Request,
@@ -292,7 +292,7 @@ namespace Azure.ResourceManager.ElasticSan
                 HttpMessage message = _elasticSansRestClient.CreateUpdateRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Name, ElasticSanPatch.ToRequestContent(patch), context);
                 Response response = Pipeline.ProcessMessage(message, context);
                 ElasticSanArmOperation<ElasticSanResource> operation = new ElasticSanArmOperation<ElasticSanResource>(
-                    new ElasticSanOperationSource(Client),
+                    new ElasticSanResourceOperationSource(Client),
                     _elasticSansClientDiagnostics,
                     Pipeline,
                     message.Request,
@@ -438,7 +438,13 @@ namespace Azure.ResourceManager.ElasticSan
             {
                 CancellationToken = cancellationToken
             };
-            return new PrivateLinkResourcesGetPrivateLinkResourcesAsyncCollectionResultOfT(_privateLinkResourcesRestClient, Id.SubscriptionId, Id.ResourceGroupName, Id.Name, context);
+            return new PrivateLinkResourcesGetPrivateLinkResourcesAsyncCollectionResultOfT(
+                _privateLinkResourcesRestClient,
+                Id.SubscriptionId,
+                Id.ResourceGroupName,
+                Id.Name,
+                context,
+                "ElasticSanResource.GetPrivateLinkResources");
         }
 
         /// <summary>
@@ -470,7 +476,13 @@ namespace Azure.ResourceManager.ElasticSan
             {
                 CancellationToken = cancellationToken
             };
-            return new PrivateLinkResourcesGetPrivateLinkResourcesCollectionResultOfT(_privateLinkResourcesRestClient, Id.SubscriptionId, Id.ResourceGroupName, Id.Name, context);
+            return new PrivateLinkResourcesGetPrivateLinkResourcesCollectionResultOfT(
+                _privateLinkResourcesRestClient,
+                Id.SubscriptionId,
+                Id.ResourceGroupName,
+                Id.Name,
+                context,
+                "ElasticSanResource.GetPrivateLinkResources");
         }
 
         /// <summary> Add a tag to the current resource. </summary>

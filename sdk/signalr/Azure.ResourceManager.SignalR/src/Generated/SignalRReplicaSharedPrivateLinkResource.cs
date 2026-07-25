@@ -50,7 +50,7 @@ namespace Azure.ResourceManager.SignalR
         {
             TryGetApiVersion(ResourceType, out string signalRReplicaSharedPrivateLinkResourceApiVersion);
             _signalRReplicaSharedPrivateLinkResourcesClientDiagnostics = new ClientDiagnostics("Azure.ResourceManager.SignalR", ResourceType.Namespace, Diagnostics);
-            _signalRReplicaSharedPrivateLinkResourcesRestClient = new SignalRReplicaSharedPrivateLinkResources(_signalRReplicaSharedPrivateLinkResourcesClientDiagnostics, Pipeline, Endpoint, signalRReplicaSharedPrivateLinkResourceApiVersion ?? "2025-01-01-preview");
+            _signalRReplicaSharedPrivateLinkResourcesRestClient = new SignalRReplicaSharedPrivateLinkResources(_signalRReplicaSharedPrivateLinkResourcesClientDiagnostics, Pipeline, Diagnostics.ApplicationId, Endpoint, signalRReplicaSharedPrivateLinkResourceApiVersion ?? "2025-01-01-preview");
             ValidateResourceId(id);
         }
 
@@ -88,7 +88,7 @@ namespace Azure.ResourceManager.SignalR
         {
             if (id.ResourceType != ResourceType)
             {
-                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, ResourceType), id);
+                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, ResourceType), nameof(id));
             }
         }
 

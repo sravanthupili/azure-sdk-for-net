@@ -41,7 +41,7 @@ namespace Azure.ResourceManager.SignalR
         {
             TryGetApiVersion(SignalRResource.ResourceType, out string signalRApiVersion);
             _signalRResourcesClientDiagnostics = new ClientDiagnostics("Azure.ResourceManager.SignalR", SignalRResource.ResourceType.Namespace, Diagnostics);
-            _signalRResourcesRestClient = new SignalRResources(_signalRResourcesClientDiagnostics, Pipeline, Endpoint, signalRApiVersion ?? "2025-01-01-preview");
+            _signalRResourcesRestClient = new SignalRResources(_signalRResourcesClientDiagnostics, Pipeline, Diagnostics.ApplicationId, Endpoint, signalRApiVersion ?? "2025-01-01-preview");
             ValidateResourceId(id);
         }
 
@@ -51,7 +51,7 @@ namespace Azure.ResourceManager.SignalR
         {
             if (id.ResourceType != ResourceGroupResource.ResourceType)
             {
-                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, ResourceGroupResource.ResourceType), id);
+                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, ResourceGroupResource.ResourceType), nameof(id));
             }
         }
 
@@ -94,7 +94,7 @@ namespace Azure.ResourceManager.SignalR
                 HttpMessage message = _signalRResourcesRestClient.CreateCreateOrUpdateRequest(Guid.Parse(Id.SubscriptionId), Id.ResourceGroupName, resourceName, SignalRData.ToRequestContent(data), context);
                 Response response = await Pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
                 SignalRArmOperation<SignalRResource> operation = new SignalRArmOperation<SignalRResource>(
-                    new SignalROperationSource(Client),
+                    new SignalRResourceOperationSource(Client),
                     _signalRResourcesClientDiagnostics,
                     Pipeline,
                     message.Request,
@@ -152,7 +152,7 @@ namespace Azure.ResourceManager.SignalR
                 HttpMessage message = _signalRResourcesRestClient.CreateCreateOrUpdateRequest(Guid.Parse(Id.SubscriptionId), Id.ResourceGroupName, resourceName, SignalRData.ToRequestContent(data), context);
                 Response response = Pipeline.ProcessMessage(message, context);
                 SignalRArmOperation<SignalRResource> operation = new SignalRArmOperation<SignalRResource>(
-                    new SignalROperationSource(Client),
+                    new SignalRResourceOperationSource(Client),
                     _signalRResourcesClientDiagnostics,
                     Pipeline,
                     message.Request,
@@ -294,7 +294,7 @@ namespace Azure.ResourceManager.SignalR
             {
                 CancellationToken = cancellationToken
             };
-            return new AsyncPageableWrapper<SignalRData, SignalRResource>(new SignalRResourcesGetByResourceGroupAsyncCollectionResultOfT(_signalRResourcesRestClient, Guid.Parse(Id.SubscriptionId), Id.ResourceGroupName, context), data => new SignalRResource(Client, data));
+            return new AsyncPageableWrapper<SignalRData, SignalRResource>(new SignalRResourcesGetByResourceGroupAsyncCollectionResultOfT(_signalRResourcesRestClient, Guid.Parse(Id.SubscriptionId), Id.ResourceGroupName, context, "SignalRCollection.GetAll"), data => new SignalRResource(Client, data));
         }
 
         /// <summary>
@@ -322,7 +322,7 @@ namespace Azure.ResourceManager.SignalR
             {
                 CancellationToken = cancellationToken
             };
-            return new PageableWrapper<SignalRData, SignalRResource>(new SignalRResourcesGetByResourceGroupCollectionResultOfT(_signalRResourcesRestClient, Guid.Parse(Id.SubscriptionId), Id.ResourceGroupName, context), data => new SignalRResource(Client, data));
+            return new PageableWrapper<SignalRData, SignalRResource>(new SignalRResourcesGetByResourceGroupCollectionResultOfT(_signalRResourcesRestClient, Guid.Parse(Id.SubscriptionId), Id.ResourceGroupName, context, "SignalRCollection.GetAll"), data => new SignalRResource(Client, data));
         }
 
         /// <summary>

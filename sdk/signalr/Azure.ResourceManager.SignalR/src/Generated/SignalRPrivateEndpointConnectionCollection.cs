@@ -40,7 +40,7 @@ namespace Azure.ResourceManager.SignalR
         {
             TryGetApiVersion(SignalRPrivateEndpointConnectionResource.ResourceType, out string signalRPrivateEndpointConnectionApiVersion);
             _privateEndpointConnectionsClientDiagnostics = new ClientDiagnostics("Azure.ResourceManager.SignalR", SignalRPrivateEndpointConnectionResource.ResourceType.Namespace, Diagnostics);
-            _privateEndpointConnectionsRestClient = new PrivateEndpointConnections(_privateEndpointConnectionsClientDiagnostics, Pipeline, Endpoint, signalRPrivateEndpointConnectionApiVersion ?? "2025-01-01-preview");
+            _privateEndpointConnectionsRestClient = new PrivateEndpointConnections(_privateEndpointConnectionsClientDiagnostics, Pipeline, Diagnostics.ApplicationId, Endpoint, signalRPrivateEndpointConnectionApiVersion ?? "2025-01-01-preview");
             ValidateResourceId(id);
         }
 
@@ -50,7 +50,7 @@ namespace Azure.ResourceManager.SignalR
         {
             if (id.ResourceType != SignalRResource.ResourceType)
             {
-                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, SignalRResource.ResourceType), id);
+                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, SignalRResource.ResourceType), nameof(id));
             }
         }
 
@@ -287,7 +287,13 @@ namespace Azure.ResourceManager.SignalR
             {
                 CancellationToken = cancellationToken
             };
-            return new AsyncPageableWrapper<SignalRPrivateEndpointConnectionData, SignalRPrivateEndpointConnectionResource>(new PrivateEndpointConnectionsGetAllAsyncCollectionResultOfT(_privateEndpointConnectionsRestClient, Guid.Parse(Id.SubscriptionId), Id.ResourceGroupName, Id.Name, context), data => new SignalRPrivateEndpointConnectionResource(Client, data));
+            return new AsyncPageableWrapper<SignalRPrivateEndpointConnectionData, SignalRPrivateEndpointConnectionResource>(new PrivateEndpointConnectionsGetAllAsyncCollectionResultOfT(
+                _privateEndpointConnectionsRestClient,
+                Guid.Parse(Id.SubscriptionId),
+                Id.ResourceGroupName,
+                Id.Name,
+                context,
+                "SignalRPrivateEndpointConnectionCollection.GetAll"), data => new SignalRPrivateEndpointConnectionResource(Client, data));
         }
 
         /// <summary>
@@ -315,7 +321,13 @@ namespace Azure.ResourceManager.SignalR
             {
                 CancellationToken = cancellationToken
             };
-            return new PageableWrapper<SignalRPrivateEndpointConnectionData, SignalRPrivateEndpointConnectionResource>(new PrivateEndpointConnectionsGetAllCollectionResultOfT(_privateEndpointConnectionsRestClient, Guid.Parse(Id.SubscriptionId), Id.ResourceGroupName, Id.Name, context), data => new SignalRPrivateEndpointConnectionResource(Client, data));
+            return new PageableWrapper<SignalRPrivateEndpointConnectionData, SignalRPrivateEndpointConnectionResource>(new PrivateEndpointConnectionsGetAllCollectionResultOfT(
+                _privateEndpointConnectionsRestClient,
+                Guid.Parse(Id.SubscriptionId),
+                Id.ResourceGroupName,
+                Id.Name,
+                context,
+                "SignalRPrivateEndpointConnectionCollection.GetAll"), data => new SignalRPrivateEndpointConnectionResource(Client, data));
         }
 
         /// <summary>

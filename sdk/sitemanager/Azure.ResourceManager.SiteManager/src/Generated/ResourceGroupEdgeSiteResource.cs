@@ -52,7 +52,7 @@ namespace Azure.ResourceManager.SiteManager
         {
             TryGetApiVersion(ResourceType, out string resourceGroupEdgeSiteApiVersion);
             _resourceGroupEdgeSiteClientDiagnostics = new ClientDiagnostics("Azure.ResourceManager.SiteManager", ResourceType.Namespace, Diagnostics);
-            _resourceGroupEdgeSiteRestClient = new ResourceGroupEdgeSite(_resourceGroupEdgeSiteClientDiagnostics, Pipeline, Endpoint, resourceGroupEdgeSiteApiVersion ?? "2025-06-01");
+            _resourceGroupEdgeSiteRestClient = new ResourceGroupEdgeSite(_resourceGroupEdgeSiteClientDiagnostics, Pipeline, Diagnostics.ApplicationId, Endpoint, resourceGroupEdgeSiteApiVersion ?? "2025-06-01");
             ValidateResourceId(id);
         }
 
@@ -88,7 +88,7 @@ namespace Azure.ResourceManager.SiteManager
         {
             if (id.ResourceType != ResourceType)
             {
-                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, ResourceType), id);
+                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, ResourceType), nameof(id));
             }
         }
 

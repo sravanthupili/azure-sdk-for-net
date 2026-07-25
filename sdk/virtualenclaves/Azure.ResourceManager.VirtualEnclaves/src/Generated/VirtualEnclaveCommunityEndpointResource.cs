@@ -53,7 +53,7 @@ namespace Azure.ResourceManager.VirtualEnclaves
         {
             TryGetApiVersion(ResourceType, out string virtualEnclaveCommunityEndpointApiVersion);
             _communityEndpointsClientDiagnostics = new ClientDiagnostics("Azure.ResourceManager.VirtualEnclaves", ResourceType.Namespace, Diagnostics);
-            _communityEndpointsRestClient = new CommunityEndpoints(_communityEndpointsClientDiagnostics, Pipeline, Endpoint, virtualEnclaveCommunityEndpointApiVersion ?? "2025-05-01-preview");
+            _communityEndpointsRestClient = new CommunityEndpoints(_communityEndpointsClientDiagnostics, Pipeline, Diagnostics.ApplicationId, Endpoint, virtualEnclaveCommunityEndpointApiVersion ?? "2025-05-01-preview");
             ValidateResourceId(id);
         }
 
@@ -90,7 +90,7 @@ namespace Azure.ResourceManager.VirtualEnclaves
         {
             if (id.ResourceType != ResourceType)
             {
-                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, ResourceType), id);
+                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, ResourceType), nameof(id));
             }
         }
 
@@ -230,7 +230,7 @@ namespace Azure.ResourceManager.VirtualEnclaves
                 HttpMessage message = _communityEndpointsRestClient.CreateUpdateRequest(Guid.Parse(Id.SubscriptionId), Id.ResourceGroupName, Id.Parent.Name, Id.Name, VirtualEnclaveCommunityEndpointPatch.ToRequestContent(patch), context);
                 Response response = await Pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
                 VirtualEnclavesArmOperation<VirtualEnclaveCommunityEndpointResource> operation = new VirtualEnclavesArmOperation<VirtualEnclaveCommunityEndpointResource>(
-                    new VirtualEnclaveCommunityEndpointOperationSource(Client),
+                    new VirtualEnclaveCommunityEndpointResourceOperationSource(Client),
                     _communityEndpointsClientDiagnostics,
                     Pipeline,
                     message.Request,
@@ -289,7 +289,7 @@ namespace Azure.ResourceManager.VirtualEnclaves
                 HttpMessage message = _communityEndpointsRestClient.CreateUpdateRequest(Guid.Parse(Id.SubscriptionId), Id.ResourceGroupName, Id.Parent.Name, Id.Name, VirtualEnclaveCommunityEndpointPatch.ToRequestContent(patch), context);
                 Response response = Pipeline.ProcessMessage(message, context);
                 VirtualEnclavesArmOperation<VirtualEnclaveCommunityEndpointResource> operation = new VirtualEnclavesArmOperation<VirtualEnclaveCommunityEndpointResource>(
-                    new VirtualEnclaveCommunityEndpointOperationSource(Client),
+                    new VirtualEnclaveCommunityEndpointResourceOperationSource(Client),
                     _communityEndpointsClientDiagnostics,
                     Pipeline,
                     message.Request,

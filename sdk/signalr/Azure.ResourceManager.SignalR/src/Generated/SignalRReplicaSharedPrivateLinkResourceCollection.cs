@@ -40,7 +40,7 @@ namespace Azure.ResourceManager.SignalR
         {
             TryGetApiVersion(SignalRReplicaSharedPrivateLinkResource.ResourceType, out string signalRReplicaSharedPrivateLinkResourceApiVersion);
             _signalRReplicaSharedPrivateLinkResourcesClientDiagnostics = new ClientDiagnostics("Azure.ResourceManager.SignalR", SignalRReplicaSharedPrivateLinkResource.ResourceType.Namespace, Diagnostics);
-            _signalRReplicaSharedPrivateLinkResourcesRestClient = new SignalRReplicaSharedPrivateLinkResources(_signalRReplicaSharedPrivateLinkResourcesClientDiagnostics, Pipeline, Endpoint, signalRReplicaSharedPrivateLinkResourceApiVersion ?? "2025-01-01-preview");
+            _signalRReplicaSharedPrivateLinkResourcesRestClient = new SignalRReplicaSharedPrivateLinkResources(_signalRReplicaSharedPrivateLinkResourcesClientDiagnostics, Pipeline, Diagnostics.ApplicationId, Endpoint, signalRReplicaSharedPrivateLinkResourceApiVersion ?? "2025-01-01-preview");
             ValidateResourceId(id);
         }
 
@@ -50,7 +50,7 @@ namespace Azure.ResourceManager.SignalR
         {
             if (id.ResourceType != SignalRReplicaResource.ResourceType)
             {
-                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, SignalRReplicaResource.ResourceType), id);
+                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, SignalRReplicaResource.ResourceType), nameof(id));
             }
         }
 
@@ -299,7 +299,8 @@ namespace Azure.ResourceManager.SignalR
                 Id.ResourceGroupName,
                 Id.Parent.Name,
                 Id.Name,
-                context), data => new SignalRReplicaSharedPrivateLinkResource(Client, data));
+                context,
+                "SignalRReplicaSharedPrivateLinkResourceCollection.GetAll"), data => new SignalRReplicaSharedPrivateLinkResource(Client, data));
         }
 
         /// <summary>
@@ -333,7 +334,8 @@ namespace Azure.ResourceManager.SignalR
                 Id.ResourceGroupName,
                 Id.Parent.Name,
                 Id.Name,
-                context), data => new SignalRReplicaSharedPrivateLinkResource(Client, data));
+                context,
+                "SignalRReplicaSharedPrivateLinkResourceCollection.GetAll"), data => new SignalRReplicaSharedPrivateLinkResource(Client, data));
         }
 
         /// <summary>

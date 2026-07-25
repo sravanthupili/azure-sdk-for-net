@@ -4,10 +4,12 @@
 using System.ClientModel.Primitives;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Azure.AI.Projects.Evaluation;
 using Microsoft.ClientModel.TestFramework;
 using NUnit.Framework;
 
 namespace Azure.AI.Projects.Tests;
+#pragma warning disable AAIP001
 
 public class RedTeamTests : ProjectsClientTestBase
 {
@@ -20,7 +22,7 @@ public class RedTeamTests : ProjectsClientTestBase
     {
         AIProjectClient projectClient = GetTestProjectClient();
 
-        AzureOpenAIModelConfiguration config = new(modelDeploymentName: TestEnvironment.MODELDEPLOYMENTNAME);
+        AzureOpenAIModelConfiguration config = new(modelDeploymentName: TestEnvironment.FOUNDRY_MODEL_NAME);
         RedTeam redTeam = new(target: config)
         {
             AttackStrategies = { AttackStrategy.Base64 },
@@ -52,7 +54,7 @@ public class RedTeamTests : ProjectsClientTestBase
     {
         AIProjectClient projectClient = GetTestProjectClient();
 
-        AzureOpenAIModelConfiguration config = new(modelDeploymentName: TestEnvironment.MODELDEPLOYMENTNAME);
+        AzureOpenAIModelConfiguration config = new(modelDeploymentName: TestEnvironment.FOUNDRY_MODEL_NAME);
         RedTeam redTeam = new(target: config)
         {
             AttackStrategies = { AttackStrategy.Base64 },
@@ -68,6 +70,6 @@ public class RedTeamTests : ProjectsClientTestBase
             await Delay();
             redTeam = await projectClient.RedTeams.GetAsync(redTeam.Name);
         }
-        Assert.That(redTeam.Status, Is.EqualTo("Completed"), $"Wrong Red team statu {redTeam.Status}");
+        Assert.That(redTeam.Status, Is.EqualTo("Completed"), $"Wrong Red team status {redTeam.Status}");
     }
 }

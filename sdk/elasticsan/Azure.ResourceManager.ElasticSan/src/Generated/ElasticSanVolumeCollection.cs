@@ -40,7 +40,7 @@ namespace Azure.ResourceManager.ElasticSan
         {
             TryGetApiVersion(ElasticSanVolumeResource.ResourceType, out string elasticSanVolumeApiVersion);
             _volumesClientDiagnostics = new ClientDiagnostics("Azure.ResourceManager.ElasticSan", ElasticSanVolumeResource.ResourceType.Namespace, Diagnostics);
-            _volumesRestClient = new Volumes(_volumesClientDiagnostics, Pipeline, Endpoint, elasticSanVolumeApiVersion ?? "2025-09-01");
+            _volumesRestClient = new Volumes(_volumesClientDiagnostics, Pipeline, Diagnostics.ApplicationId, Endpoint, elasticSanVolumeApiVersion ?? "2025-09-01");
             ValidateResourceId(id);
         }
 
@@ -50,7 +50,7 @@ namespace Azure.ResourceManager.ElasticSan
         {
             if (id.ResourceType != ElasticSanVolumeGroupResource.ResourceType)
             {
-                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, ElasticSanVolumeGroupResource.ResourceType), id);
+                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, ElasticSanVolumeGroupResource.ResourceType), nameof(id));
             }
         }
 
@@ -93,7 +93,7 @@ namespace Azure.ResourceManager.ElasticSan
                 HttpMessage message = _volumesRestClient.CreateCreateRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, volumeName, ElasticSanVolumeData.ToRequestContent(data), context);
                 Response response = await Pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
                 ElasticSanArmOperation<ElasticSanVolumeResource> operation = new ElasticSanArmOperation<ElasticSanVolumeResource>(
-                    new ElasticSanVolumeOperationSource(Client),
+                    new ElasticSanVolumeResourceOperationSource(Client),
                     _volumesClientDiagnostics,
                     Pipeline,
                     message.Request,
@@ -151,7 +151,7 @@ namespace Azure.ResourceManager.ElasticSan
                 HttpMessage message = _volumesRestClient.CreateCreateRequest(Id.SubscriptionId, Id.ResourceGroupName, Id.Parent.Name, Id.Name, volumeName, ElasticSanVolumeData.ToRequestContent(data), context);
                 Response response = Pipeline.ProcessMessage(message, context);
                 ElasticSanArmOperation<ElasticSanVolumeResource> operation = new ElasticSanArmOperation<ElasticSanVolumeResource>(
-                    new ElasticSanVolumeOperationSource(Client),
+                    new ElasticSanVolumeResourceOperationSource(Client),
                     _volumesClientDiagnostics,
                     Pipeline,
                     message.Request,
@@ -299,7 +299,8 @@ namespace Azure.ResourceManager.ElasticSan
                 Id.ResourceGroupName,
                 Id.Parent.Name,
                 Id.Name,
-                context), data => new ElasticSanVolumeResource(Client, data));
+                context,
+                "ElasticSanVolumeCollection.GetAll"), data => new ElasticSanVolumeResource(Client, data));
         }
 
         /// <summary>
@@ -333,7 +334,8 @@ namespace Azure.ResourceManager.ElasticSan
                 Id.ResourceGroupName,
                 Id.Parent.Name,
                 Id.Name,
-                context), data => new ElasticSanVolumeResource(Client, data));
+                context,
+                "ElasticSanVolumeCollection.GetAll"), data => new ElasticSanVolumeResource(Client, data));
         }
 
         /// <summary>

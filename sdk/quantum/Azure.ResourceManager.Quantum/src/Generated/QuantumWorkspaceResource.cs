@@ -53,7 +53,7 @@ namespace Azure.ResourceManager.Quantum
         {
             TryGetApiVersion(ResourceType, out string quantumWorkspaceApiVersion);
             _workspacesClientDiagnostics = new ClientDiagnostics("Azure.ResourceManager.Quantum", ResourceType.Namespace, Diagnostics);
-            _workspacesRestClient = new Workspaces(_workspacesClientDiagnostics, Pipeline, Endpoint, quantumWorkspaceApiVersion ?? "2025-12-15-preview");
+            _workspacesRestClient = new Workspaces(_workspacesClientDiagnostics, Pipeline, Diagnostics.ApplicationId, Endpoint, quantumWorkspaceApiVersion ?? "2025-12-15-preview");
             ValidateResourceId(id);
         }
 
@@ -89,7 +89,7 @@ namespace Azure.ResourceManager.Quantum
         {
             if (id.ResourceType != ResourceType)
             {
-                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, ResourceType), id);
+                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, ResourceType), nameof(id));
             }
         }
 

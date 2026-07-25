@@ -53,7 +53,7 @@ namespace Azure.ResourceManager.VirtualEnclaves
         {
             TryGetApiVersion(ResourceType, out string virtualEnclaveEndpointApiVersion);
             _enclaveEndpointsClientDiagnostics = new ClientDiagnostics("Azure.ResourceManager.VirtualEnclaves", ResourceType.Namespace, Diagnostics);
-            _enclaveEndpointsRestClient = new EnclaveEndpoints(_enclaveEndpointsClientDiagnostics, Pipeline, Endpoint, virtualEnclaveEndpointApiVersion ?? "2025-05-01-preview");
+            _enclaveEndpointsRestClient = new EnclaveEndpoints(_enclaveEndpointsClientDiagnostics, Pipeline, Diagnostics.ApplicationId, Endpoint, virtualEnclaveEndpointApiVersion ?? "2025-05-01-preview");
             ValidateResourceId(id);
         }
 
@@ -90,7 +90,7 @@ namespace Azure.ResourceManager.VirtualEnclaves
         {
             if (id.ResourceType != ResourceType)
             {
-                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, ResourceType), id);
+                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, ResourceType), nameof(id));
             }
         }
 
@@ -230,7 +230,7 @@ namespace Azure.ResourceManager.VirtualEnclaves
                 HttpMessage message = _enclaveEndpointsRestClient.CreateUpdateRequest(Guid.Parse(Id.SubscriptionId), Id.ResourceGroupName, Id.Parent.Name, Id.Name, VirtualEnclaveEndpointPatch.ToRequestContent(patch), context);
                 Response response = await Pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
                 VirtualEnclavesArmOperation<VirtualEnclaveEndpointResource> operation = new VirtualEnclavesArmOperation<VirtualEnclaveEndpointResource>(
-                    new VirtualEnclaveEndpointOperationSource(Client),
+                    new VirtualEnclaveEndpointResourceOperationSource(Client),
                     _enclaveEndpointsClientDiagnostics,
                     Pipeline,
                     message.Request,
@@ -289,7 +289,7 @@ namespace Azure.ResourceManager.VirtualEnclaves
                 HttpMessage message = _enclaveEndpointsRestClient.CreateUpdateRequest(Guid.Parse(Id.SubscriptionId), Id.ResourceGroupName, Id.Parent.Name, Id.Name, VirtualEnclaveEndpointPatch.ToRequestContent(patch), context);
                 Response response = Pipeline.ProcessMessage(message, context);
                 VirtualEnclavesArmOperation<VirtualEnclaveEndpointResource> operation = new VirtualEnclavesArmOperation<VirtualEnclaveEndpointResource>(
-                    new VirtualEnclaveEndpointOperationSource(Client),
+                    new VirtualEnclaveEndpointResourceOperationSource(Client),
                     _enclaveEndpointsClientDiagnostics,
                     Pipeline,
                     message.Request,

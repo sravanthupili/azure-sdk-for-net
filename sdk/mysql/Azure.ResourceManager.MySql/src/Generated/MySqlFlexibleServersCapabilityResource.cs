@@ -51,7 +51,7 @@ namespace Azure.ResourceManager.MySql.FlexibleServers
         {
             TryGetApiVersion(ResourceType, out string mySqlFlexibleServersCapabilityApiVersion);
             _locationBasedCapabilitySetClientDiagnostics = new ClientDiagnostics("Azure.ResourceManager.MySql.FlexibleServers", ResourceType.Namespace, Diagnostics);
-            _locationBasedCapabilitySetRestClient = new LocationBasedCapabilitySet(_locationBasedCapabilitySetClientDiagnostics, Pipeline, Endpoint, mySqlFlexibleServersCapabilityApiVersion ?? "2024-12-30");
+            _locationBasedCapabilitySetRestClient = new LocationBasedCapabilitySet(_locationBasedCapabilitySetClientDiagnostics, Pipeline, Diagnostics.ApplicationId, Endpoint, mySqlFlexibleServersCapabilityApiVersion ?? "2024-12-30");
             ValidateResourceId(id);
         }
 
@@ -87,7 +87,7 @@ namespace Azure.ResourceManager.MySql.FlexibleServers
         {
             if (id.ResourceType != ResourceType)
             {
-                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, ResourceType), id);
+                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, ResourceType), nameof(id));
             }
         }
 

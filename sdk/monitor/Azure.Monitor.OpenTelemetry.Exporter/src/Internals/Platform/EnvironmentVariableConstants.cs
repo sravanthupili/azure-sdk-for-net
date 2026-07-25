@@ -17,6 +17,9 @@ namespace Azure.Monitor.OpenTelemetry.Exporter.Internals.Platform
             APPLICATIONINSIGHTS_STATSBEAT_DISABLED,
             APPLICATIONINSIGHTS_SDKSTATS_DISABLED,
             APPLICATIONINSIGHTS_SDKSTATS_EXPORT_INTERVAL,
+            APPLICATIONINSIGHTS_CLOUD_ROLE_NAME,
+            APPLICATIONINSIGHTS_CLOUD_ROLE_INSTANCE,
+            APPLICATIONINSIGHTS_COMPONENT_VERSION,
             FUNCTIONS_WORKER_RUNTIME,
             LOCALAPPDATA,
             TEMP,
@@ -49,11 +52,11 @@ namespace Azure.Monitor.OpenTelemetry.Exporter.Internals.Platform
         public const string APPLICATIONINSIGHTS_STATSBEAT_DISABLED = "APPLICATIONINSIGHTS_STATSBEAT_DISABLED";
 
         /// <summary>
-        /// Available for users to enable customer SDK stats.
+        /// Available for users to opt out of customer SDK stats.
         /// </summary>
         /// <remarks>
-        /// Customer SDK stats provide insights into SDK success/failure/retry counts.
-        /// Set to "false" to enable this feature.
+        /// Customer SDK stats provide insights into SDK success/failure/retry counts and are on by default.
+        /// Set to "true" to disable this feature.
         /// </remarks>
         public const string APPLICATIONINSIGHTS_SDKSTATS_DISABLED = "APPLICATIONINSIGHTS_SDKSTATS_DISABLED";
 
@@ -140,5 +143,23 @@ namespace Azure.Monitor.OpenTelemetry.Exporter.Internals.Platform
         /// For microsoft.fixed_percentage sampler: sampling ratio (double from 0 to 1).
         /// </summary>
         public const string OTEL_TRACES_SAMPLER_ARG = "OTEL_TRACES_SAMPLER_ARG";
+
+        /// <summary>
+        /// Set by the Application Insights shim (TelemetryClient.Context.Cloud.RoleName) to override
+        /// the cloud role name after the OTel Resource has been built and is immutable.
+        /// </summary>
+        public const string APPLICATIONINSIGHTS_CLOUD_ROLE_NAME = "APPLICATIONINSIGHTS_CLOUD_ROLE_NAME";
+
+        /// <summary>
+        /// Set by the Application Insights shim (TelemetryClient.Context.Cloud.RoleInstance) to override
+        /// the cloud role instance after the OTel Resource has been built and is immutable.
+        /// </summary>
+        public const string APPLICATIONINSIGHTS_CLOUD_ROLE_INSTANCE = "APPLICATIONINSIGHTS_CLOUD_ROLE_INSTANCE";
+
+        /// <summary>
+        /// Set by the Application Insights shim (TelemetryClient.Context.Component.Version) to override
+        /// the application version after the OTel Resource has been built and is immutable.
+        /// </summary>
+        public const string APPLICATIONINSIGHTS_COMPONENT_VERSION = "APPLICATIONINSIGHTS_COMPONENT_VERSION";
     }
 }

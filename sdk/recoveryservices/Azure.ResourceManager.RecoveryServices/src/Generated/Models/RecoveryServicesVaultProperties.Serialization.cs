@@ -33,6 +33,29 @@ namespace Azure.ResourceManager.RecoveryServices.Models
             }
         }
 
+        /// <param name="options"> The client options for reading and writing models. </param>
+        protected virtual BinaryData PersistableModelWriteCore(ModelReaderWriterOptions options)
+        {
+            string format = options.Format == "W" ? ((IPersistableModel<RecoveryServicesVaultProperties>)this).GetFormatFromOptions(options) : options.Format;
+            switch (format)
+            {
+                case "J":
+                    return ModelReaderWriter.Write(this, options, AzureResourceManagerRecoveryServicesContext.Default);
+                default:
+                    throw new FormatException($"The model {nameof(RecoveryServicesVaultProperties)} does not support writing '{options.Format}' format.");
+            }
+        }
+
+        /// <param name="options"> The client options for reading and writing models. </param>
+        BinaryData IPersistableModel<RecoveryServicesVaultProperties>.Write(ModelReaderWriterOptions options) => PersistableModelWriteCore(options);
+
+        /// <param name="data"> The data to parse. </param>
+        /// <param name="options"> The client options for reading and writing models. </param>
+        RecoveryServicesVaultProperties IPersistableModel<RecoveryServicesVaultProperties>.Create(BinaryData data, ModelReaderWriterOptions options) => PersistableModelCreateCore(data, options);
+
+        /// <param name="options"> The client options for reading and writing models. </param>
+        string IPersistableModel<RecoveryServicesVaultProperties>.GetFormatFromOptions(ModelReaderWriterOptions options) => "J";
+
         /// <param name="writer"> The JSON writer. </param>
         /// <param name="options"> The client options for reading and writing models. </param>
         void IJsonModel<RecoveryServicesVaultProperties>.Write(Utf8JsonWriter writer, ModelReaderWriterOptions options)
@@ -110,6 +133,11 @@ namespace Azure.ResourceManager.RecoveryServices.Models
             {
                 writer.WritePropertyName("monitoringSettings"u8);
                 writer.WriteObjectValue(MonitoringSettings, options);
+            }
+            if (Optional.IsDefined(CostManagementSettings))
+            {
+                writer.WritePropertyName("costManagementSettings"u8);
+                writer.WriteObjectValue(CostManagementSettings, options);
             }
             if (Optional.IsDefined(RestoreSettings))
             {
@@ -204,6 +232,7 @@ namespace Azure.ResourceManager.RecoveryServices.Models
             BackupStorageVersion? backupStorageVersion = default;
             VaultPublicNetworkAccess? publicNetworkAccess = default;
             VaultMonitoringSettings monitoringSettings = default;
+            CostManagementSettings costManagementSettings = default;
             RestoreSettings restoreSettings = default;
             VaultPropertiesRedundancySettings redundancySettings = default;
             RecoveryServicesSecuritySettings securitySettings = default;
@@ -313,6 +342,15 @@ namespace Azure.ResourceManager.RecoveryServices.Models
                     monitoringSettings = VaultMonitoringSettings.DeserializeVaultMonitoringSettings(prop.Value, options);
                     continue;
                 }
+                if (prop.NameEquals("costManagementSettings"u8))
+                {
+                    if (prop.Value.ValueKind == JsonValueKind.Null)
+                    {
+                        continue;
+                    }
+                    costManagementSettings = CostManagementSettings.DeserializeCostManagementSettings(prop.Value, options);
+                    continue;
+                }
                 if (prop.NameEquals("restoreSettings"u8))
                 {
                     if (prop.Value.ValueKind == JsonValueKind.Null)
@@ -396,6 +434,7 @@ namespace Azure.ResourceManager.RecoveryServices.Models
                 backupStorageVersion,
                 publicNetworkAccess,
                 monitoringSettings,
+                costManagementSettings,
                 restoreSettings,
                 redundancySettings,
                 securitySettings,
@@ -404,28 +443,5 @@ namespace Azure.ResourceManager.RecoveryServices.Models
                 resourceGuardOperationRequests ?? new ChangeTrackingList<string>(),
                 additionalBinaryDataProperties);
         }
-
-        /// <param name="options"> The client options for reading and writing models. </param>
-        BinaryData IPersistableModel<RecoveryServicesVaultProperties>.Write(ModelReaderWriterOptions options) => PersistableModelWriteCore(options);
-
-        /// <param name="options"> The client options for reading and writing models. </param>
-        protected virtual BinaryData PersistableModelWriteCore(ModelReaderWriterOptions options)
-        {
-            string format = options.Format == "W" ? ((IPersistableModel<RecoveryServicesVaultProperties>)this).GetFormatFromOptions(options) : options.Format;
-            switch (format)
-            {
-                case "J":
-                    return ModelReaderWriter.Write(this, options, AzureResourceManagerRecoveryServicesContext.Default);
-                default:
-                    throw new FormatException($"The model {nameof(RecoveryServicesVaultProperties)} does not support writing '{options.Format}' format.");
-            }
-        }
-
-        /// <param name="data"> The data to parse. </param>
-        /// <param name="options"> The client options for reading and writing models. </param>
-        RecoveryServicesVaultProperties IPersistableModel<RecoveryServicesVaultProperties>.Create(BinaryData data, ModelReaderWriterOptions options) => PersistableModelCreateCore(data, options);
-
-        /// <param name="options"> The client options for reading and writing models. </param>
-        string IPersistableModel<RecoveryServicesVaultProperties>.GetFormatFromOptions(ModelReaderWriterOptions options) => "J";
     }
 }

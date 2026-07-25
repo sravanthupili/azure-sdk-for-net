@@ -41,7 +41,7 @@ namespace Azure.ResourceManager.Advisor
         {
             TryGetApiVersion(AdvisorScoreEntityResource.ResourceType, out string advisorScoreEntityApiVersion);
             _advisorScoreEntitiesClientDiagnostics = new ClientDiagnostics("Azure.ResourceManager.Advisor", AdvisorScoreEntityResource.ResourceType.Namespace, Diagnostics);
-            _advisorScoreEntitiesRestClient = new AdvisorScoreEntities(_advisorScoreEntitiesClientDiagnostics, Pipeline, Endpoint, advisorScoreEntityApiVersion ?? "2025-05-01-preview");
+            _advisorScoreEntitiesRestClient = new AdvisorScoreEntities(_advisorScoreEntitiesClientDiagnostics, Pipeline, Diagnostics.ApplicationId, Endpoint, advisorScoreEntityApiVersion ?? "2025-05-01-preview");
             ValidateResourceId(id);
         }
 
@@ -51,7 +51,7 @@ namespace Azure.ResourceManager.Advisor
         {
             if (id.ResourceType != SubscriptionResource.ResourceType)
             {
-                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, SubscriptionResource.ResourceType), id);
+                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, SubscriptionResource.ResourceType), nameof(id));
             }
         }
 
@@ -178,7 +178,7 @@ namespace Azure.ResourceManager.Advisor
             {
                 CancellationToken = cancellationToken
             };
-            return new AsyncPageableWrapper<AdvisorScoreEntityData, AdvisorScoreEntityResource>(new AdvisorScoreEntitiesGetAllAsyncCollectionResultOfT(_advisorScoreEntitiesRestClient, Guid.Parse(Id.SubscriptionId), context), data => new AdvisorScoreEntityResource(Client, data));
+            return new AsyncPageableWrapper<AdvisorScoreEntityData, AdvisorScoreEntityResource>(new AdvisorScoreEntitiesGetAllAsyncCollectionResultOfT(_advisorScoreEntitiesRestClient, Guid.Parse(Id.SubscriptionId), context, "AdvisorScoreEntityCollection.GetAll"), data => new AdvisorScoreEntityResource(Client, data));
         }
 
         /// <summary>
@@ -206,7 +206,7 @@ namespace Azure.ResourceManager.Advisor
             {
                 CancellationToken = cancellationToken
             };
-            return new PageableWrapper<AdvisorScoreEntityData, AdvisorScoreEntityResource>(new AdvisorScoreEntitiesGetAllCollectionResultOfT(_advisorScoreEntitiesRestClient, Guid.Parse(Id.SubscriptionId), context), data => new AdvisorScoreEntityResource(Client, data));
+            return new PageableWrapper<AdvisorScoreEntityData, AdvisorScoreEntityResource>(new AdvisorScoreEntitiesGetAllCollectionResultOfT(_advisorScoreEntitiesRestClient, Guid.Parse(Id.SubscriptionId), context, "AdvisorScoreEntityCollection.GetAll"), data => new AdvisorScoreEntityResource(Client, data));
         }
 
         /// <summary>

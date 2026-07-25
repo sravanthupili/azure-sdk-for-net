@@ -7,8 +7,9 @@ using System.ClientModel;
 using System.ClientModel.Primitives;
 using System.Threading;
 using System.Threading.Tasks;
+using Azure.AI.Projects;
 
-namespace Azure.AI.Projects
+namespace Azure.AI.Projects.Evaluation
 {
     /// <summary> The EvaluationRules sub-client. </summary>
     public partial class EvaluationRules
@@ -22,11 +23,13 @@ namespace Azure.AI.Projects
         }
 
         /// <summary> Initializes a new instance of EvaluationRules. </summary>
+        /// <param name="clientDiagnostics"> The ClientDiagnostics is used to provide tracing support for the client library. </param>
         /// <param name="pipeline"> The HTTP pipeline for sending and receiving REST requests and responses. </param>
         /// <param name="endpoint"> Service endpoint. </param>
         /// <param name="apiVersion"></param>
-        internal EvaluationRules(ClientPipeline pipeline, Uri endpoint, string apiVersion)
+        internal EvaluationRules(ClientDiagnostics clientDiagnostics, ClientPipeline pipeline, Uri endpoint, string apiVersion)
         {
+            ClientDiagnostics = clientDiagnostics;
             _endpoint = endpoint;
             Pipeline = pipeline;
             _apiVersion = apiVersion;
@@ -35,8 +38,11 @@ namespace Azure.AI.Projects
         /// <summary> The HTTP pipeline for sending and receiving REST requests and responses. </summary>
         public ClientPipeline Pipeline { get; }
 
+        /// <summary> The ClientDiagnostics is used to provide tracing support for the client library. </summary>
+        internal ClientDiagnostics ClientDiagnostics { get; }
+
         /// <summary>
-        /// [Protocol Method] Get an evaluation rule.
+        /// [Protocol Method] Retrieves the specified evaluation rule and its configuration.
         /// <list type="bullet">
         /// <item>
         /// <description> This <see href="https://aka.ms/azsdk/net/protocol-methods">protocol method</see> allows explicit creation of the request and processing of the response for advanced scenarios. </description>
@@ -51,14 +57,24 @@ namespace Azure.AI.Projects
         /// <returns> The response returned from the service. </returns>
         public virtual ClientResult Get(string id, RequestOptions options)
         {
-            Argument.AssertNotNullOrEmpty(id, nameof(id));
+            using DiagnosticScope scope = ClientDiagnostics.CreateScope("EvaluationRules.Get");
+            scope.Start();
+            try
+            {
+                Argument.AssertNotNullOrEmpty(id, nameof(id));
 
-            using PipelineMessage message = CreateGetRequest(id, options);
-            return ClientResult.FromResponse(Pipeline.ProcessMessage(message, options));
+                using PipelineMessage message = CreateGetRequest(id, options);
+                return ClientResult.FromResponse(Pipeline.ProcessMessage(message, options));
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
         }
 
         /// <summary>
-        /// [Protocol Method] Get an evaluation rule.
+        /// [Protocol Method] Retrieves the specified evaluation rule and its configuration.
         /// <list type="bullet">
         /// <item>
         /// <description> This <see href="https://aka.ms/azsdk/net/protocol-methods">protocol method</see> allows explicit creation of the request and processing of the response for advanced scenarios. </description>
@@ -73,13 +89,23 @@ namespace Azure.AI.Projects
         /// <returns> The response returned from the service. </returns>
         public virtual async Task<ClientResult> GetAsync(string id, RequestOptions options)
         {
-            Argument.AssertNotNullOrEmpty(id, nameof(id));
+            using DiagnosticScope scope = ClientDiagnostics.CreateScope("EvaluationRules.Get");
+            scope.Start();
+            try
+            {
+                Argument.AssertNotNullOrEmpty(id, nameof(id));
 
-            using PipelineMessage message = CreateGetRequest(id, options);
-            return ClientResult.FromResponse(await Pipeline.ProcessMessageAsync(message, options).ConfigureAwait(false));
+                using PipelineMessage message = CreateGetRequest(id, options);
+                return ClientResult.FromResponse(await Pipeline.ProcessMessageAsync(message, options).ConfigureAwait(false));
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
         }
 
-        /// <summary> Get an evaluation rule. </summary>
+        /// <summary> Retrieves the specified evaluation rule and its configuration. </summary>
         /// <param name="id"> Unique identifier for the evaluation rule. </param>
         /// <param name="cancellationToken"> The cancellation token that can be used to cancel the operation. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="id"/> is null. </exception>
@@ -93,7 +119,7 @@ namespace Azure.AI.Projects
             return ClientResult.FromValue((EvaluationRule)result, result.GetRawResponse());
         }
 
-        /// <summary> Get an evaluation rule. </summary>
+        /// <summary> Retrieves the specified evaluation rule and its configuration. </summary>
         /// <param name="id"> Unique identifier for the evaluation rule. </param>
         /// <param name="cancellationToken"> The cancellation token that can be used to cancel the operation. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="id"/> is null. </exception>
@@ -108,7 +134,7 @@ namespace Azure.AI.Projects
         }
 
         /// <summary>
-        /// [Protocol Method] Delete an evaluation rule.
+        /// [Protocol Method] Removes the specified evaluation rule from the project.
         /// <list type="bullet">
         /// <item>
         /// <description> This <see href="https://aka.ms/azsdk/net/protocol-methods">protocol method</see> allows explicit creation of the request and processing of the response for advanced scenarios. </description>
@@ -123,14 +149,24 @@ namespace Azure.AI.Projects
         /// <returns> The response returned from the service. </returns>
         public virtual ClientResult Delete(string id, RequestOptions options)
         {
-            Argument.AssertNotNullOrEmpty(id, nameof(id));
+            using DiagnosticScope scope = ClientDiagnostics.CreateScope("EvaluationRules.Delete");
+            scope.Start();
+            try
+            {
+                Argument.AssertNotNullOrEmpty(id, nameof(id));
 
-            using PipelineMessage message = CreateDeleteRequest(id, options);
-            return ClientResult.FromResponse(Pipeline.ProcessMessage(message, options));
+                using PipelineMessage message = CreateDeleteRequest(id, options);
+                return ClientResult.FromResponse(Pipeline.ProcessMessage(message, options));
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
         }
 
         /// <summary>
-        /// [Protocol Method] Delete an evaluation rule.
+        /// [Protocol Method] Removes the specified evaluation rule from the project.
         /// <list type="bullet">
         /// <item>
         /// <description> This <see href="https://aka.ms/azsdk/net/protocol-methods">protocol method</see> allows explicit creation of the request and processing of the response for advanced scenarios. </description>
@@ -145,13 +181,23 @@ namespace Azure.AI.Projects
         /// <returns> The response returned from the service. </returns>
         public virtual async Task<ClientResult> DeleteAsync(string id, RequestOptions options)
         {
-            Argument.AssertNotNullOrEmpty(id, nameof(id));
+            using DiagnosticScope scope = ClientDiagnostics.CreateScope("EvaluationRules.Delete");
+            scope.Start();
+            try
+            {
+                Argument.AssertNotNullOrEmpty(id, nameof(id));
 
-            using PipelineMessage message = CreateDeleteRequest(id, options);
-            return ClientResult.FromResponse(await Pipeline.ProcessMessageAsync(message, options).ConfigureAwait(false));
+                using PipelineMessage message = CreateDeleteRequest(id, options);
+                return ClientResult.FromResponse(await Pipeline.ProcessMessageAsync(message, options).ConfigureAwait(false));
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
         }
 
-        /// <summary> Delete an evaluation rule. </summary>
+        /// <summary> Removes the specified evaluation rule from the project. </summary>
         /// <param name="id"> Unique identifier for the evaluation rule. </param>
         /// <param name="cancellationToken"> The cancellation token that can be used to cancel the operation. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="id"/> is null. </exception>
@@ -164,7 +210,7 @@ namespace Azure.AI.Projects
             return Delete(id, cancellationToken.ToRequestOptions());
         }
 
-        /// <summary> Delete an evaluation rule. </summary>
+        /// <summary> Removes the specified evaluation rule from the project. </summary>
         /// <param name="id"> Unique identifier for the evaluation rule. </param>
         /// <param name="cancellationToken"> The cancellation token that can be used to cancel the operation. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="id"/> is null. </exception>
@@ -178,7 +224,7 @@ namespace Azure.AI.Projects
         }
 
         /// <summary>
-        /// [Protocol Method] Create or update an evaluation rule.
+        /// [Protocol Method] Creates a new evaluation rule, or replaces the existing rule when the identifier matches.
         /// <list type="bullet">
         /// <item>
         /// <description> This <see href="https://aka.ms/azsdk/net/protocol-methods">protocol method</see> allows explicit creation of the request and processing of the response for advanced scenarios. </description>
@@ -187,22 +233,33 @@ namespace Azure.AI.Projects
         /// </summary>
         /// <param name="id"> Unique identifier for the evaluation rule. </param>
         /// <param name="content"> The content to send as the body of the request. </param>
+        /// <param name="foundryFeatures"> A feature flag opt-in required when using preview operations or modifying persisted preview resources. </param>
         /// <param name="options"> The request options, which can override default behaviors of the client pipeline on a per-call basis. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="id"/> or <paramref name="content"/> is null. </exception>
         /// <exception cref="ArgumentException"> <paramref name="id"/> is an empty string, and was expected to be non-empty. </exception>
         /// <exception cref="ClientResultException"> Service returned a non-success status code. </exception>
         /// <returns> The response returned from the service. </returns>
-        public virtual ClientResult CreateOrUpdate(string id, BinaryContent content, RequestOptions options = null)
+        public virtual ClientResult CreateOrUpdate(string id, BinaryContent content, string foundryFeatures = default, RequestOptions options = null)
         {
-            Argument.AssertNotNullOrEmpty(id, nameof(id));
-            Argument.AssertNotNull(content, nameof(content));
+            using DiagnosticScope scope = ClientDiagnostics.CreateScope("EvaluationRules.CreateOrUpdate");
+            scope.Start();
+            try
+            {
+                Argument.AssertNotNullOrEmpty(id, nameof(id));
+                Argument.AssertNotNull(content, nameof(content));
 
-            using PipelineMessage message = CreateCreateOrUpdateRequest(id, content, options);
-            return ClientResult.FromResponse(Pipeline.ProcessMessage(message, options));
+                using PipelineMessage message = CreateCreateOrUpdateRequest(id, content, foundryFeatures, options);
+                return ClientResult.FromResponse(Pipeline.ProcessMessage(message, options));
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
         }
 
         /// <summary>
-        /// [Protocol Method] Create or update an evaluation rule.
+        /// [Protocol Method] Creates a new evaluation rule, or replaces the existing rule when the identifier matches.
         /// <list type="bullet">
         /// <item>
         /// <description> This <see href="https://aka.ms/azsdk/net/protocol-methods">protocol method</see> allows explicit creation of the request and processing of the response for advanced scenarios. </description>
@@ -211,54 +268,67 @@ namespace Azure.AI.Projects
         /// </summary>
         /// <param name="id"> Unique identifier for the evaluation rule. </param>
         /// <param name="content"> The content to send as the body of the request. </param>
+        /// <param name="foundryFeatures"> A feature flag opt-in required when using preview operations or modifying persisted preview resources. </param>
         /// <param name="options"> The request options, which can override default behaviors of the client pipeline on a per-call basis. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="id"/> or <paramref name="content"/> is null. </exception>
         /// <exception cref="ArgumentException"> <paramref name="id"/> is an empty string, and was expected to be non-empty. </exception>
         /// <exception cref="ClientResultException"> Service returned a non-success status code. </exception>
         /// <returns> The response returned from the service. </returns>
-        public virtual async Task<ClientResult> CreateOrUpdateAsync(string id, BinaryContent content, RequestOptions options = null)
+        public virtual async Task<ClientResult> CreateOrUpdateAsync(string id, BinaryContent content, string foundryFeatures = default, RequestOptions options = null)
         {
-            Argument.AssertNotNullOrEmpty(id, nameof(id));
-            Argument.AssertNotNull(content, nameof(content));
+            using DiagnosticScope scope = ClientDiagnostics.CreateScope("EvaluationRules.CreateOrUpdate");
+            scope.Start();
+            try
+            {
+                Argument.AssertNotNullOrEmpty(id, nameof(id));
+                Argument.AssertNotNull(content, nameof(content));
 
-            using PipelineMessage message = CreateCreateOrUpdateRequest(id, content, options);
-            return ClientResult.FromResponse(await Pipeline.ProcessMessageAsync(message, options).ConfigureAwait(false));
+                using PipelineMessage message = CreateCreateOrUpdateRequest(id, content, foundryFeatures, options);
+                return ClientResult.FromResponse(await Pipeline.ProcessMessageAsync(message, options).ConfigureAwait(false));
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
         }
 
-        /// <summary> Create or update an evaluation rule. </summary>
+        /// <summary> Creates a new evaluation rule, or replaces the existing rule when the identifier matches. </summary>
         /// <param name="id"> Unique identifier for the evaluation rule. </param>
         /// <param name="evaluationRule"> Evaluation rule resource. </param>
+        /// <param name="foundryFeatures"> A feature flag opt-in required when using preview operations or modifying persisted preview resources. </param>
         /// <param name="cancellationToken"> The cancellation token that can be used to cancel the operation. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="id"/> or <paramref name="evaluationRule"/> is null. </exception>
         /// <exception cref="ArgumentException"> <paramref name="id"/> is an empty string, and was expected to be non-empty. </exception>
         /// <exception cref="ClientResultException"> Service returned a non-success status code. </exception>
-        public virtual ClientResult<EvaluationRule> CreateOrUpdate(string id, EvaluationRule evaluationRule, CancellationToken cancellationToken = default)
+        public virtual ClientResult<EvaluationRule> CreateOrUpdate(string id, EvaluationRule evaluationRule, FoundryFeaturesOptInKeys? foundryFeatures = default, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(id, nameof(id));
             Argument.AssertNotNull(evaluationRule, nameof(evaluationRule));
 
-            ClientResult result = CreateOrUpdate(id, evaluationRule, cancellationToken.ToRequestOptions());
+            ClientResult result = CreateOrUpdate(id, evaluationRule, foundryFeatures?.ToSerialString(), cancellationToken.ToRequestOptions());
             return ClientResult.FromValue((EvaluationRule)result, result.GetRawResponse());
         }
 
-        /// <summary> Create or update an evaluation rule. </summary>
+        /// <summary> Creates a new evaluation rule, or replaces the existing rule when the identifier matches. </summary>
         /// <param name="id"> Unique identifier for the evaluation rule. </param>
         /// <param name="evaluationRule"> Evaluation rule resource. </param>
+        /// <param name="foundryFeatures"> A feature flag opt-in required when using preview operations or modifying persisted preview resources. </param>
         /// <param name="cancellationToken"> The cancellation token that can be used to cancel the operation. </param>
         /// <exception cref="ArgumentNullException"> <paramref name="id"/> or <paramref name="evaluationRule"/> is null. </exception>
         /// <exception cref="ArgumentException"> <paramref name="id"/> is an empty string, and was expected to be non-empty. </exception>
         /// <exception cref="ClientResultException"> Service returned a non-success status code. </exception>
-        public virtual async Task<ClientResult<EvaluationRule>> CreateOrUpdateAsync(string id, EvaluationRule evaluationRule, CancellationToken cancellationToken = default)
+        public virtual async Task<ClientResult<EvaluationRule>> CreateOrUpdateAsync(string id, EvaluationRule evaluationRule, FoundryFeaturesOptInKeys? foundryFeatures = default, CancellationToken cancellationToken = default)
         {
             Argument.AssertNotNullOrEmpty(id, nameof(id));
             Argument.AssertNotNull(evaluationRule, nameof(evaluationRule));
 
-            ClientResult result = await CreateOrUpdateAsync(id, evaluationRule, cancellationToken.ToRequestOptions()).ConfigureAwait(false);
+            ClientResult result = await CreateOrUpdateAsync(id, evaluationRule, foundryFeatures?.ToSerialString(), cancellationToken.ToRequestOptions()).ConfigureAwait(false);
             return ClientResult.FromValue((EvaluationRule)result, result.GetRawResponse());
         }
 
         /// <summary>
-        /// [Protocol Method] List all evaluation rules.
+        /// [Protocol Method] Returns the evaluation rules configured for the project, optionally filtered by action type, agent name, or enabled state.
         /// <list type="bullet">
         /// <item>
         /// <description> This <see href="https://aka.ms/azsdk/net/protocol-methods">protocol method</see> allows explicit creation of the request and processing of the response for advanced scenarios. </description>
@@ -273,11 +343,21 @@ namespace Azure.AI.Projects
         /// <returns> The response returned from the service. </returns>
         public virtual CollectionResult GetAll(string actionType, string agentName, bool? enabled, RequestOptions options)
         {
-            return new EvaluationRulesGetAllCollectionResult(this, actionType, agentName, enabled, options);
+            using DiagnosticScope scope = ClientDiagnostics.CreateScope("EvaluationRules.GetAll");
+            scope.Start();
+            try
+            {
+                return new EvaluationRulesGetAllCollectionResult(this, actionType, agentName, enabled, options);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
         }
 
         /// <summary>
-        /// [Protocol Method] List all evaluation rules.
+        /// [Protocol Method] Returns the evaluation rules configured for the project, optionally filtered by action type, agent name, or enabled state.
         /// <list type="bullet">
         /// <item>
         /// <description> This <see href="https://aka.ms/azsdk/net/protocol-methods">protocol method</see> allows explicit creation of the request and processing of the response for advanced scenarios. </description>
@@ -292,10 +372,20 @@ namespace Azure.AI.Projects
         /// <returns> The response returned from the service. </returns>
         public virtual AsyncCollectionResult GetAllAsync(string actionType, string agentName, bool? enabled, RequestOptions options)
         {
-            return new EvaluationRulesGetAllAsyncCollectionResult(this, actionType, agentName, enabled, options);
+            using DiagnosticScope scope = ClientDiagnostics.CreateScope("EvaluationRules.GetAll");
+            scope.Start();
+            try
+            {
+                return new EvaluationRulesGetAllAsyncCollectionResult(this, actionType, agentName, enabled, options);
+            }
+            catch (Exception e)
+            {
+                scope.Failed(e);
+                throw;
+            }
         }
 
-        /// <summary> List all evaluation rules. </summary>
+        /// <summary> Returns the evaluation rules configured for the project, optionally filtered by action type, agent name, or enabled state. </summary>
         /// <param name="actionType"> Filter by the type of evaluation rule. </param>
         /// <param name="agentName"> Filter by the agent name. </param>
         /// <param name="enabled"> Filter by the enabled status. </param>
@@ -306,7 +396,7 @@ namespace Azure.AI.Projects
             return new EvaluationRulesGetAllCollectionResultOfT(this, actionType?.ToString(), agentName, enabled, cancellationToken.ToRequestOptions());
         }
 
-        /// <summary> List all evaluation rules. </summary>
+        /// <summary> Returns the evaluation rules configured for the project, optionally filtered by action type, agent name, or enabled state. </summary>
         /// <param name="actionType"> Filter by the type of evaluation rule. </param>
         /// <param name="agentName"> Filter by the agent name. </param>
         /// <param name="enabled"> Filter by the enabled status. </param>

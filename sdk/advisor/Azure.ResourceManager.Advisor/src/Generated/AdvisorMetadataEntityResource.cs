@@ -51,7 +51,7 @@ namespace Azure.ResourceManager.Advisor
         {
             TryGetApiVersion(ResourceType, out string advisorMetadataEntityApiVersion);
             _metadataEntitiesClientDiagnostics = new ClientDiagnostics("Azure.ResourceManager.Advisor", ResourceType.Namespace, Diagnostics);
-            _metadataEntitiesRestClient = new MetadataEntities(_metadataEntitiesClientDiagnostics, Pipeline, Endpoint, advisorMetadataEntityApiVersion ?? "2025-05-01-preview");
+            _metadataEntitiesRestClient = new MetadataEntities(_metadataEntitiesClientDiagnostics, Pipeline, Diagnostics.ApplicationId, Endpoint, advisorMetadataEntityApiVersion ?? "2025-05-01-preview");
             ValidateResourceId(id);
         }
 
@@ -85,7 +85,7 @@ namespace Azure.ResourceManager.Advisor
         {
             if (id.ResourceType != ResourceType)
             {
-                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, ResourceType), id);
+                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, ResourceType), nameof(id));
             }
         }
 

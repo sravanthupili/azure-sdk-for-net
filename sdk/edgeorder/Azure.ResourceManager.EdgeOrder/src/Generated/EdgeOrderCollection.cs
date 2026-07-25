@@ -39,7 +39,7 @@ namespace Azure.ResourceManager.EdgeOrder
         {
             TryGetApiVersion(EdgeOrderResource.ResourceType, out string edgeOrderApiVersion);
             _orderResourcesClientDiagnostics = new ClientDiagnostics("Azure.ResourceManager.EdgeOrder", EdgeOrderResource.ResourceType.Namespace, Diagnostics);
-            _orderResourcesRestClient = new OrderResources(_orderResourcesClientDiagnostics, Pipeline, Endpoint, edgeOrderApiVersion ?? "2024-02-01");
+            _orderResourcesRestClient = new OrderResources(_orderResourcesClientDiagnostics, Pipeline, Diagnostics.ApplicationId, Endpoint, edgeOrderApiVersion ?? "2024-02-01");
             ValidateResourceId(id);
         }
 
@@ -49,7 +49,7 @@ namespace Azure.ResourceManager.EdgeOrder
         {
             if (id.ResourceType != ResourceGroupResource.ResourceType)
             {
-                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, ResourceGroupResource.ResourceType), id);
+                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, ResourceGroupResource.ResourceType), nameof(id));
             }
         }
 

@@ -41,7 +41,7 @@ namespace Azure.ResourceManager.VirtualEnclaves
         {
             TryGetApiVersion(VirtualEnclaveConnectionResource.ResourceType, out string virtualEnclaveConnectionApiVersion);
             _enclaveConnectionClientDiagnostics = new ClientDiagnostics("Azure.ResourceManager.VirtualEnclaves", VirtualEnclaveConnectionResource.ResourceType.Namespace, Diagnostics);
-            _enclaveConnectionRestClient = new EnclaveConnection(_enclaveConnectionClientDiagnostics, Pipeline, Endpoint, virtualEnclaveConnectionApiVersion ?? "2025-05-01-preview");
+            _enclaveConnectionRestClient = new EnclaveConnection(_enclaveConnectionClientDiagnostics, Pipeline, Diagnostics.ApplicationId, Endpoint, virtualEnclaveConnectionApiVersion ?? "2025-05-01-preview");
             ValidateResourceId(id);
         }
 
@@ -51,7 +51,7 @@ namespace Azure.ResourceManager.VirtualEnclaves
         {
             if (id.ResourceType != ResourceGroupResource.ResourceType)
             {
-                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, ResourceGroupResource.ResourceType), id);
+                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, ResourceGroupResource.ResourceType), nameof(id));
             }
         }
 
@@ -94,7 +94,7 @@ namespace Azure.ResourceManager.VirtualEnclaves
                 HttpMessage message = _enclaveConnectionRestClient.CreateCreateOrUpdateRequest(Guid.Parse(Id.SubscriptionId), Id.ResourceGroupName, enclaveConnectionName, VirtualEnclaveConnectionData.ToRequestContent(data), context);
                 Response response = await Pipeline.ProcessMessageAsync(message, context).ConfigureAwait(false);
                 VirtualEnclavesArmOperation<VirtualEnclaveConnectionResource> operation = new VirtualEnclavesArmOperation<VirtualEnclaveConnectionResource>(
-                    new VirtualEnclaveConnectionOperationSource(Client),
+                    new VirtualEnclaveConnectionResourceOperationSource(Client),
                     _enclaveConnectionClientDiagnostics,
                     Pipeline,
                     message.Request,
@@ -152,7 +152,7 @@ namespace Azure.ResourceManager.VirtualEnclaves
                 HttpMessage message = _enclaveConnectionRestClient.CreateCreateOrUpdateRequest(Guid.Parse(Id.SubscriptionId), Id.ResourceGroupName, enclaveConnectionName, VirtualEnclaveConnectionData.ToRequestContent(data), context);
                 Response response = Pipeline.ProcessMessage(message, context);
                 VirtualEnclavesArmOperation<VirtualEnclaveConnectionResource> operation = new VirtualEnclavesArmOperation<VirtualEnclaveConnectionResource>(
-                    new VirtualEnclaveConnectionOperationSource(Client),
+                    new VirtualEnclaveConnectionResourceOperationSource(Client),
                     _enclaveConnectionClientDiagnostics,
                     Pipeline,
                     message.Request,
@@ -294,7 +294,7 @@ namespace Azure.ResourceManager.VirtualEnclaves
             {
                 CancellationToken = cancellationToken
             };
-            return new AsyncPageableWrapper<VirtualEnclaveConnectionData, VirtualEnclaveConnectionResource>(new EnclaveConnectionGetByResourceGroupAsyncCollectionResultOfT(_enclaveConnectionRestClient, Guid.Parse(Id.SubscriptionId), Id.ResourceGroupName, context), data => new VirtualEnclaveConnectionResource(Client, data));
+            return new AsyncPageableWrapper<VirtualEnclaveConnectionData, VirtualEnclaveConnectionResource>(new EnclaveConnectionGetByResourceGroupAsyncCollectionResultOfT(_enclaveConnectionRestClient, Guid.Parse(Id.SubscriptionId), Id.ResourceGroupName, context, "VirtualEnclaveConnectionCollection.GetAll"), data => new VirtualEnclaveConnectionResource(Client, data));
         }
 
         /// <summary>
@@ -322,7 +322,7 @@ namespace Azure.ResourceManager.VirtualEnclaves
             {
                 CancellationToken = cancellationToken
             };
-            return new PageableWrapper<VirtualEnclaveConnectionData, VirtualEnclaveConnectionResource>(new EnclaveConnectionGetByResourceGroupCollectionResultOfT(_enclaveConnectionRestClient, Guid.Parse(Id.SubscriptionId), Id.ResourceGroupName, context), data => new VirtualEnclaveConnectionResource(Client, data));
+            return new PageableWrapper<VirtualEnclaveConnectionData, VirtualEnclaveConnectionResource>(new EnclaveConnectionGetByResourceGroupCollectionResultOfT(_enclaveConnectionRestClient, Guid.Parse(Id.SubscriptionId), Id.ResourceGroupName, context, "VirtualEnclaveConnectionCollection.GetAll"), data => new VirtualEnclaveConnectionResource(Client, data));
         }
 
         /// <summary>

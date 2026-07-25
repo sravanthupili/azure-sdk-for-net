@@ -41,7 +41,7 @@ namespace Azure.ResourceManager.PowerBIDedicated
         {
             TryGetApiVersion(AutoScaleVCoreResource.ResourceType, out string autoScaleVCoreApiVersion);
             _autoScaleVCoresClientDiagnostics = new ClientDiagnostics("Azure.ResourceManager.PowerBIDedicated", AutoScaleVCoreResource.ResourceType.Namespace, Diagnostics);
-            _autoScaleVCoresRestClient = new AutoScaleVCores(_autoScaleVCoresClientDiagnostics, Pipeline, Endpoint, autoScaleVCoreApiVersion ?? "2021-01-01");
+            _autoScaleVCoresRestClient = new AutoScaleVCores(_autoScaleVCoresClientDiagnostics, Pipeline, Diagnostics.ApplicationId, Endpoint, autoScaleVCoreApiVersion ?? "2021-01-01");
             ValidateResourceId(id);
         }
 
@@ -51,7 +51,7 @@ namespace Azure.ResourceManager.PowerBIDedicated
         {
             if (id.ResourceType != ResourceGroupResource.ResourceType)
             {
-                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, ResourceGroupResource.ResourceType), id);
+                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, ResourceGroupResource.ResourceType), nameof(id));
             }
         }
 
@@ -288,7 +288,7 @@ namespace Azure.ResourceManager.PowerBIDedicated
             {
                 CancellationToken = cancellationToken
             };
-            return new AsyncPageableWrapper<AutoScaleVCoreData, AutoScaleVCoreResource>(new AutoScaleVCoresGetByResourceGroupAsyncCollectionResultOfT(_autoScaleVCoresRestClient, Id.SubscriptionId, Id.ResourceGroupName, context), data => new AutoScaleVCoreResource(Client, data));
+            return new AsyncPageableWrapper<AutoScaleVCoreData, AutoScaleVCoreResource>(new AutoScaleVCoresGetByResourceGroupAsyncCollectionResultOfT(_autoScaleVCoresRestClient, Id.SubscriptionId, Id.ResourceGroupName, context, "AutoScaleVCoreCollection.GetAll"), data => new AutoScaleVCoreResource(Client, data));
         }
 
         /// <summary>
@@ -316,7 +316,7 @@ namespace Azure.ResourceManager.PowerBIDedicated
             {
                 CancellationToken = cancellationToken
             };
-            return new PageableWrapper<AutoScaleVCoreData, AutoScaleVCoreResource>(new AutoScaleVCoresGetByResourceGroupCollectionResultOfT(_autoScaleVCoresRestClient, Id.SubscriptionId, Id.ResourceGroupName, context), data => new AutoScaleVCoreResource(Client, data));
+            return new PageableWrapper<AutoScaleVCoreData, AutoScaleVCoreResource>(new AutoScaleVCoresGetByResourceGroupCollectionResultOfT(_autoScaleVCoresRestClient, Id.SubscriptionId, Id.ResourceGroupName, context, "AutoScaleVCoreCollection.GetAll"), data => new AutoScaleVCoreResource(Client, data));
         }
 
         /// <summary>

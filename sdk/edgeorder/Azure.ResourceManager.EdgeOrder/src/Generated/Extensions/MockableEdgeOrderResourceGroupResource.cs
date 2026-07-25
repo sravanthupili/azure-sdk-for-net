@@ -37,7 +37,7 @@ namespace Azure.ResourceManager.EdgeOrder.Mocking
 
         private ClientDiagnostics OrdersOperationGroupClientDiagnostics => _ordersOperationGroupClientDiagnostics ??= new ClientDiagnostics("Azure.ResourceManager.EdgeOrder.Mocking", ProviderConstants.DefaultProviderNamespace, Diagnostics);
 
-        private OrdersOperationGroup OrdersOperationGroupRestClient => _ordersOperationGroupRestClient ??= new OrdersOperationGroup(OrdersOperationGroupClientDiagnostics, Pipeline, Endpoint, "2024-02-01");
+        private OrdersOperationGroup OrdersOperationGroupRestClient => _ordersOperationGroupRestClient ??= new OrdersOperationGroup(OrdersOperationGroupClientDiagnostics, Pipeline, Diagnostics.ApplicationId, Endpoint, "2024-02-01");
 
         /// <summary> Gets a collection of EdgeOrderAddresses in the <see cref="ResourceGroupResource"/>. </summary>
         /// <returns> An object representing collection of EdgeOrderAddresses and their operations over a EdgeOrderAddressResource. </returns>
@@ -271,7 +271,8 @@ namespace Azure.ResourceManager.EdgeOrder.Mocking
                 Id.ResourceGroupName,
                 skipToken,
                 top,
-                context), data => new EdgeOrderResource(Client, data));
+                context,
+                "MockableEdgeOrderResourceGroupResource.GetEdgeOrders"), data => new EdgeOrderResource(Client, data));
         }
 
         /// <summary>
@@ -307,7 +308,8 @@ namespace Azure.ResourceManager.EdgeOrder.Mocking
                 Id.ResourceGroupName,
                 skipToken,
                 top,
-                context), data => new EdgeOrderResource(Client, data));
+                context,
+                "MockableEdgeOrderResourceGroupResource.GetEdgeOrders"), data => new EdgeOrderResource(Client, data));
         }
     }
 }

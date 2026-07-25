@@ -40,7 +40,7 @@ namespace Azure.ResourceManager.AppComplianceAutomation
         {
             TryGetApiVersion(AppComplianceReportWebhookResource.ResourceType, out string appComplianceReportWebhookApiVersion);
             _webhookClientDiagnostics = new ClientDiagnostics("Azure.ResourceManager.AppComplianceAutomation", AppComplianceReportWebhookResource.ResourceType.Namespace, Diagnostics);
-            _webhookRestClient = new Webhook(_webhookClientDiagnostics, Pipeline, Endpoint, appComplianceReportWebhookApiVersion ?? "2024-06-27");
+            _webhookRestClient = new Webhook(_webhookClientDiagnostics, Pipeline, Diagnostics.ApplicationId, Endpoint, appComplianceReportWebhookApiVersion ?? "2024-06-27");
             ValidateResourceId(id);
         }
 
@@ -50,7 +50,7 @@ namespace Azure.ResourceManager.AppComplianceAutomation
         {
             if (id.ResourceType != AppComplianceReportResource.ResourceType)
             {
-                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, AppComplianceReportResource.ResourceType), id);
+                throw new ArgumentException(string.Format("Invalid resource type {0} expected {1}", id.ResourceType, AppComplianceReportResource.ResourceType), nameof(id));
             }
         }
 
@@ -304,7 +304,8 @@ namespace Azure.ResourceManager.AppComplianceAutomation
                 @orderby,
                 offerGuid,
                 reportCreatorTenantId,
-                context), data => new AppComplianceReportWebhookResource(Client, data));
+                context,
+                "AppComplianceReportWebhookCollection.GetAll"), data => new AppComplianceReportWebhookResource(Client, data));
         }
 
         /// <summary>
@@ -349,7 +350,8 @@ namespace Azure.ResourceManager.AppComplianceAutomation
                 @orderby,
                 offerGuid,
                 reportCreatorTenantId,
-                context), data => new AppComplianceReportWebhookResource(Client, data));
+                context,
+                "AppComplianceReportWebhookCollection.GetAll"), data => new AppComplianceReportWebhookResource(Client, data));
         }
 
         /// <summary>

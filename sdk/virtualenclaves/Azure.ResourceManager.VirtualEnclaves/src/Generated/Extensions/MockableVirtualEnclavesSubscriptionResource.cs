@@ -48,31 +48,31 @@ namespace Azure.ResourceManager.VirtualEnclaves.Mocking
 
         private ClientDiagnostics WorkloadClientDiagnostics => _workloadClientDiagnostics ??= new ClientDiagnostics("Azure.ResourceManager.VirtualEnclaves.Mocking", ProviderConstants.DefaultProviderNamespace, Diagnostics);
 
-        private Workload WorkloadRestClient => _workloadRestClient ??= new Workload(WorkloadClientDiagnostics, Pipeline, Endpoint, "2025-05-01-preview");
+        private Workload WorkloadRestClient => _workloadRestClient ??= new Workload(WorkloadClientDiagnostics, Pipeline, Diagnostics.ApplicationId, Endpoint, "2025-05-01-preview");
 
         private ClientDiagnostics VirtualEnclaveClientDiagnostics => _virtualEnclaveClientDiagnostics ??= new ClientDiagnostics("Azure.ResourceManager.VirtualEnclaves.Mocking", ProviderConstants.DefaultProviderNamespace, Diagnostics);
 
-        private VirtualEnclave VirtualEnclaveRestClient => _virtualEnclaveRestClient ??= new VirtualEnclave(VirtualEnclaveClientDiagnostics, Pipeline, Endpoint, "2025-05-01-preview");
+        private VirtualEnclave VirtualEnclaveRestClient => _virtualEnclaveRestClient ??= new VirtualEnclave(VirtualEnclaveClientDiagnostics, Pipeline, Diagnostics.ApplicationId, Endpoint, "2025-05-01-preview");
 
         private ClientDiagnostics CommunityClientDiagnostics => _communityClientDiagnostics ??= new ClientDiagnostics("Azure.ResourceManager.VirtualEnclaves.Mocking", ProviderConstants.DefaultProviderNamespace, Diagnostics);
 
-        private Community CommunityRestClient => _communityRestClient ??= new Community(CommunityClientDiagnostics, Pipeline, Endpoint, "2025-05-01-preview");
+        private Community CommunityRestClient => _communityRestClient ??= new Community(CommunityClientDiagnostics, Pipeline, Diagnostics.ApplicationId, Endpoint, "2025-05-01-preview");
 
         private ClientDiagnostics TransitHubClientDiagnostics => _transitHubClientDiagnostics ??= new ClientDiagnostics("Azure.ResourceManager.VirtualEnclaves.Mocking", ProviderConstants.DefaultProviderNamespace, Diagnostics);
 
-        private TransitHub TransitHubRestClient => _transitHubRestClient ??= new TransitHub(TransitHubClientDiagnostics, Pipeline, Endpoint, "2025-05-01-preview");
+        private TransitHub TransitHubRestClient => _transitHubRestClient ??= new TransitHub(TransitHubClientDiagnostics, Pipeline, Diagnostics.ApplicationId, Endpoint, "2025-05-01-preview");
 
         private ClientDiagnostics EnclaveConnectionClientDiagnostics => _enclaveConnectionClientDiagnostics ??= new ClientDiagnostics("Azure.ResourceManager.VirtualEnclaves.Mocking", ProviderConstants.DefaultProviderNamespace, Diagnostics);
 
-        private EnclaveConnection EnclaveConnectionRestClient => _enclaveConnectionRestClient ??= new EnclaveConnection(EnclaveConnectionClientDiagnostics, Pipeline, Endpoint, "2025-05-01-preview");
+        private EnclaveConnection EnclaveConnectionRestClient => _enclaveConnectionRestClient ??= new EnclaveConnection(EnclaveConnectionClientDiagnostics, Pipeline, Diagnostics.ApplicationId, Endpoint, "2025-05-01-preview");
 
         private ClientDiagnostics EnclaveEndpointsClientDiagnostics => _enclaveEndpointsClientDiagnostics ??= new ClientDiagnostics("Azure.ResourceManager.VirtualEnclaves.Mocking", ProviderConstants.DefaultProviderNamespace, Diagnostics);
 
-        private EnclaveEndpoints EnclaveEndpointsRestClient => _enclaveEndpointsRestClient ??= new EnclaveEndpoints(EnclaveEndpointsClientDiagnostics, Pipeline, Endpoint, "2025-05-01-preview");
+        private EnclaveEndpoints EnclaveEndpointsRestClient => _enclaveEndpointsRestClient ??= new EnclaveEndpoints(EnclaveEndpointsClientDiagnostics, Pipeline, Diagnostics.ApplicationId, Endpoint, "2025-05-01-preview");
 
         private ClientDiagnostics CommunityEndpointsClientDiagnostics => _communityEndpointsClientDiagnostics ??= new ClientDiagnostics("Azure.ResourceManager.VirtualEnclaves.Mocking", ProviderConstants.DefaultProviderNamespace, Diagnostics);
 
-        private CommunityEndpoints CommunityEndpointsRestClient => _communityEndpointsRestClient ??= new CommunityEndpoints(CommunityEndpointsClientDiagnostics, Pipeline, Endpoint, "2025-05-01-preview");
+        private CommunityEndpoints CommunityEndpointsRestClient => _communityEndpointsRestClient ??= new CommunityEndpoints(CommunityEndpointsClientDiagnostics, Pipeline, Diagnostics.ApplicationId, Endpoint, "2025-05-01-preview");
 
         /// <summary>
         /// List WorkloadResource resources by subscription ID
@@ -104,7 +104,7 @@ namespace Azure.ResourceManager.VirtualEnclaves.Mocking
             {
                 CancellationToken = cancellationToken
             };
-            return new AsyncPageableWrapper<VirtualEnclaveWorkloadData, VirtualEnclaveWorkloadResource>(new WorkloadGetBySubscriptionAsyncCollectionResultOfT(WorkloadRestClient, Guid.Parse(Id.SubscriptionId), virtualEnclaveName, context), data => new VirtualEnclaveWorkloadResource(Client, data));
+            return new AsyncPageableWrapper<VirtualEnclaveWorkloadData, VirtualEnclaveWorkloadResource>(new WorkloadGetBySubscriptionAsyncCollectionResultOfT(WorkloadRestClient, Guid.Parse(Id.SubscriptionId), virtualEnclaveName, context, "MockableVirtualEnclavesSubscriptionResource.GetVirtualEnclaveWorkloads"), data => new VirtualEnclaveWorkloadResource(Client, data));
         }
 
         /// <summary>
@@ -137,7 +137,7 @@ namespace Azure.ResourceManager.VirtualEnclaves.Mocking
             {
                 CancellationToken = cancellationToken
             };
-            return new PageableWrapper<VirtualEnclaveWorkloadData, VirtualEnclaveWorkloadResource>(new WorkloadGetBySubscriptionCollectionResultOfT(WorkloadRestClient, Guid.Parse(Id.SubscriptionId), virtualEnclaveName, context), data => new VirtualEnclaveWorkloadResource(Client, data));
+            return new PageableWrapper<VirtualEnclaveWorkloadData, VirtualEnclaveWorkloadResource>(new WorkloadGetBySubscriptionCollectionResultOfT(WorkloadRestClient, Guid.Parse(Id.SubscriptionId), virtualEnclaveName, context, "MockableVirtualEnclavesSubscriptionResource.GetVirtualEnclaveWorkloads"), data => new VirtualEnclaveWorkloadResource(Client, data));
         }
 
         /// <summary>
@@ -165,7 +165,7 @@ namespace Azure.ResourceManager.VirtualEnclaves.Mocking
             {
                 CancellationToken = cancellationToken
             };
-            return new AsyncPageableWrapper<VirtualEnclaveData, VirtualEnclaveResource>(new VirtualEnclaveGetBySubscriptionAsyncCollectionResultOfT(VirtualEnclaveRestClient, Guid.Parse(Id.SubscriptionId), context), data => new VirtualEnclaveResource(Client, data));
+            return new AsyncPageableWrapper<VirtualEnclaveData, VirtualEnclaveResource>(new VirtualEnclaveGetBySubscriptionAsyncCollectionResultOfT(VirtualEnclaveRestClient, Guid.Parse(Id.SubscriptionId), context, "MockableVirtualEnclavesSubscriptionResource.GetVirtualEnclaves"), data => new VirtualEnclaveResource(Client, data));
         }
 
         /// <summary>
@@ -193,7 +193,7 @@ namespace Azure.ResourceManager.VirtualEnclaves.Mocking
             {
                 CancellationToken = cancellationToken
             };
-            return new PageableWrapper<VirtualEnclaveData, VirtualEnclaveResource>(new VirtualEnclaveGetBySubscriptionCollectionResultOfT(VirtualEnclaveRestClient, Guid.Parse(Id.SubscriptionId), context), data => new VirtualEnclaveResource(Client, data));
+            return new PageableWrapper<VirtualEnclaveData, VirtualEnclaveResource>(new VirtualEnclaveGetBySubscriptionCollectionResultOfT(VirtualEnclaveRestClient, Guid.Parse(Id.SubscriptionId), context, "MockableVirtualEnclavesSubscriptionResource.GetVirtualEnclaves"), data => new VirtualEnclaveResource(Client, data));
         }
 
         /// <summary>
@@ -221,7 +221,7 @@ namespace Azure.ResourceManager.VirtualEnclaves.Mocking
             {
                 CancellationToken = cancellationToken
             };
-            return new AsyncPageableWrapper<VirtualEnclaveCommunityData, VirtualEnclaveCommunityResource>(new CommunityGetBySubscriptionAsyncCollectionResultOfT(CommunityRestClient, Guid.Parse(Id.SubscriptionId), context), data => new VirtualEnclaveCommunityResource(Client, data));
+            return new AsyncPageableWrapper<VirtualEnclaveCommunityData, VirtualEnclaveCommunityResource>(new CommunityGetBySubscriptionAsyncCollectionResultOfT(CommunityRestClient, Guid.Parse(Id.SubscriptionId), context, "MockableVirtualEnclavesSubscriptionResource.GetVirtualEnclaveCommunities"), data => new VirtualEnclaveCommunityResource(Client, data));
         }
 
         /// <summary>
@@ -249,7 +249,7 @@ namespace Azure.ResourceManager.VirtualEnclaves.Mocking
             {
                 CancellationToken = cancellationToken
             };
-            return new PageableWrapper<VirtualEnclaveCommunityData, VirtualEnclaveCommunityResource>(new CommunityGetBySubscriptionCollectionResultOfT(CommunityRestClient, Guid.Parse(Id.SubscriptionId), context), data => new VirtualEnclaveCommunityResource(Client, data));
+            return new PageableWrapper<VirtualEnclaveCommunityData, VirtualEnclaveCommunityResource>(new CommunityGetBySubscriptionCollectionResultOfT(CommunityRestClient, Guid.Parse(Id.SubscriptionId), context, "MockableVirtualEnclavesSubscriptionResource.GetVirtualEnclaveCommunities"), data => new VirtualEnclaveCommunityResource(Client, data));
         }
 
         /// <summary>
@@ -282,7 +282,7 @@ namespace Azure.ResourceManager.VirtualEnclaves.Mocking
             {
                 CancellationToken = cancellationToken
             };
-            return new AsyncPageableWrapper<VirtualEnclaveTransitHubData, VirtualEnclaveTransitHubResource>(new TransitHubGetBySubscriptionAsyncCollectionResultOfT(TransitHubRestClient, Guid.Parse(Id.SubscriptionId), communityName, context), data => new VirtualEnclaveTransitHubResource(Client, data));
+            return new AsyncPageableWrapper<VirtualEnclaveTransitHubData, VirtualEnclaveTransitHubResource>(new TransitHubGetBySubscriptionAsyncCollectionResultOfT(TransitHubRestClient, Guid.Parse(Id.SubscriptionId), communityName, context, "MockableVirtualEnclavesSubscriptionResource.GetVirtualEnclaveTransitHubs"), data => new VirtualEnclaveTransitHubResource(Client, data));
         }
 
         /// <summary>
@@ -315,7 +315,7 @@ namespace Azure.ResourceManager.VirtualEnclaves.Mocking
             {
                 CancellationToken = cancellationToken
             };
-            return new PageableWrapper<VirtualEnclaveTransitHubData, VirtualEnclaveTransitHubResource>(new TransitHubGetBySubscriptionCollectionResultOfT(TransitHubRestClient, Guid.Parse(Id.SubscriptionId), communityName, context), data => new VirtualEnclaveTransitHubResource(Client, data));
+            return new PageableWrapper<VirtualEnclaveTransitHubData, VirtualEnclaveTransitHubResource>(new TransitHubGetBySubscriptionCollectionResultOfT(TransitHubRestClient, Guid.Parse(Id.SubscriptionId), communityName, context, "MockableVirtualEnclavesSubscriptionResource.GetVirtualEnclaveTransitHubs"), data => new VirtualEnclaveTransitHubResource(Client, data));
         }
 
         /// <summary>
@@ -343,7 +343,7 @@ namespace Azure.ResourceManager.VirtualEnclaves.Mocking
             {
                 CancellationToken = cancellationToken
             };
-            return new AsyncPageableWrapper<VirtualEnclaveConnectionData, VirtualEnclaveConnectionResource>(new EnclaveConnectionGetBySubscriptionAsyncCollectionResultOfT(EnclaveConnectionRestClient, Guid.Parse(Id.SubscriptionId), context), data => new VirtualEnclaveConnectionResource(Client, data));
+            return new AsyncPageableWrapper<VirtualEnclaveConnectionData, VirtualEnclaveConnectionResource>(new EnclaveConnectionGetBySubscriptionAsyncCollectionResultOfT(EnclaveConnectionRestClient, Guid.Parse(Id.SubscriptionId), context, "MockableVirtualEnclavesSubscriptionResource.GetVirtualEnclaveConnections"), data => new VirtualEnclaveConnectionResource(Client, data));
         }
 
         /// <summary>
@@ -371,7 +371,7 @@ namespace Azure.ResourceManager.VirtualEnclaves.Mocking
             {
                 CancellationToken = cancellationToken
             };
-            return new PageableWrapper<VirtualEnclaveConnectionData, VirtualEnclaveConnectionResource>(new EnclaveConnectionGetBySubscriptionCollectionResultOfT(EnclaveConnectionRestClient, Guid.Parse(Id.SubscriptionId), context), data => new VirtualEnclaveConnectionResource(Client, data));
+            return new PageableWrapper<VirtualEnclaveConnectionData, VirtualEnclaveConnectionResource>(new EnclaveConnectionGetBySubscriptionCollectionResultOfT(EnclaveConnectionRestClient, Guid.Parse(Id.SubscriptionId), context, "MockableVirtualEnclavesSubscriptionResource.GetVirtualEnclaveConnections"), data => new VirtualEnclaveConnectionResource(Client, data));
         }
 
         /// <summary>
@@ -404,7 +404,7 @@ namespace Azure.ResourceManager.VirtualEnclaves.Mocking
             {
                 CancellationToken = cancellationToken
             };
-            return new AsyncPageableWrapper<VirtualEnclaveEndpointData, VirtualEnclaveEndpointResource>(new EnclaveEndpointsGetBySubscriptionAsyncCollectionResultOfT(EnclaveEndpointsRestClient, Guid.Parse(Id.SubscriptionId), virtualEnclaveName, context), data => new VirtualEnclaveEndpointResource(Client, data));
+            return new AsyncPageableWrapper<VirtualEnclaveEndpointData, VirtualEnclaveEndpointResource>(new EnclaveEndpointsGetBySubscriptionAsyncCollectionResultOfT(EnclaveEndpointsRestClient, Guid.Parse(Id.SubscriptionId), virtualEnclaveName, context, "MockableVirtualEnclavesSubscriptionResource.GetVirtualEnclaveEndpoints"), data => new VirtualEnclaveEndpointResource(Client, data));
         }
 
         /// <summary>
@@ -437,7 +437,7 @@ namespace Azure.ResourceManager.VirtualEnclaves.Mocking
             {
                 CancellationToken = cancellationToken
             };
-            return new PageableWrapper<VirtualEnclaveEndpointData, VirtualEnclaveEndpointResource>(new EnclaveEndpointsGetBySubscriptionCollectionResultOfT(EnclaveEndpointsRestClient, Guid.Parse(Id.SubscriptionId), virtualEnclaveName, context), data => new VirtualEnclaveEndpointResource(Client, data));
+            return new PageableWrapper<VirtualEnclaveEndpointData, VirtualEnclaveEndpointResource>(new EnclaveEndpointsGetBySubscriptionCollectionResultOfT(EnclaveEndpointsRestClient, Guid.Parse(Id.SubscriptionId), virtualEnclaveName, context, "MockableVirtualEnclavesSubscriptionResource.GetVirtualEnclaveEndpoints"), data => new VirtualEnclaveEndpointResource(Client, data));
         }
 
         /// <summary>
@@ -470,7 +470,7 @@ namespace Azure.ResourceManager.VirtualEnclaves.Mocking
             {
                 CancellationToken = cancellationToken
             };
-            return new AsyncPageableWrapper<VirtualEnclaveCommunityEndpointData, VirtualEnclaveCommunityEndpointResource>(new CommunityEndpointsGetBySubscriptionAsyncCollectionResultOfT(CommunityEndpointsRestClient, Guid.Parse(Id.SubscriptionId), communityName, context), data => new VirtualEnclaveCommunityEndpointResource(Client, data));
+            return new AsyncPageableWrapper<VirtualEnclaveCommunityEndpointData, VirtualEnclaveCommunityEndpointResource>(new CommunityEndpointsGetBySubscriptionAsyncCollectionResultOfT(CommunityEndpointsRestClient, Guid.Parse(Id.SubscriptionId), communityName, context, "MockableVirtualEnclavesSubscriptionResource.GetVirtualEnclaveCommunityEndpoints"), data => new VirtualEnclaveCommunityEndpointResource(Client, data));
         }
 
         /// <summary>
@@ -503,7 +503,7 @@ namespace Azure.ResourceManager.VirtualEnclaves.Mocking
             {
                 CancellationToken = cancellationToken
             };
-            return new PageableWrapper<VirtualEnclaveCommunityEndpointData, VirtualEnclaveCommunityEndpointResource>(new CommunityEndpointsGetBySubscriptionCollectionResultOfT(CommunityEndpointsRestClient, Guid.Parse(Id.SubscriptionId), communityName, context), data => new VirtualEnclaveCommunityEndpointResource(Client, data));
+            return new PageableWrapper<VirtualEnclaveCommunityEndpointData, VirtualEnclaveCommunityEndpointResource>(new CommunityEndpointsGetBySubscriptionCollectionResultOfT(CommunityEndpointsRestClient, Guid.Parse(Id.SubscriptionId), communityName, context, "MockableVirtualEnclavesSubscriptionResource.GetVirtualEnclaveCommunityEndpoints"), data => new VirtualEnclaveCommunityEndpointResource(Client, data));
         }
     }
 }

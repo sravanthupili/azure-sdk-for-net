@@ -16,6 +16,7 @@ namespace Azure.ResourceManager.SelfHelp
     {
         private readonly Uri _endpoint;
         private readonly string _apiVersion;
+        private readonly TelemetryDetails _userAgent;
 
         /// <summary> Initializes a new instance of SolutionResources for mocking. </summary>
         protected SolutionResources()
@@ -25,14 +26,16 @@ namespace Azure.ResourceManager.SelfHelp
         /// <summary> Initializes a new instance of SolutionResources. </summary>
         /// <param name="clientDiagnostics"> The ClientDiagnostics is used to provide tracing support for the client library. </param>
         /// <param name="pipeline"> The HTTP pipeline for sending and receiving REST requests and responses. </param>
+        /// <param name="applicationId"> The application id to use for user agent. </param>
         /// <param name="endpoint"> Service endpoint. </param>
         /// <param name="apiVersion"></param>
-        internal SolutionResources(ClientDiagnostics clientDiagnostics, HttpPipeline pipeline, Uri endpoint, string apiVersion)
+        internal SolutionResources(ClientDiagnostics clientDiagnostics, HttpPipeline pipeline, string applicationId, Uri endpoint, string apiVersion)
         {
             ClientDiagnostics = clientDiagnostics;
             _endpoint = endpoint;
             Pipeline = pipeline;
             _apiVersion = apiVersion;
+            _userAgent = new TelemetryDetails(typeof(SolutionResources).Assembly, applicationId);
         }
 
         /// <summary> The HTTP pipeline for sending and receiving REST requests and responses. </summary>
@@ -49,11 +52,15 @@ namespace Azure.ResourceManager.SelfHelp
             uri.AppendPath(scope, false);
             uri.AppendPath("/providers/Microsoft.Help/solutions/", false);
             uri.AppendPath(solutionResourceName, true);
-            uri.AppendQuery("api-version", _apiVersion, true);
+            if (_apiVersion != null)
+            {
+                uri.AppendQuery("api-version", _apiVersion, true);
+            }
             HttpMessage message = Pipeline.CreateMessage();
             Request request = message.Request;
             request.Uri = uri;
             request.Method = RequestMethod.Get;
+            _userAgent.Apply(message);
             request.Headers.SetValue("Accept", "application/json");
             return message;
         }
@@ -66,12 +73,16 @@ namespace Azure.ResourceManager.SelfHelp
             uri.AppendPath(scope, false);
             uri.AppendPath("/providers/Microsoft.Help/solutions/", false);
             uri.AppendPath(solutionResourceName, true);
-            uri.AppendQuery("api-version", _apiVersion, true);
+            if (_apiVersion != null)
+            {
+                uri.AppendQuery("api-version", _apiVersion, true);
+            }
             HttpMessage message = Pipeline.CreateMessage();
             Request request = message.Request;
             request.Uri = uri;
             request.Method = RequestMethod.Put;
-            if ("application/json" != null)
+            _userAgent.Apply(message);
+            if (content != null)
             {
                 request.Headers.SetValue("Content-Type", "application/json");
             }
@@ -88,12 +99,16 @@ namespace Azure.ResourceManager.SelfHelp
             uri.AppendPath(scope, false);
             uri.AppendPath("/providers/Microsoft.Help/solutions/", false);
             uri.AppendPath(solutionResourceName, true);
-            uri.AppendQuery("api-version", _apiVersion, true);
+            if (_apiVersion != null)
+            {
+                uri.AppendQuery("api-version", _apiVersion, true);
+            }
             HttpMessage message = Pipeline.CreateMessage();
             Request request = message.Request;
             request.Uri = uri;
             request.Method = RequestMethod.Patch;
-            if ("application/json" != null)
+            _userAgent.Apply(message);
+            if (content != null)
             {
                 request.Headers.SetValue("Content-Type", "application/json");
             }
@@ -111,12 +126,16 @@ namespace Azure.ResourceManager.SelfHelp
             uri.AppendPath("/providers/Microsoft.Help/solutions/", false);
             uri.AppendPath(solutionResourceName, true);
             uri.AppendPath("/warmup", false);
-            uri.AppendQuery("api-version", _apiVersion, true);
+            if (_apiVersion != null)
+            {
+                uri.AppendQuery("api-version", _apiVersion, true);
+            }
             HttpMessage message = Pipeline.CreateMessage();
             Request request = message.Request;
             request.Uri = uri;
             request.Method = RequestMethod.Post;
-            if ("application/json" != null)
+            _userAgent.Apply(message);
+            if (content != null)
             {
                 request.Headers.SetValue("Content-Type", "application/json");
             }
